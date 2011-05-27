@@ -3,14 +3,14 @@
 Plugin Name: Mini Loops
 Plugin URI: http://trepmal.com/plugins/mini-loops/
 Description: Query posts and display them where you want
-Version: 0.1
+Version: 0.2
 Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 */
 
-global $allowedposttags;
-$allowedposttags['ol']['style'] = array();
-//die( print_r($allowedposttags,true));
+
+//certain attributes may be filtered out upon saving
+//declare them as safe here
 add_filter( 'safe_style_css', 'more_safe_css');
 function more_safe_css( $attr ) {
 	$attr[] = 'list-style-type';
@@ -54,11 +54,6 @@ function miniloops_post_formats( $item_format, $post_format ) {
 		default :
 	}
 	return $item_format;
-}
-
-//add_filter( 'the_title', 'testing_title_filter');
-function testing_title_filter( $input ) {
-	return $input.'!';
 }
 
 add_action( 'widgets_init', 'miniloops_load' );

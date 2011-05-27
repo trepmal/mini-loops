@@ -1,6 +1,15 @@
-		<p>
+		<p style="width:63%;float:left;">
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' );?> 
 				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+			</label>
+		</p>
+		<p style="width:33%;float:right;padding-top:20px;height:20px;">
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('hide_title'); ?>" name="<?php echo $this->get_field_name('hide_title'); ?>"<?php checked( $hide_title ); ?> />
+			<label for="<?php echo $this->get_field_id('hide_title'); ?>"><?php _e('Hide Title?', 'miniloops');?></label>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title_url' ); ?>"><?php _e( 'Title URL:' );?> 
+				<input class="widefat" id="<?php echo $this->get_field_id('title_url'); ?>" name="<?php echo $this->get_field_name('title_url'); ?>" type="text" value="<?php echo $title_url; ?>" />
 			</label>
 		</p>
 		<h3>Query</h3>
@@ -66,11 +75,15 @@
 		<p style="clear:both;">
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('reverse_order'); ?>" name="<?php echo $this->get_field_name('reverse_order'); ?>"<?php checked( $reverse_order ); ?> />
 			<label for="<?php echo $this->get_field_id('reverse_order'); ?>"><?php _e('Show posts in reverse order?', 'miniloops');?></label>
-				<small>(<?php _e('ABC vs CBA', 'miniloops');?>)</small>
+			<small>(<?php _e('ABC vs CBA', 'miniloops');?>)</small>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('ignore_sticky'); ?>" name="<?php echo $this->get_field_name('ignore_sticky'); ?>"<?php checked( $ignore_sticky ); ?> />
 			<label for="<?php echo $this->get_field_id('ignore_sticky'); ?>"><?php _e('Ignore sticky posts?', 'miniloops');?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('exclude_current'); ?>" name="<?php echo $this->get_field_name('exclude_current'); ?>"<?php checked( $exclude_current ); ?> />
+			<label for="<?php echo $this->get_field_id('exclude_current'); ?>"><?php _e('If viewing a single post, exclude it?', 'miniloops');?></label>
 		</p>
 		<p style="width:48%;float:left;">
 			<label for="<?php echo $this->get_field_id('categories'); ?>"><?php _e('Categories:', 'miniloops');?> 

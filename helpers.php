@@ -2,6 +2,8 @@
 // Show recent posts function
 function get_miniloops_defaults() {
 	$defs = array( 	'title' => __( 'Recent Posts', 'miniloops' ),
+					'hide_title' => 0, 
+					'title_url' => '', 
 					'number_posts' => 3,
 					'post_offset' => 0,
 					'post_type' => 'post', 
@@ -10,6 +12,7 @@ function get_miniloops_defaults() {
 					'order' => 'DESC', 
 					'reverse_order' => 0, 
 					'ignore_sticky' => 1, 
+					'exclude_current' => 1, 
 					'categories' => '',
 					'tags' => '',
 					'tax' => '',
@@ -23,7 +26,7 @@ function get_miniloops_defaults() {
 }
 
 function get_miniloops( $args = '' ) {
-	global $wpdb;
+	global $wpdb, $post;
 	$defaults = get_miniloops_defaults();
 	
 	$args = wp_parse_args( $args, $defaults );
@@ -39,6 +42,7 @@ function get_miniloops( $args = '' ) {
 	if (!in_array( $order, array( 'ASC', 'DESC' ) ) ) $order = 'DESC';
 	$reverse_order = (bool) $reverse_order;
 	$ignore_sticky = (bool) $ignore_sticky;
+	$exclude_current = (bool) $exclude_current;
 	$categories = esc_attr( $categories );
 	$tags = esc_attr( $tags );
 	$tax = str_replace('&amp;', '&', esc_attr( $tax ) );
@@ -48,6 +52,10 @@ function get_miniloops( $args = '' ) {
 	$after_items = wp_filter_post_kses( $after_items );
 	//$item_format //this is escaped in the loop so that the filter can be applied
 
+	if (is_single() && $exclude_current) {
+		$exclude[] = $post->ID;	
+	}
+	
 	parse_str($tax, $taxes);	
 	$tax_query = array();
 	foreach( array_keys( $taxes ) as $k => $slug ) {

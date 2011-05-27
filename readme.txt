@@ -30,7 +30,8 @@ List its ID as a negative number.
 
 == Screenshots ==
 
-1. Widget Options
+1. 
+2. 
 
 == Options ==
 
@@ -120,10 +121,12 @@ Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
 
 == Planned ==
-* options for is_single vs is_archive vs is_page...
 * true image cropping
 
 == Changelog ==
 
-= Version 1.0 =
+= Version 0.2 =
+* Improvements: hide title, link title, exclude current single post options
+
+= Version 0.1 =
 * Initial release version.
