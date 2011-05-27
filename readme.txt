@@ -33,64 +33,47 @@ List its ID as a negative number.
 1. 
 2. 
 
-== Options ==
+== Other Notes ==
 
 Explanation of options:
 
-= Title: =
-Your recent posts widget's title on your sidebar.
+** Title: ** Your recent posts widget's title on your sidebar.
 
-= Title Link: =
-The page the title should link to.
+** Title Link: ** The page the title should link to.
 
-= Number of Posts: =
-Number of posts to be displayed
+** Number of Posts: ** Number of posts to be displayed
 
-= Post Offset =
-Number of posts to skip before displaying the list
+** Post Offset: ** Number of posts to skip before displaying the list
 
-= Post Type =
-Post type to display
+** Post Type: ** Post type to display
 
-= Post Status =
-Post status to display. Primarily useful to show upcoming (future) posts. But be creative!
+** Post Status: **Post status to display. Primarily useful to show upcoming (future) posts. But be creative!
 
-= Order By =
-What order the posts should be displayed in
+** Order By: ** What order the posts should be displayed in
 
-= Order =
-Ascending (good for order by title) or Descending (good for order by date)
+** Order: ** Ascending (good for order by title) or Descending (good for order by date)
 
-= Show posts in reverse order? =
-Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
+** Show posts in reverse order? ** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
 
-= Ignore sticky posts? =
-I recommend ignoring, or the number of posts displayed may be inconsistent.
+** Ignore sticky posts? ** I recommend ignoring, or the number of posts displayed may be inconsistent.
 
-= Categories =
-Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
+** Categories: ** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
 
-= Tags =
-Comma separated list of tag IDs to pull from. Use negative ID numbers to exclude a tag.
+** Tags: ** Comma separated list of tag IDs to pull from. Use negative ID numbers to exclude a tag.
 
-= Custom Taxonomies =
-A clunky way to support custom taxonomies. To include terms 5, 6, 9 from taxonomy "Genre" do this:
+** Custom Taxonomies: ** A clunky way to support custom taxonomies. To include terms 5, 6, 9 from taxonomy "Genre" do this:
 `genre=5,6,9`
 
-= Custom Fields =
-For listing posts that have certain meta data. To list posts that have a custom field 'favorite_color' with a value of 'blue' do this:
+** Custom Fields: ** For listing posts that have certain meta data. To list posts that have a custom field 'favorite_color' with a value of 'blue' do this:
 `favorite_color=blue`
 
-= Exclude Posts =
-A comma separated list of post IDs to exclude.
+** Exclude Posts: ** A comma separated list of post IDs to exclude.
 
-= Before Item: =
-Text/HTML to insert before the post list
+** Before Item: ** Text/HTML to insert before the post list
 
-= After Item: =
-Text/HTML to insert after the post list
+** After Item: ** Text/HTML to insert after the post list
 
-= Item Format =
+** Item Format =
 HTML and shortcodes to format each item
 
 = Shortcodes =
@@ -120,7 +103,7 @@ HTML and shortcodes to format each item
 Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
 
-== Planned ==
+= Planned =
 * true image cropping
 
 == Changelog ==
