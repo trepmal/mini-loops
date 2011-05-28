@@ -82,7 +82,7 @@ function get_miniloops( $args = '' ) {
 		'order' => $order,
 		'post__not_in' => $exclude,
 	);
-//	echo '<pre>'.print_r($query,true).'</pre>';
+
 	//run the query
 	$miniloop = new WP_Query( $query );
 	if ( $reverse_order ) $miniloop->posts = array_reverse( $miniloop->posts );
@@ -99,7 +99,6 @@ function get_miniloops( $args = '' ) {
 		$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
 		$item_format_to_use = miniloops_shortcoder( $item_format_to_use );
-		//$postlist .= str_replace( '%%%%%', '', $item_format_to_use );
 		$postlist .= str_replace( '%%%%%', '', do_shortcode( $item_format_to_use ) );
 
 	endwhile;
@@ -288,7 +287,6 @@ function miniloop_image( $atts ) {
 				}
 				//manipulate width, height, and class here
 				$img = '<img' . $inners . ' />';
-//				$img = '<img '.implode( ' ', $img_atts[0] ) . ' />';
 			}
 
 		break;

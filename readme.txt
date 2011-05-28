@@ -102,11 +102,43 @@ HTML and shortcodes to format each item
   
 Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
+= Sample Item Formats =
+
+![format](http://s.wordpress.org/extend/plugins/mini-loops/screenshot-2.png)
+
+(before: <ul> after: </ul>)
+
+<li class="[class]"><p><a href="[url]">[image from=customfield 
+cfname=image width=50 height=50 class=alignright 
+fallback='http://dummyimage.com/50'][title]</a><br />
+[excerpt wlength=30 space_between=1 after="..." after_link=1]<br /><br />
+By [author] on [date format="n/j/y"]</p></li>
+
+![format](http://s.wordpress.org/extend/plugins/mini-loops/screenshot-3.png)
+
+(before: <ul> after: </ul>)
+
+<li class="[class]"><p>[date format="F j, Y"]<br /><a href="[url]">
+[image from=customfield cfname=image width=180 height=100 
+class=aligncenter fallback='http://placekitten.com/180/100']</a>
+[excerpt length=90 space_between=1 after="..." after_link=1]</p></li>
+
+![format](http://s.wordpress.org/extend/plugins/mini-loops/screenshot-4.png)
+
+(before: -- after: --)
+
+<p class="[class]" style="text-align:center"><a href="[url]">[title]<br />
+[image from=customfield cfname=image width=140 height=140 
+class=aligncenter fallback='http://placepuppy.it/200/300&text=++woof++']</a></p>
+
 
 = Planned =
 * true image cropping
 
 == Changelog ==
+
+= Version 0.3 =
+* Bug fix: post status works now
 
 = Version 0.2 =
 * Improvements: hide title, link title, exclude current single post options

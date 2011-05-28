@@ -41,7 +41,7 @@
 				<?php
 					$pss = get_available_post_statuses();
 					foreach($pss as $k=>$v) {
-						echo '<option value="' . $k . '"' . selected($k,$post_status,true) . '>' . $v . '</option>';
+						echo '<option value="' . $v . '"' . selected($v,$post_status,true) . '>' . $v . '</option>';
 					}
 				?>
 				</select>
