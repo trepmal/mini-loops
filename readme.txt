@@ -3,7 +3,7 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
-Tested up to: 3.1.3
+Tested up to: 3.2-beta2
 Stable tag: trunk
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
