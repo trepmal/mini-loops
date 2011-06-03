@@ -28,6 +28,9 @@ This is a new release, please report bugs to trepmal (at) gmail (dot) com before
 = How can I exclude categories? =
 List its ID as a negative number.
 
+= Auto-Drafts are showing up? =
+I haven't replicated this problem on my end, but excluding the default category seems to be a good - hopefully temporary - solution
+
 == Screenshots ==
 
 1. Widget Options
