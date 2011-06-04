@@ -8,7 +8,7 @@ Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 */
 /*
-    Copyright (C) 2011  Kailey Lampert
+    Copyright (C) 2010  Kailey Lampert
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,16 +24,21 @@ Author URI: http://kaileylampert.com
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-//certain attributes may be filtered out upon saving
-//declare them as safe here
-add_filter( 'safe_style_css', 'more_safe_css');
-function more_safe_css( $attr ) {
+/*
+	certain attributes may be filtered out upon saving
+	declare them as safe here
+	of course, you should move any of your changes to another
+	files so future updates don't overwrite your changes
+*/
+//add_filter( 'safe_style_css', 'miniloops_more_safe_css');
+function miniloops_more_safe_css( $attr ) {
 	$attr[] = 'list-style-type';
 	return $attr;
 }
 
-//Example for customizing the output based on post format
+/*
+	Example for customizing the output based on post format
+*/
 //add_filter( 'miniloops_item_format', 'miniloops_post_formats', 10, 2 );
 function miniloops_post_formats( $item_format, $post_format ) {
 	switch ( $post_format ) {
@@ -66,6 +71,10 @@ function miniloops_post_formats( $item_format, $post_format ) {
 			break;
 		case 'standard' :
 		case false :
+			/*
+				the standard format should be what you put in the widget
+				but you could change it here if you really wanted
+			*/
 			//$item_format = '<li class="[class]">standard: <a href="[url]">[title]</a></li>';
 		default :
 	}
@@ -73,7 +82,7 @@ function miniloops_post_formats( $item_format, $post_format ) {
 }
 
 add_action( 'widgets_init', 'miniloops_load' );
-function miniloops_load() { 
+function miniloops_load() {
 	register_widget( 'miniloops' );
 }
 

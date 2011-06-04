@@ -24,9 +24,9 @@ class miniloops extends WP_Widget {
 
 		echo $after_widget;
 
-  } //end widget()
-	
-  function update($new_instance, $old_instance) {
+	} //end widget()
+
+	function update($new_instance, $old_instance) {
 
 		$instance = $old_instance;
 		//get old variables
@@ -52,14 +52,14 @@ class miniloops extends WP_Widget {
 		$instance['after_items'] = wp_filter_post_kses( $new_instance['after_items'] );
 
 		return $instance;
- 
+
 	} //end update()
-	
-  function form( $instance ) {
+
+	function form( $instance ) {
 
 		$instance = wp_parse_args( (array) $instance, get_miniloops_defaults() );
 		extract( $instance );
-		
+
 		include('form.php');
 
 	} //end form()
