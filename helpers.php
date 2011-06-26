@@ -94,7 +94,7 @@ function get_miniloops( $args = '' ) {
 
 	while ( $miniloop->have_posts() ) : $miniloop->the_post();
 		
-		$post_format = get_post_format( get_the_ID() );
+    $post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
 		
 		$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
@@ -259,6 +259,15 @@ function miniloop_image( $atts ) {
 			if ( has_post_thumbnail( $post->ID ) )
 			$img = get_the_post_thumbnail( $post->ID, array( $width, $height ), array( 'class' => $class ) );			
 		break;
+		case 'attached' :
+			$atts = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment' ) );
+			foreach( $atts as $a ) {
+				//make sure we don't grab the wrong file type
+				if ( strpos( $a->post_mime_type, 'image/' ) !== false ) {
+					$img = wp_get_attachment_image( $a->ID, array( $width, $height ), array( 'class' => $class ) );
+				}
+			}
+		break;
 		case 'customfield' :
 			if (empty($cfname)) break;
 			$img = get_post_meta( $post->ID, $cfname, true );
@@ -291,7 +300,7 @@ function miniloop_image( $atts ) {
 
 		break;
 	}
-	
-	$fallback = '<img src="' . $fallback . '" alt="" width="' . $width . '" height="' . $height . '" class="' . $class . '" />';
+
+	$fallback = !empty($fallback) ? '<img src="' . $fallback . '" alt="" width="' . $width . '" height="' . $height . '" class="' . $class . '" />' : '';
 	return (!$img || empty($img)) ? $fallback : $img;
 }

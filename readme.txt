@@ -3,7 +3,7 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
-Tested up to: 3.2-beta2
+Tested up to: 3.1.3
 Stable tag: trunk
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -27,9 +27,6 @@ This is a new release, please report bugs to trepmal (at) gmail (dot) com before
 
 = How can I exclude categories? =
 List its ID as a negative number.
-
-= Auto-Drafts are showing up? =
-I haven't replicated this problem on my end, but excluding the default category seems to be a good - hopefully temporary - solution
 
 == Screenshots ==
 
@@ -97,7 +94,11 @@ HTML and shortcodes to format each item
 * [ml_class] Attributes: class
   * class = classes to display in addition to the traditional post classes
 * [ml_image] Attributes: from, cfname, class, width (50), height (50), crop, fallback
-  * from = 'thumb' post thumbnail/featured image, 'customfield' get from custom field, 'first' first image in post
+  * from:
+    * 'thumb' post thumbnail/featured image
+    * 'attached' first attached image
+    * 'customfield' get from custom field
+    * 'first' first image in post
   * cfname = custom field to use if from=customfield
   * class = class for image
   * width = width of image
@@ -139,6 +140,10 @@ class=aligncenter fallback='http://placepuppy.it/200/300&text=++woof++']</a></p>
 * true image cropping
 
 == Changelog ==
+
+= Version 0.4 =
+* New image option: get first attached image (great for galleries!)
+* Bug fix: broken image if no fallback is set
 
 = Version 0.3 =
 * Bug fix: post status works now
