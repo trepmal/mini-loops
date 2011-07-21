@@ -15,6 +15,13 @@ Show most recent posts, posts from categories, and more. Can be displayed via wi
 
 This is a new release, please report bugs to trepmal (at) gmail (dot) com before leaving a poor review. Thanks
 
+[0.5-dev](http://kly.me/oyL0FO) release: 
+
+* New: get only sticky posts
+* New: shuffle order
+* New: cropped thumbnails for 'thumb' and 'attached' image options
+
+
 == Installation ==
 
 = Installation =
