@@ -139,7 +139,7 @@ Format 3: http://s.wordpress.org/extend/plugins/mini-loops/screenshot-4.png
 class=aligncenter fallback='http://placepuppy.it/200/300&text=++woof++']</a></p>`
 
 == Template Tag ==
-`miniloops( $args )` or `get_miniloops( $args )`
+use `miniloops( $args )` or `get_miniloops( $args )`
 
 Like WordPress function, the 'get_' variant will simply return the results.
 
