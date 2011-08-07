@@ -3,7 +3,7 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
-Tested up to: 3.1.3
+Tested up to: 3.2.1
 Stable tag: trunk
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -14,13 +14,6 @@ Widget for mini post loops.
 Show most recent posts, posts from categories, and more. Can be displayed via widgets, shortcodes, and template tags.
 
 This is a new release, please report bugs to trepmal (at) gmail (dot) com before leaving a poor review. Thanks
-
-[0.5-dev](http://kly.me/oyL0FO) release: 
-
-* New: get only sticky posts
-* New: shuffle order
-* New: cropped thumbnails for 'thumb' and 'attached' image options
-
 
 == Installation ==
 
@@ -95,23 +88,26 @@ HTML and shortcodes to format each item
   * space_between = force space between excerpt and 'after'
   * after_link = make the 'after' link to the post
 * [ml_content]
+* [ml_comment_count]
 * [ml_author]
+* [ml_author_link]
 * [ml_date] Attributes: format ('F j, Y')
   * format = PHP-style date format
 * [ml_class] Attributes: class
   * class = classes to display in addition to the traditional post classes
 * [ml_image] Attributes: from, cfname, class, width (50), height (50), crop, fallback
-  * from:
-    * 'thumb' post thumbnail/featured image
-    * 'attached' first attached image
-    * 'customfield' get from custom field
-    * 'first' first image in post
+  * from (options: thumb, attached, customfield, first)
+     * *from* 'thumb' post thumbnail/featured image
+     * *from* 'attached' first attached image
+     * *from* 'customfield' get from custom field
+     * *from* 'first' first image in post
   * cfname = custom field to use if from=customfield
   * class = class for image
   * width = width of image
   * height = height of image
   * crop = 1 to crop, 0 to scale (not implemented yet)
   * fallback = URL of image to use if 'from' doesn't return anything
+  * cache = set to 'clear' to generate new thumbnails
   
 Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
@@ -142,11 +138,58 @@ Format 3: http://s.wordpress.org/extend/plugins/mini-loops/screenshot-4.png
 [image from=customfield cfname=image width=140 height=140 
 class=aligncenter fallback='http://placepuppy.it/200/300&text=++woof++']</a></p>`
 
+== Template Tag ==
+`miniloops( $args )` or `get_miniloops( $args )`
+
+Like WordPress function, the 'get_' variant will simply return the results.
+
+Here are the acceptable arguments and their default values:
+
+`$args = array(
+		'title' => __( 'Recent Posts', 'mini-loops' ),
+		'hide_title' => 0,
+		'title_url' => '',
+		'number_posts' => 3,
+		'post_offset' => 0,
+		'post_type' => 'post',
+		'post_status' => 'publish',
+		'order_by' => 'date',
+		'order' => 'DESC',
+		'reverse_order' => 0,
+		'shuffle_order' => 0,
+		'ignore_sticky' => 1,
+		'only_sticky' => 0,
+		'exclude_current' => 1,
+		'categories' => '',
+		'tags' => '',
+		'tax' => '',
+		'custom_fields' => '',
+		'exclude' => '',
+		'before_items' => '<ul>',
+		'item_format' => '<li><a href="[url]">[title]</a><br />[excerpt]</li>',
+		'after_items' => '</ul>',
+		);
+get_miniloops( $args );`
 
 = Planned =
-* true image cropping
+* true image cropping for remote images
+
+== Upgrade Notice ==
+
+= 0.5 =
+Real image croping for thumbnails and several other new features. See Changelog.
+
+= Version 0.5 =
 
 == Changelog ==
+
+= Version 0.5 =
+* New: get only sticky posts
+* New: shuffle order
+* New: [ml_author_link] shortcode
+* New: [ml_comment_count] shortcode
+* New: thumbnail cropping for local images
+* New: Ready for localization
 
 = Version 0.4 =
 * New image option: get first attached image (great for galleries!)

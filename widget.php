@@ -4,11 +4,11 @@ class miniloops extends WP_Widget {
 
 	function miniloops() {
 		$widget_ops = array('classname' => 'miniloops',
-							'description' => __( 'Query posts, display them.', 'miniloops' )
+							'description' => __( 'Query posts, display them.', 'mini-loops' )
 						);
 		$control_ops = array( 'width' => 300, 'id_base' => 'miniloops' );
 
-		parent::WP_Widget( 'miniloops', __( 'Mini Loops', 'miniloops' ), $widget_ops, $control_ops );
+		parent::WP_Widget( 'miniloops', __( 'Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
 	}
 
 	function widget( $args, $instance ) {
@@ -40,7 +40,9 @@ class miniloops extends WP_Widget {
 		$instance['order_by'] = esc_attr( $new_instance['order_by'] );
 		$instance['order'] = esc_attr( $new_instance['order'] );
 		$instance['reverse_order'] = (bool) $new_instance['reverse_order'] ? 1 : 0;
+		$instance['shuffle_order'] = (bool) $new_instance['shuffle_order'] ? 1 : 0;
 		$instance['ignore_sticky'] = (bool) $new_instance['ignore_sticky'] ? 1 : 0;
+		$instance['only_sticky'] = (bool) $new_instance['only_sticky'] ? 1 : 0;
 		$instance['exclude_current'] = (bool) $new_instance['exclude_current'] ? 1 : 0;
 		$instance['categories'] = esc_attr( $new_instance['categories'] );
 		$instance['tags'] = esc_attr( $new_instance['tags'] );

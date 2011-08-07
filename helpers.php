@@ -1,18 +1,20 @@
 <?php
 // Show recent posts function
 function get_miniloops_defaults() {
-	$defs = array( 	'title' => __( 'Recent Posts', 'miniloops' ),
-					'hide_title' => 0, 
-					'title_url' => '', 
+	$defs = array( 	'title' => __( 'Recent Posts', 'mini-loops' ),
+					'hide_title' => 0,
+					'title_url' => '',
 					'number_posts' => 3,
 					'post_offset' => 0,
-					'post_type' => 'post', 
-					'post_status' => 'publish', 
-					'order_by' => 'date', 
-					'order' => 'DESC', 
-					'reverse_order' => 0, 
-					'ignore_sticky' => 1, 
-					'exclude_current' => 1, 
+					'post_type' => 'post',
+					'post_status' => 'publish',
+					'order_by' => 'date',
+					'order' => 'DESC',
+					'reverse_order' => 0,
+					'shuffle_order' => 0,
+					'ignore_sticky' => 1,
+					'only_sticky' => 0,
+					'exclude_current' => 1,
 					'categories' => '',
 					'tags' => '',
 					'tax' => '',
@@ -28,10 +30,10 @@ function get_miniloops_defaults() {
 function get_miniloops( $args = '' ) {
 	global $wpdb, $post;
 	$defaults = get_miniloops_defaults();
-	
+
 	$args = wp_parse_args( $args, $defaults );
 	extract($args);
-	
+
 	//since this function can be called in the template, re-escape the parameters
 	$number_posts = (int) $number_posts;
 	$post_offset = (int) $post_offset;
@@ -42,6 +44,7 @@ function get_miniloops( $args = '' ) {
 	if (!in_array( $order, array( 'ASC', 'DESC' ) ) ) $order = 'DESC';
 	$reverse_order = (bool) $reverse_order;
 	$ignore_sticky = (bool) $ignore_sticky;
+	$only_sticky = (bool) $only_sticky;
 	$exclude_current = (bool) $exclude_current;
 	$categories = esc_attr( $categories );
 	$tags = esc_attr( $tags );
@@ -53,10 +56,10 @@ function get_miniloops( $args = '' ) {
 	//$item_format //this is escaped in the loop so that the filter can be applied
 
 	if (is_single() && $exclude_current) {
-		$exclude[] = $post->ID;	
+		$exclude[] = $post->ID;
 	}
-	
-	parse_str($tax, $taxes);	
+
+	parse_str($tax, $taxes);
 	$tax_query = array();
 	foreach( array_keys( $taxes ) as $k => $slug ) {
 		$tax_query[] = array( 'taxonomy' => $slug, 'field' => 'id', 'terms' => explode(',',$taxes[ $slug ]) );
@@ -75,6 +78,7 @@ function get_miniloops( $args = '' ) {
 		'meta_query' => $meta_query,
 		'posts_per_page' => $number_posts,
 		'ignore_sticky_posts' => $ignore_sticky,
+		'post__in' => ( $only_sticky ? get_option('sticky_posts') : '' ),
 		'post_type' => $post_type,
 		'post_status' => $post_status,
 		'offset' => $post_offset,
@@ -83,26 +87,30 @@ function get_miniloops( $args = '' ) {
 		'post__not_in' => $exclude,
 	);
 
+	//for testing
+	//return '<pre>'. print_r( $query, true ) .'</pre>';
+
 	//run the query
 	$miniloop = new WP_Query( $query );
 	if ( $reverse_order ) $miniloop->posts = array_reverse( $miniloop->posts );
-	
+	if ( $shuffle_order ) shuffle( $miniloop->posts );
+
 	//begin building the list
 	$postlist = '';
 
 	$postlist .= $before_items;
 
 	while ( $miniloop->have_posts() ) : $miniloop->the_post();
-		
+
     $post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
-		
+
 		$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
 		$item_format_to_use = miniloops_shortcoder( $item_format_to_use );
 		$postlist .= str_replace( '%%%%%', '', do_shortcode( $item_format_to_use ) );
 
 	endwhile;
-	
+
 	wp_reset_query();
 
 	$postlist .= $after_items;
@@ -146,7 +154,7 @@ function get_miniloops_sc( $atts, $content ) {
 	$atts['item_format'] = $content;
 	$args = shortcode_atts($defaults, $atts );
 	return get_miniloops( $args, false );
-	
+
 }
 
 /*
@@ -184,12 +192,12 @@ function miniloop_excerpt( $atts ) {
 	$ocontent = strip_tags( strip_shortcodes( get_the_content() ) );
 	if ($wlength) $content = word_excerpt( $ocontent, $wlength );
 	else $content = substr( $ocontent, 0, $length );
-	
+
 	$after = '<a href="' . get_permalink( $post->ID ) . '">' . $after . '</a>';
 	if ($space_between) $after = ' '.$after;
 	if (!$after_link) $after = trim( strip_tags( $after ) );
 	if ( strlen( $content ) >= strlen( $ocontent ) )  $after = '';
-	
+
 	return $content . $after;
 }
 
@@ -204,15 +212,30 @@ function miniloop_content( $atts ) {
 		'after_link' => 1,
 	), $atts));
 	$content = apply_filters( 'the_content', get_the_content() );
-	
+
 	return $content;
+}
+
+add_shortcode( 'ml_comment_count' , 'miniloop_comment_count' );
+function miniloop_comment_count() {
+	global $post;
+	$count = get_comment_count( $post->ID );
+
+	return $count['approved'];
 }
 
 add_shortcode( 'ml_author' , 'miniloop_author' );
 function miniloop_author() {
 	global $post;
-	
+
 	return get_userdata( $post->post_author )->display_name;
+}
+
+add_shortcode( 'ml_author_link' , 'miniloop_author_link' );
+function miniloop_author_link() {
+	global $post;
+
+	return get_author_posts_url( $post->post_author );
 }
 
 add_shortcode( 'ml_date' , 'miniloop_date' );
@@ -223,7 +246,7 @@ function miniloop_date( $atts ) {
 	), $atts));
 	$format = esc_attr( $format );
 
-	return date( $format, strtotime($post->post_date) );
+	return date_i18n( $format, strtotime($post->post_date) );
 }
 
 add_shortcode( 'ml_class' , 'miniloop_class' );
@@ -252,55 +275,155 @@ function miniloop_image( $atts ) {
 		'height' => 50,
 		'crop' => 0,
 		'fallback' => '',
+		'cache' => '',
 	), $atts));
+
+	//for testing
+	//return "width: $width, height: $height";
+
 	$img = '';
 	switch ($from) {
 		case 'thumb' :
-			if ( has_post_thumbnail( $post->ID ) )
-			$img = get_the_post_thumbnail( $post->ID, array( $width, $height ), array( 'class' => $class ) );			
-		break;
+
+			if ( 'clear' == $cache ) delete_post_meta( $post->ID, '_ml_thumb_thumb' );
+			$resized = (array) get_post_meta( $post->ID, '_ml_thumb_thumb', true );
+
+			if ( isset( $resized["{$width}x{$height}"] ) ) {
+				//thumb exists
+				$src = $resized["{$width}x{$height}"];
+			}
+			elseif ( has_post_thumbnail( $post->ID ) ) {
+				$id = get_post_thumbnail_id( $post->ID );
+				$src = miniloops_create_thumbnail_from_id( $id, $width, $height );
+				//save to meta
+				$resized["{$width}x{$height}"] = $src;
+				update_post_meta( $post->ID, '_ml_thumb_thumb', $resized );
+			}
+			if ( ! empty( $src ) )
+				$img = "<img src='$src' width='$width' height='$height' class='$class' />";
+			break;
+
 		case 'attached' :
-			$atts = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment' ) );
-			foreach( $atts as $a ) {
-				//make sure we don't grab the wrong file type
-				if ( strpos( $a->post_mime_type, 'image/' ) !== false ) {
-					$img = wp_get_attachment_image( $a->ID, array( $width, $height ), array( 'class' => $class ) );
+
+			if ( 'clear' == $cache ) delete_post_meta( $post->ID, '_ml_thumb_attached' );
+			$resized = (array) get_post_meta( $post->ID, '_ml_thumb_attached', true );
+
+			if ( isset( $resized["{$width}x{$height}"] ) ) {
+				//thumb exists
+				$src = $resized["{$width}x{$height}"];
+			}
+			else {
+				$atts = get_children( array( 'post_parent' => $post->ID, 'post_type' => 'attachment' ) );
+				foreach( $atts as $a ) {
+					//make sure we don't grab the wrong file type
+					if ( strpos( $a->post_mime_type, 'image/' ) !== false ) {
+						$src = miniloops_create_thumbnail_from_id( $a->ID, $width, $height );
+						//save to meta
+						$resized["{$width}x{$height}"] = $src;
+						update_post_meta( $post->ID, '_ml_thumb_attached', $resized );
+					}
 				}
 			}
-		break;
+			if ( ! empty( $src ) )
+				$img = "<img src='$src' width='$width' height='$height' class='$class' />";
+			break;
+
 		case 'customfield' :
 			if (empty($cfname)) break;
-			$img = get_post_meta( $post->ID, $cfname, true );
-			if (!empty($img))
-			$img = '<img src="' . $img . '" alt="" width="' . $width . '" height="' . $height . '" class="' . $class . '" />';
-			
-		break;
+
+			if ( 'clear' == $cache ) delete_post_meta( $post->ID, '_ml_thumb_customfield' );
+			$resized = (array) get_post_meta( $post->ID, '_ml_thumb_customfield', true );
+
+			if ( isset( $resized["{$width}x{$height}"] ) ) {
+				//thumb exists
+				$src = $resized["{$width}x{$height}"];
+			}
+			else {
+				$img = get_post_meta( $post->ID, $cfname, true );
+				if ( ! empty( $img ) ) {
+					if ( substr( $img, 0, 4 ) != 'http' ) {
+						//if no 'http'
+						//assume relative to root
+						$img = site_url( $img );
+						$file = str_replace( content_url(), WP_CONTENT_DIR, $img );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+					}
+					elseif ( strpos( $img, site_url() ) !== false) {
+						//if match for site_url
+						$file = str_replace( content_url(), WP_CONTENT_DIR, $img );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+					}
+					else {
+						//external
+						//todo: real cropping for remote images
+						$src = $img;
+					}
+					$resized["{$width}x{$height}"] = $src;
+					update_post_meta( $post->ID, '_ml_thumb_customfield', $resized );
+				}
+			}
+			if ( ! empty( $src ) )
+				$img = "<img src='$src' width='$width' height='$height' class='$class' />";
+
+			break;
+
 		case 'first' :
 		default :
-			preg_match('/<img[^>]+>/i', $post->post_content, $match_array );
-			$img = count($match_array) > 0 ? $match_array[0] : false;
-			if ($img) {
-				$img = str_replace("'", '"', $img);
-				preg_match_all('/(alt|title|src)=("[^"]*")/i',$img, $img_atts);
-				$img_atts[1][] = 'class';
-				$img_atts[2][] = '"'.$class.'"';
-				$img_atts[1][] = 'width';
-				$img_atts[2][] = '"'.$width.'"';
-				$img_atts[1][] = 'height';
-				$img_atts[2][] = '"'.$height.'"';
-				
-				$inners = '';
-				
-				foreach($img_atts[1] as $k => $attr) {
-					$inners .= " $attr=".$img_atts[2][$k];
-				}
-				//manipulate width, height, and class here
-				$img = '<img' . $inners . ' />';
+
+			if ( 'clear' == $cache ) delete_post_meta( $post->ID, '_ml_thumb_first' );
+			$resized = (array) get_post_meta( $post->ID, '_ml_thumb_first', true );
+
+			if ( isset( $resized["{$width}x{$height}"] ) ) {
+				//thumb exists
+				$src = $resized["{$width}x{$height}"];
 			}
+			else {
+				preg_match('/<img[^>]+>/i', $post->post_content, $match_array );
+				$img = count($match_array) > 0 ? $match_array[0] : false;
+				if ($img) {
+					$img = str_replace("'", '"', $img);
+					//locate the first image
+					//preg_match_all('/(alt|title|src)=("[^"]*")/i', $img, $img_atts);
+					preg_match('/src="([^"]*)"/i', $img, $img_atts);
+					$img = $img_atts[1];
+
+					if ( substr( $img, 0, 4 ) != 'http' ) {
+						//if no 'http'
+						//assume relative to root
+						$img = site_url( $img );
+						$file = str_replace( content_url(), WP_CONTENT_DIR, $img );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+					}
+					elseif ( strpos( $img, site_url() ) !== false) {
+						//if match for site_url
+						$file = str_replace( content_url(), WP_CONTENT_DIR, $img );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+					}
+					else {
+						//external
+						//todo: real cropping for remote images
+						$src = $img;
+					}
+					$resized["{$width}x{$height}"] = $src;
+					update_post_meta( $post->ID, '_ml_thumb_first', $resized );
+				}
+			}
+			if ( ! empty( $src ) )
+				$img = "<img src='$src' width='$width' height='$height' class='$class' />";
 
 		break;
 	}
 
-	$fallback = !empty($fallback) ? '<img src="' . $fallback . '" alt="" width="' . $width . '" height="' . $height . '" class="' . $class . '" />' : '';
+	$fallback = !empty($fallback) ? "<img src='$fallback' alt='' width='$width' height='$height' class='$class' />" : '';
 	return (!$img || empty($img)) ? $fallback : $img;
+}
+
+function miniloops_create_thumbnail_from_id( $att_id, $width, $height ) {
+	$file = wp_get_attachment_image_src( $att_id, 'fullsize' );
+	$file = str_replace( content_url(), WP_CONTENT_DIR, $file[0] );
+	return miniloops_create_thumbnail_from_path( $file, $width, $height );
+}
+function miniloops_create_thumbnail_from_path( $file, $width, $height ) {
+	$new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
+	return str_replace( WP_CONTENT_DIR, content_url(), $new );
 }
