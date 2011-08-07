@@ -142,5 +142,5 @@
 			<label for="<?php echo $this->get_field_id('item_format'); ?>"><?php _e('Item Format:', 'mini-loops');?>
 				<textarea class="widefat" rows="5" id="<?php echo $this->get_field_id('item_format'); ?>" name="<?php echo $this->get_field_name('item_format'); ?>"><?php echo stripslashes( $item_format ); ?></textarea>
 			</label>
-			<small><em><a href="http://wordpress.org/extend/plugins/mini-loops/other_notes/"><?php _e('Sweet beaver! What does this mean?!?', 'mini-loops');?></a></em></small>
+			<small><em><a href="http://wordpress.org/extend/plugins/mini-loops/other_notes/"><?php _e('See an explanation of options.', 'mini-loops');?></a></em></small>
 		</p>

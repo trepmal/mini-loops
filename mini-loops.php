@@ -83,6 +83,7 @@ function miniloops_post_formats( $item_format, $post_format ) {
 add_action( 'widgets_init', 'miniloops_load' );
 function miniloops_load() {
 	register_widget( 'miniloops' );
+	load_plugin_textdomain( 'mini-loops', false, dirname( plugin_basename( __FILE__ ) ) .  '/lang' );
 }
 
 include_once('widget.php');

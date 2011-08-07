@@ -66,4 +66,3 @@ class miniloops extends WP_Widget {
 
 	} //end form()
 }
-
