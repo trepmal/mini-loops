@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: trunk
+Stable tag: 0.6
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -171,10 +171,25 @@ Here are the acceptable arguments and their default values:
 		);
 get_miniloops( $args );`
 
+= Shortcode =
+`[miniloop]`
+
+Use with all args listed above  
+e.g. `[miniloop number_posts=10]`
+
+Exception  
+'item_format' must go into the content of the shortcode, and square brackets must be replaced with curly brackets.  
+e.g. `[miniloop number_posts=10]{title}by {author}<br />[/miniloop]`
+
+Also, if you are using html inside the item_format, you must add this into the HTML editor, else your markup will be rendered, not parsed
+
 = Planned =
 * true image cropping for remote images
 
 == Upgrade Notice ==
+
+= 0.6 =
+New: get posts from current category (if archive) option
 
 = 0.5 =
 Real image croping for thumbnails and several other new features. See Changelog.
@@ -182,6 +197,13 @@ Real image croping for thumbnails and several other new features. See Changelog.
 = Version 0.5 =
 
 == Changelog ==
+
+= Version 0.6 =
+* New (sorta): shortcode option `[miniloop]` (see Other Notes for usage). Why "sorta"? shortcode has existed the whole time, I only just now added some docs
+* New: get posts from current category (if archive)
+* New: custom taxonomies, if only 1 ID given, and it's negative, treat it like "NOT IN"
+* Fix: added missing echo in instructions
+* General code optimization
 
 = Version 0.5 =
 * New: get only sticky posts
