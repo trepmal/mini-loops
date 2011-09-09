@@ -86,7 +86,7 @@ function get_miniloops( $args = '' ) {
 	foreach( $meta_fields as $k => $v ) {
 		$meta_query[] = array( 'key' => $k, 'value' => $v, 'compare' => '=' );
 	}
-	
+
 	if ( $current_category && is_category() ) {
 	    $categories = get_query_var( 'cat' );
 	}
@@ -118,7 +118,7 @@ function get_miniloops( $args = '' ) {
 	//begin building the list
 	$postlist = '';
 
-	$postlist .= $before_items;
+	$postlist .= stripslashes( $before_items );
 
 	while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
@@ -133,7 +133,7 @@ function get_miniloops( $args = '' ) {
 
 	wp_reset_query();
 
-	$postlist .= $after_items;
+	$postlist .= stripslashes( $after_items );
 
 	return $postlist;
 }
@@ -223,7 +223,7 @@ function miniloop_excerpt( $atts ) {
 
 	//just get the post content
 	$contents = get_the_content();
-	
+
 	$used_more = false;
 	if ( $up_to_more ) {
 		global $post;

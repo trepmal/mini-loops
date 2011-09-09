@@ -92,7 +92,7 @@ HTML and shortcodes to format each item
   * custom = 1 to default/customized excerpts, 0 to trim by lentgh
   * strip_tags = 1 to strip HTML tags, 0 to keep. **CAREFUL:** it is not generally recommended to keep the tags. Character excerpts may break tags, and thus break an entire page's layout.
   * strip_shortcodes = 1 to strip shortcodes, 0 to keep
-  * up_to_more = 1 to get everything up to the '<!--more-->' tag (the 'more' text), if it exists, otherwise use char/word limit excerpt. 0 use char/word limited excerpt
+  * up_to_more = 1 to get everything up to the `<!--more-->` tag (the 'more' text), if it exists, otherwise use char/word limit excerpt. 0 use char/word limited excerpt
   * after_with_more = (with up_to_more) 1 to use the 'after' text with the 'more' text, 0 to add nothing after the 'more' text
 * [ml_content]
 * [ml_comment_count]
@@ -210,6 +210,7 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 = Version 0.7 =
 * New: more excerpt options (use automated/custom excerpts rather than trim by length, option to bypass tag/shortcode stripping). Please report issues.
+* Fix: stipping slashes for before/after item during output
 
 = Version 0.6 =
 * New (sorta): shortcode option `[miniloop]` (see Other Notes for usage). Why "sorta"? shortcode has existed the whole time, I only just now added some docs

@@ -3,7 +3,7 @@
 Plugin Name: Mini Loops
 Plugin URI: http://trepmal.com/plugins/mini-loops/
 Description: Query posts and display them where you want
-Version: 0.6
+Version: 0.7
 Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 
