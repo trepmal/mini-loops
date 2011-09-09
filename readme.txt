@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 0.6
+Stable tag: 0.7
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -17,7 +17,6 @@ This is a new release, please report bugs to trepmal (at) gmail (dot) com before
 
 == Installation ==
 
-= Installation =
 1. Download the zip file and extract the contents.
 2. Upload the 'mini-loops' folder to your plugin directory (default: wp-content/plugins/).
 3. Activate the plugin through the 'plugins' page in WP.
@@ -27,6 +26,9 @@ This is a new release, please report bugs to trepmal (at) gmail (dot) com before
 
 = How can I exclude categories? =
 List its ID as a negative number.
+
+= My site broke after customizing the excerpt. What happened? =
+Did you set the strip_tags attribute to false? (`[excerpt strip_tags=0]`). If tags haven't been stripped, it may have cut off the text before an HTML tag was properly closed, thus breaking the page. Setting strip_tags to false should only be used if you're carefully managing the excerpt's output.
 
 == Screenshots ==
 
@@ -81,12 +83,17 @@ HTML and shortcodes to format each item
 = Shortcodes =
 * [ml_title]
 * [ml_url]
-* [ml_excerpt] Attributes: length (100), wlength (0), after ('...'), space_between (0), after_link (1)
-  * length = excerpt length in characters
+* [ml_excerpt] Attributes: length (100), wlength (0), after ('...'), space_between (0), after_link (1), custom (0), strip_tags (1), strip_shortcodes (1)
+  * length = excerpt length in characters (0 for none, -1 for full length)
   * wlength = excerpt length in words
   * after = what to show after the excerpt
   * space_between = force space between excerpt and 'after'
   * after_link = make the 'after' link to the post
+  * custom = 1 to default/customized excerpts, 0 to trim by lentgh
+  * strip_tags = 1 to strip HTML tags, 0 to keep. **CAREFUL:** it is not generally recommended to keep the tags. Character excerpts may break tags, and thus break an entire page's layout.
+  * strip_shortcodes = 1 to strip shortcodes, 0 to keep
+  * up_to_more = 1 to get everything up to the `<!--more-->` tag (the 'more' text), if it exists, otherwise use char/word limit excerpt. 0 use char/word limited excerpt
+  * after_with_more = (with up_to_more) 1 to use the 'after' text with the 'more' text, 0 to add nothing after the 'more' text
 * [ml_content]
 * [ml_comment_count]
 * [ml_author]
@@ -188,6 +195,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 
 == Upgrade Notice ==
 
+= 0.7 =
+New: more excerpt options
+
 = 0.6 =
 New: get posts from current category (if archive) option
 
@@ -197,6 +207,10 @@ Real image croping for thumbnails and several other new features. See Changelog.
 = Version 0.5 =
 
 == Changelog ==
+
+= Version 0.7 =
+* New: more excerpt options (use automated/custom excerpts rather than trim by length, option to bypass tag/shortcode stripping). Please report issues.
+* Fix: stipping slashes for before/after item during output
 
 = Version 0.6 =
 * New (sorta): shortcode option `[miniloop]` (see Other Notes for usage). Why "sorta"? shortcode has existed the whole time, I only just now added some docs
