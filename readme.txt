@@ -227,6 +227,7 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 = Version 0.8 =
 * New: [ml_field] shortcode, [ml_category] shortcode, [ml_tag] shortcode, [ml_taxonomy] shortcode
+* Fix: strip slashes from widget title
 
 = Version 0.7 =
 * New: more excerpt options (use automated/custom excerpts rather than trim by length, option to bypass tag/shortcode stripping). Please report issues.
