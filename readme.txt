@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 0.7
+Stable tag: 0.8
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -98,6 +98,20 @@ HTML and shortcodes to format each item
 * [ml_comment_count]
 * [ml_author]
 * [ml_author_link]
+* [ml_field] Attributes: name, single (1), separator (', '), reverse (0)
+  * name = custom field name
+  * single = 1 get single value, 0 get all values matching name
+  * separator = string to separate each value
+  * reverse = 0 default order, 1 reverse display order
+* [ml_taxonomy] Attributes: taxonomy, separator (', '), link (0), justone (0), reverse (0)
+  * taxonomy = taxonomy slug
+  * separator = string to separate each term
+  * link = 1 to link categories to their archive page, 0 for no links
+  * justone = 1 to show just first category, 0 to show all
+  * reverse = 0 default order, 1 reverse display order
+* [ml_tax] Alias to [ml_taxonomy]
+* [ml_category] Shortcut for [tax taxonomy=category]
+* [ml_tag] Shortcut for [tax taxonomy=post_tag]
 * [ml_date] Attributes: format ('F j, Y')
   * format = PHP-style date format
 * [ml_class] Attributes: class
@@ -195,6 +209,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 
 == Upgrade Notice ==
 
+= 0.8 =
+New: new item format options (custom fields and taxonomies)
+
 = 0.7 =
 New: more excerpt options
 
@@ -207,6 +224,9 @@ Real image croping for thumbnails and several other new features. See Changelog.
 = Version 0.5 =
 
 == Changelog ==
+
+= Version 0.8 =
+* New: [ml_field] shortcode, [ml_category] shortcode, [ml_tag] shortcode, [ml_taxonomy] shortcode
 
 = Version 0.7 =
 * New: more excerpt options (use automated/custom excerpts rather than trim by length, option to bypass tag/shortcode stripping). Please report issues.
