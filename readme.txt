@@ -225,6 +225,9 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
+= Version 0.8 (2011.10.31) =
+* Added French Translation files. (Thanks [@maoneetag](http://twitter.com/maoneetag))
+
 = Version 0.8 =
 * New: [ml_field] shortcode, [ml_category] shortcode, [ml_tag] shortcode, [ml_taxonomy] shortcode
 * Fix: strip slashes from widget title
