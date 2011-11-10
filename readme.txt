@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 0.8
+Stable tag: 0.9
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -198,7 +198,18 @@ get_miniloops( $args );`
 Use with all args listed above  
 e.g. `[miniloop number_posts=10]`
 
-Exception  
+**Exception - 'item_format' must be handled differently**
+
+New way (since v0.9):
+
+Create a custom field named `ml_format` and save the item format there. Then adjust your `[miniloop]` shortcode  
+e.g. `[miniloop number_posts=10][ml_format][/miniloop]`
+
+If needed, you can change the custom field. Just pass the name of the new custom field to the `[ml_format]` shortcode  
+e.g. `[miniloop number_posts=10][ml_format name="new_field"][/miniloop]`
+
+Old way:
+
 'item_format' must go into the content of the shortcode, and square brackets must be replaced with curly brackets.  
 e.g. `[miniloop number_posts=10]{title}by {author}<br />[/miniloop]`
 
@@ -208,6 +219,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 * true image cropping for remote images
 
 == Upgrade Notice ==
+
+= 0.9 =
+New: multisite support, better image handling
 
 = 0.8 =
 New: new item format options (custom fields and taxonomies)
@@ -224,6 +238,11 @@ Real image croping for thumbnails and several other new features. See Changelog.
 = Version 0.5 =
 
 == Changelog ==
+
+= Version 0.9 (2011.10.31) =
+* Fix: Prevents error from being displayed if image can't be resized
+* New: Improved support for multisite use
+* New: Improved [miniloop] shortcode. Editor tries to hard to "fix" the user-provided item format. Now you can save the format in a custom field. See Other Notes
 
 = Version 0.8 (2011.10.31) =
 * Added French Translation files. (Thanks [@maoneetag](http://twitter.com/maoneetag))
