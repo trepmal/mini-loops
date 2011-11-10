@@ -239,7 +239,7 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
-= Version 0.9 (2011.10.31) =
+= Version 0.9 =
 * Fix: Prevents error from being displayed if image can't be resized
 * New: Improved support for multisite use
 * New: Improved [miniloop] shortcode. Editor tries to hard to "fix" the user-provided item format. Now you can save the format in a custom field. See Other Notes
