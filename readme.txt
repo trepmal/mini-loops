@@ -220,6 +220,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 
 == Upgrade Notice ==
 
+= 1.0 =
+New: get from first category if viewing single post
+
 = 0.9 =
 New: multisite support, better image handling
 
