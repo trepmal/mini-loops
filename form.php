@@ -90,6 +90,10 @@
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('only_sticky'); ?>" name="<?php echo $this->get_field_name('only_sticky'); ?>"<?php checked( $only_sticky ); ?> />
 			<label for="<?php echo $this->get_field_id('only_sticky'); ?>"><?php _e('Only sticky posts?', 'mini-loops');?></label>
 		</p>
+		<p style="width:48%;float:left;">
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('exclude_sticky'); ?>" name="<?php echo $this->get_field_name('exclude_sticky'); ?>"<?php checked( $exclude_sticky ); ?> />
+			<label for="<?php echo $this->get_field_id('exclude_sticky'); ?>"><?php _e('Exclude sticky posts?', 'mini-loops');?></label>
+		</p>
 		<p style="clear:both;"><small>"<em>Only</em>" will take precedence if both sticky options are checked.</small></p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('exclude_current'); ?>" name="<?php echo $this->get_field_name('exclude_current'); ?>"<?php checked( $exclude_current ); ?> />

@@ -14,6 +14,7 @@ function get_miniloops_defaults() {
 					'shuffle_order' => 0,
 					'ignore_sticky' => 1,
 					'only_sticky' => 0,
+					'exclude_sticky' => 0,
 					'exclude_current' => 1,
 					'current_category' => 0,
 					'current_single_category' => 0,
@@ -47,6 +48,7 @@ function get_miniloops( $args = '' ) {
 	$reverse_order = (bool) $reverse_order;
 	$ignore_sticky = (bool) $ignore_sticky;
 	$only_sticky = (bool) $only_sticky;
+	$exclude_sticky = (bool) $exclude_sticky;
 	$exclude_current = (bool) $exclude_current;
 	$current_category = (bool) $current_category;
 	$current_single_category = (bool) $current_single_category;
@@ -61,6 +63,9 @@ function get_miniloops( $args = '' ) {
 
 	if (is_single() && $exclude_current) {
 		$exclude[] = $post->ID;
+	}
+	if ($exclude_sticky) {
+		$exclude = array_merge( $exclude, get_option('sticky_posts') );
 	}
 
 	parse_str($tax, $taxes);
