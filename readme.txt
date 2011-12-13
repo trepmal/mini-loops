@@ -3,7 +3,7 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
-Tested up to: 3.2.1
+Tested up to: 3.3
 Stable tag: 1.0
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -59,7 +59,9 @@ Explanation of options:
 
 **Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
 
-**Ignore sticky posts?** I recommend ignoring, or the number of posts displayed may be inconsistent.
+**Ignore sticky posts?** Treat sticky posts as normal posts. I recommend ignoring, or the number of posts displayed may be inconsistent.
+
+**Exclude sticky posts?** Don't show sticky posts at all.
 
 **Categories:** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
 
@@ -118,17 +120,17 @@ HTML and shortcodes to format each item
   * class = classes to display in addition to the traditional post classes
 * [ml_image] Attributes: from, cfname, class, width (50), height (50), crop, fallback
   * from (options: thumb, attached, customfield, first)
-     * *from* 'thumb' post thumbnail/featured image
-     * *from* 'attached' first attached image
-     * *from* 'customfield' get from custom field
-     * *from* 'first' first image in post
-  * cfname = custom field to use if from=customfield
+     * *from* 'thumb' post thumbnail/featured image `[ml_image from=thumb]`
+     * *from* 'attached' first attached image `[ml_image from=attached]`
+     * *from* 'customfield' get from custom field `[ml_image from=customfield]`
+     * *from* 'first' first image in post `[ml_image from=first]`
+  * cfname = custom field to use if from=customfield `[ml_image from=customfield cfname=thumbnail]`
   * class = class for image
   * width = width of image
   * height = height of image
   * crop = 1 to crop, 0 to scale (not implemented yet)
   * fallback = URL of image to use if 'from' doesn't return anything
-  * cache = set to 'clear' to generate new thumbnails
+  * cache = set to 'clear' to generate new thumbnails. It is not recommended that you leave this option on. `[ml_image from=thumb cache=clear]`
   
 Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
@@ -218,6 +220,12 @@ Also, if you are using html inside the item_format, you must add this into the H
 = Planned =
 * true image cropping for remote images
 
+== Other Languages ==
+* French (Thanks [@maoneetag](http://twitter.com/maoneetag))
+
+= Bilingual? =
+Send your mo/po files to me at trepmal (at) gmail.com
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -242,6 +250,10 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
+= Version 1.0 =
+* New: Exclude sticky posts option
+* New: Get posts from first current category (if single)
+ 
 = Version 0.9 =
 * Fix: Prevents error from being displayed if image can't be resized
 * New: Improved support for multisite use
