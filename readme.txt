@@ -228,6 +228,9 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
+= 1.0 =
+New: get from first category if viewing single post
+
 = 0.9 =
 New: multisite support, better image handling
 
