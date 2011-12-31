@@ -130,12 +130,13 @@ function get_miniloops( $args = '' ) {
 
 	//begin building the list
 	$postlist = '';
-
-	$postlist .= stripslashes( $before_items );
+	$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
+	$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
+	$postlist .= $before_items;
 
 	while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
-    $post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
+    	$post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
 
 		$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
@@ -146,7 +147,9 @@ function get_miniloops( $args = '' ) {
 
 	wp_reset_query();
 
-	$postlist .= stripslashes( $after_items );
+	$after_items = do_shortcode( miniloops_shortcoder( stripslashes( $after_items ) ) );
+	$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query );
+	$postlist .= $after_items;
 
 	return $postlist;
 }

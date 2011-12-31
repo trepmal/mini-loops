@@ -275,6 +275,11 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
+= Version 1.1 =
+* New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup
+* New: Filters for the Before/After Items content. `miniloops_{before|after}_items_format` $query arguments passed to it. See source for more details.
+* New: "Mini Mini Loops" widget. Simplified 'Recent Posts' widget for typical usage - only 3 options.
+
 = Version 1.0 =
 * New: Exclude sticky posts option
 * New: Get posts from first current category (if single)

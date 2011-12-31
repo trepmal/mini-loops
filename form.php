@@ -142,12 +142,14 @@
 		<h3 style="clear:both;"><?php _e( 'Format', 'mini-loops' ); ?></h3>
 		<p style="width:48%;float:left;">
 			<label for="<?php echo $this->get_field_id('before_items'); ?>"><?php _e('Before Item:', 'mini-loops');?>
-				<input class="widefat" id="<?php echo $this->get_field_id('before_items'); ?>" name="<?php echo $this->get_field_name('before_items'); ?>" type="text" value="<?php echo htmlspecialchars( stripslashes( $before_items ) ); ?>" />
+				<?php /*<input class="widefat" id="<?php echo $this->get_field_id('before_items'); ?>" name="<?php echo $this->get_field_name('before_items'); ?>" type="text" value="<?php echo htmlspecialchars( stripslashes( $before_items ) ); ?>" />*/?>
+				<textarea class="widefat" id="<?php echo $this->get_field_id('before_items'); ?>" name="<?php echo $this->get_field_name('before_items'); ?>"><?php echo htmlspecialchars( stripslashes( $before_items ) ); ?></textarea>
 			</label>
 		</p>
 		<p style="width:48%;float:right;">
 			<label for="<?php echo $this->get_field_id('after_items'); ?>"><?php _e('After Item:', 'mini-loops');?>
-				<input class="widefat" id="<?php echo $this->get_field_id('after_items'); ?>" name="<?php echo $this->get_field_name('after_items'); ?>" type="text" value="<?php echo htmlspecialchars( stripslashes( $after_items ) ); ?>" />
+				<?php /*<input class="widefat" id="<?php echo $this->get_field_id('after_items'); ?>" name="<?php echo $this->get_field_name('after_items'); ?>" type="text" value="<?php echo htmlspecialchars( stripslashes( $after_items ) ); ?>" />*/?>
+				<textarea class="widefat" id="<?php echo $this->get_field_id('after_items'); ?>" name="<?php echo $this->get_field_name('after_items'); ?>"><?php echo htmlspecialchars( stripslashes( $after_items ) ); ?></textarea>
 			</label>
 		</p>
 		<p>

@@ -6,7 +6,7 @@ class miniloops extends WP_Widget {
 		$widget_ops = array('classname' => 'miniloops',
 							'description' => __( 'Query posts, display them.', 'mini-loops' )
 						);
-		$control_ops = array( 'width' => 300, 'id_base' => 'miniloops' );
+		$control_ops = array( 'width' => 300 );
 
 		parent::WP_Widget( 'miniloops', __( 'Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
 	}
@@ -67,5 +67,68 @@ class miniloops extends WP_Widget {
 
 		include('form.php');
 
+	} //end form()
+}
+
+
+class miniminiloops extends miniloops {
+
+	function miniminiloops() {
+		$widget_ops = array('classname' => 'miniminiloops',
+							'description' => __( 'Query posts, display them.', 'mini-loops' )
+						);
+		$control_ops = array(  );
+
+		parent::WP_Widget( 'miniminiloops', __( 'Mini Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
+	}
+
+	function form( $instance ) {
+
+		$instance = wp_parse_args( (array) $instance, get_miniloops_defaults() );
+		extract( $instance );
+
+		?>
+		<p><?php _e( 'Back to basics. Just recent posts. No fuss.', 'mini-loops' ); ?></p>
+		<p style="width:63%;float:left;">
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'mini-loops' );?>
+				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo stripslashes( $title ); ?>" />
+			</label>
+		</p>
+		<p style="width:33%;float:right;padding-top:20px;height:20px;">
+			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('hide_title'); ?>" name="<?php echo $this->get_field_name('hide_title'); ?>"<?php checked( $hide_title ); ?> />
+			<label for="<?php echo $this->get_field_id('hide_title'); ?>"><?php _e('Hide Title?', 'mini-loops' );?></label>
+		</p>
+		<p style="width:48%;float:left;">
+			<label for="<?php echo $this->get_field_id( 'title_url' ); ?>"><?php _e( 'Title URL:', 'mini-loops' );?>
+				<input class="widefat" id="<?php echo $this->get_field_id('title_url'); ?>" name="<?php echo $this->get_field_name('title_url'); ?>" type="text" value="<?php echo $title_url; ?>" />
+			</label>
+		</p>
+		<p style="width:48%;float:right;">
+			<label for="<?php echo $this->get_field_id('number_posts'); ?>"><?php _e('Number of Posts:', 'mini-loops' );?>
+				<input class="widefat" id="<?php echo $this->get_field_id('number_posts'); ?>" name="<?php echo $this->get_field_name('number_posts'); ?>" type="number" value="<?php echo $number_posts; ?>" />
+			</label>
+		</p>
+		<input name="<?php echo $this->get_field_name('post_offset'); ?>" type="hidden" value="<?php echo $post_offset; ?>" />
+		<input name="<?php echo $this->get_field_name('post_type'); ?>" type="hidden" value="<?php echo $post_type; ?>" />
+		<input name="<?php echo $this->get_field_name('post_status'); ?>" type="hidden" value="<?php echo $post_status; ?>" />
+		<input name="<?php echo $this->get_field_name('order_by'); ?>" type="hidden" value="<?php echo $order_by; ?>" />
+		<input name="<?php echo $this->get_field_name('order'); ?>" type="hidden" value="<?php echo $order; ?>" />
+		<input name="<?php echo $this->get_field_name('reverse_order'); ?>" type="hidden" value="<?php echo $reverse_order; ?>" />
+		<input name="<?php echo $this->get_field_name('shuffle_order'); ?>" type="hidden" value="<?php echo $shuffle_order; ?>" />
+		<input name="<?php echo $this->get_field_name('ignore_sticky'); ?>" type="hidden" value="<?php echo $ignore_sticky; ?>" />
+		<input name="<?php echo $this->get_field_name('only_sticky'); ?>" type="hidden" value="<?php echo $only_sticky; ?>" />
+		<input name="<?php echo $this->get_field_name('exclude_sticky'); ?>" type="hidden" value="<?php echo $exclude_sticky; ?>" />
+		<input name="<?php echo $this->get_field_name('exclude_current'); ?>" type="hidden" value="<?php echo $exclude_current; ?>" />
+		<input name="<?php echo $this->get_field_name('current_category'); ?>" type="hidden" value="<?php echo $current_category; ?>" />
+		<input name="<?php echo $this->get_field_name('current_category'); ?>" type="hidden" value="<?php echo $current_category; ?>" />
+		<input name="<?php echo $this->get_field_name('categories'); ?>" type="hidden" value="<?php echo $categories; ?>" />
+		<input name="<?php echo $this->get_field_name('tags'); ?>" type="hidden" value="<?php echo $tags; ?>" />
+		<input name="<?php echo $this->get_field_name('tax'); ?>" type="hidden" value="<?php echo $tax; ?>" />
+		<input name="<?php echo $this->get_field_name('custom_fields'); ?>" type="hidden" value="<?php echo $custom_fields; ?>" />
+		<input name="<?php echo $this->get_field_name('exclude'); ?>" type="hidden" value="<?php echo $exclude; ?>" />
+		<textarea class="hidden widefat" id="<?php echo $this->get_field_id('before_items'); ?>" name="<?php echo $this->get_field_name('before_items'); ?>"><?php echo htmlspecialchars( stripslashes( $before_items ) ); ?></textarea>
+		<textarea class="hidden widefat" id="<?php echo $this->get_field_id('after_items'); ?>" name="<?php echo $this->get_field_name('after_items'); ?>"><?php echo htmlspecialchars( stripslashes( $after_items ) ); ?></textarea>
+		<textarea class="hidden widefat" rows="5" id="<?php echo $this->get_field_id('item_format'); ?>" name="<?php echo $this->get_field_name('item_format'); ?>"><?php echo stripslashes( $item_format ); ?></textarea>
+		<?php
 	} //end form()
 }
