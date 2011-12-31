@@ -30,6 +30,31 @@ List its ID as a negative number.
 = My site broke after customizing the excerpt. What happened? =
 Did you set the strip_tags attribute to false? (`[excerpt strip_tags=0]`). If tags haven't been stripped, it may have cut off the text before an HTML tag was properly closed, thus breaking the page. Setting strip_tags to false should only be used if you're carefully managing the excerpt's output.
 
+= Why can't I add an ID to the element in 'Before Items'? =
+There are limitations on the tag or tag/attribute combiniations allowed by WordPress. However, these can be overcome with a few lines of code.
+
+To allow an additional tag, use this: 
+
+`add_filter( "admin_init", "allowed_tags" );
+function allowed_tags() {
+	global $allowedposttags;
+	$allowedposttags["video"] = array();
+}`
+
+To allow additional attributes for any tag, use the following code:
+
+`add_filter( "admin_init", "allowed_tags" );
+function allowed_tags() {
+	global $allowedposttags;
+	$allowedposttags["video"]["src"] = array();
+	$allowedposttags["video"]["type"] = array();
+	$allowedposttags["video"]["poster"] = array();
+}`
+
+If you're using a custom theme, you can add this code the its `functions.php` file. Otherwise, you may want to create your own plugin to hold these modifications.
+
+See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-functions-plugin-for-end-users) for instructions on creating your own plugin.
+
 == Screenshots ==
 
 1. Widget Options
