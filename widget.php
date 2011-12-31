@@ -43,6 +43,7 @@ class miniloops extends WP_Widget {
 		$instance['shuffle_order'] = (bool) $new_instance['shuffle_order'] ? 1 : 0;
 		$instance['ignore_sticky'] = (bool) $new_instance['ignore_sticky'] ? 1 : 0;
 		$instance['only_sticky'] = (bool) $new_instance['only_sticky'] ? 1 : 0;
+		$instance['exclude_sticky'] = (bool) $new_instance['exclude_sticky'] ? 1 : 0;
 		$instance['exclude_current'] = (bool) $new_instance['exclude_current'] ? 1 : 0;
 		$instance['current_category'] = (bool) $new_instance['current_category'] ? 1 : 0;
 		$instance['current_single_category'] = (bool) $new_instance['current_single_category'] ? 1 : 0;
