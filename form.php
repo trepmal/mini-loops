@@ -99,7 +99,7 @@
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('exclude_current'); ?>" name="<?php echo $this->get_field_name('exclude_current'); ?>"<?php checked( $exclude_current ); ?> />
 			<label for="<?php echo $this->get_field_id('exclude_current'); ?>"><?php _e('If viewing a single post, exclude it?', 'mini-loops');?></label>
 		</p>
-		<p style="clear:both;">This option is ignored if "Only sticky" is checked.</small></p>
+		<p style="clear:both;"><small>This option is ignored if "Only sticky" is checked.</small></p>
 		<p>
 			<input type="checkbox" class="checkbox" id="<?php echo $this->get_field_id('current_category'); ?>" name="<?php echo $this->get_field_name('current_category'); ?>"<?php checked( $current_category ); ?> />
 			<label for="<?php echo $this->get_field_id('current_category'); ?>"><?php _e('Get posts from current category (if archive)?', 'mini-loops');?></label>
