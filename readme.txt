@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.3
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -254,19 +254,19 @@ Send your mo/po files to me at trepmal (at) gmail.com
 == Upgrade Notice ==
 
 = 1.0 =
-New: get from first category if viewing single post
+New: get from first category if viewing single post.
 
 = 0.9 =
-New: multisite support, better image handling
+New: multisite support, better image handling.
 
 = 0.8 =
-New: new item format options (custom fields and taxonomies)
+New: new item format options (custom fields and taxonomies).
 
 = 0.7 =
 New: more excerpt options
 
 = 0.6 =
-New: get posts from current category (if archive) option
+New: get posts from current category (if archive) option.
 
 = 0.5 =
 Real image croping for thumbnails and several other new features. See Changelog.
@@ -276,54 +276,56 @@ Real image croping for thumbnails and several other new features. See Changelog.
 == Changelog ==
 
 = Version 1.1 =
-* New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup
+* New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup.
 * New: Filters for the Before/After Items content. `miniloops_{before|after}_items_format` $query arguments passed to it. See source for more details.
 * New: "Mini Mini Loops" widget. Simplified 'Recent Posts' widget for typical usage - only 3 options.
+* Fix: Multiple tag bug. Only first was being recognized, now correctly accepts all. Thanks Ozias.
+* New: Filter for altering query. `miniloops_query` See source for more details.
 
 = Version 1.0 =
-* New: Exclude sticky posts option
-* New: Get posts from first current category (if single)
+* New: Exclude sticky posts option.
+* New: Get posts from first current category (if single).
  
 = Version 0.9 =
-* Fix: Prevents error from being displayed if image can't be resized
-* New: Improved support for multisite use
-* New: Improved [miniloop] shortcode. Editor tries to hard to "fix" the user-provided item format. Now you can save the format in a custom field. See Other Notes
+* Fix: Prevents error from being displayed if image can't be resized.
+* New: Improved support for multisite use.
+* New: Improved [miniloop] shortcode. Editor tries to hard to "fix" the user-provided item format. Now you can save the format in a custom field. See Other Notes.
 
 = Version 0.8 (2011.10.31) =
 * Added French Translation files. (Thanks [@maoneetag](http://twitter.com/maoneetag))
 
 = Version 0.8 =
-* New: [ml_field] shortcode, [ml_category] shortcode, [ml_tag] shortcode, [ml_taxonomy] shortcode
-* Fix: strip slashes from widget title
+* New: [ml_field] shortcode, [ml_category] shortcode, [ml_tag] shortcode, [ml_taxonomy] shortcode.
+* Fix: strip slashes from widget title.
 
 = Version 0.7 =
 * New: more excerpt options (use automated/custom excerpts rather than trim by length, option to bypass tag/shortcode stripping). Please report issues.
-* Fix: stipping slashes for before/after item during output
+* Fix: stipping slashes for before/after item during output.
 
 = Version 0.6 =
-* New (sorta): shortcode option `[miniloop]` (see Other Notes for usage). Why "sorta"? shortcode has existed the whole time, I only just now added some docs
-* New: get posts from current category (if archive)
-* New: custom taxonomies, if only 1 ID given, and it's negative, treat it like "NOT IN"
-* Fix: added missing echo in instructions
-* General code optimization
+* New (sorta): shortcode option `[miniloop]` (see Other Notes for usage). Why "sorta"? shortcode has existed the whole time, I only just now added some docs.
+* New: get posts from current category (if archive).
+* New: custom taxonomies, if only 1 ID given, and it's negative, treat it like "NOT IN".
+* Fix: added missing echo in instructions.
+* General code optimization.
 
 = Version 0.5 =
-* New: get only sticky posts
-* New: shuffle order
-* New: [ml_author_link] shortcode
-* New: [ml_comment_count] shortcode
-* New: thumbnail cropping for local images
-* New: Ready for localization
+* New: get only sticky posts.
+* New: shuffle order.
+* New: [ml_author_link] shortcode.
+* New: [ml_comment_count] shortcode.
+* New: thumbnail cropping for local images.
+* New: Ready for localization.
 
 = Version 0.4 =
-* New image option: get first attached image (great for galleries!)
-* Bug fix: broken image if no fallback is set
+* New image option: get first attached image (great for galleries!).
+* Bug fix: broken image if no fallback is set.
 
 = Version 0.3 =
-* Bug fix: post status works now
+* Bug fix: post status works now.
 
 = Version 0.2 =
-* Improvements: hide title, link title, exclude current single post options
+* Improvements: hide title, link title, exclude current single post options.
 
 = Version 0.1 =
 * Initial release version.

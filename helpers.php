@@ -54,6 +54,9 @@ function get_miniloops( $args = '' ) {
 	$current_single_category = (bool) $current_single_category;
 	$categories = esc_attr( $categories );
 	$tags = esc_attr( $tags );
+		$tags = str_replace( ' ', '', $tags );
+		$tags = explode( ',', $tags );
+		$tags = array_filter( $tags );
 	$tax = str_replace('&amp;', '&', esc_attr( $tax ) );
 	$custom_fields = str_replace('&amp;', '&', esc_attr( $custom_fields ) );
 	$exclude = explode( ',', esc_attr( $exclude ) );
@@ -72,7 +75,7 @@ function get_miniloops( $args = '' ) {
 	$tax_query = array();
 	foreach( array_keys( $taxes ) as $k => $slug ) {
 		//original code is this single commented line, if you need to revert
-		//$tax_query[] = array( 'taxonomy' => $slug, 'field' => 'id', 'terms' => explode(',',$taxes[ $slug ]) );
+		//$tax_query[] = array( 'taxonomy' => $slug, 'field' => 'id', 'terms' => explode( ',', $taxes[ $slug ] ) );
 
 		$oper = 'IN';
 		$ids = explode( ',', $taxes[ $slug ] );
@@ -106,7 +109,7 @@ function get_miniloops( $args = '' ) {
 
 	$query = array(
 		'cat' => $categories,
-		'tag_id' => $tags,
+		'tag__in' => $tags,
 		'tax_query' => $tax_query,
 		'meta_query' => $meta_query,
 		'posts_per_page' => $number_posts,
@@ -119,14 +122,18 @@ function get_miniloops( $args = '' ) {
 		'order' => $order,
 		'post__not_in' => $exclude,
 	);
+	$query = apply_filters( 'miniloops_query', $query );
 
 	//for testing
 	//return '<pre>'. print_r( $query, true ) .'</pre>';
 
-	//run the query
+	//perform the query
 	$miniloop = new WP_Query( $query );
 	if ( $reverse_order ) $miniloop->posts = array_reverse( $miniloop->posts );
 	if ( $shuffle_order ) shuffle( $miniloop->posts );
+
+	//for testing
+	//return '<pre>'. print_r( $miniloop, true ) .'</pre>';
 
 	//begin building the list
 	$postlist = '';

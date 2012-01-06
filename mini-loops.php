@@ -87,7 +87,6 @@ function miniloops_post_formats( $item_format, $post_format ) {
 */
 //add_filter( 'miniloops_after_items_format' , 'miniloops_after_items_format_filter_test', 10, 2 );
 function miniloops_after_items_format_filter_test( $after, $query ) {
-
 	$post_type = $query['post_type'];
 	$post_type_obj = get_post_type_object( $post_type );
 	$post_type_name = $post_type_obj->labels->name;
@@ -95,7 +94,21 @@ function miniloops_after_items_format_filter_test( $after, $query ) {
 	
 	$archive_link = "<p><a href='$post_archive_url'>More $post_type_name &raquo;</a></p>";
 	return $after . $archive_link;
+}
 
+/*
+	Modify the query args before they are run
+	Can either work on all instances, or only some by checking existing args
+	
+	This demo changes the 'tag__in' query to 'tag__and' to limit the number of matching posts
+*/
+//add_filter( 'miniloops_query' , 'miniloops_query_filter_test' );
+function miniloops_query_filter_test( $query ) {
+	if ( $query['tag__in'] == array( 53, 82 ) ) {
+		$query['tag__and'] = $query['tag__in'];
+		unset( $query['tag__in'] );
+	}
+	return $query;
 }
 
 
