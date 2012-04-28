@@ -15,6 +15,25 @@ Show most recent posts, posts from categories, and more. Can be displayed via wi
 
 This is a new release, please report bugs to trepmal (at) gmail (dot) com before leaving a poor review. Thanks
 
+New stuff coming in 1.1!
+= Version 1.1 =
+* New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup.
+* New: Filters for the Before/After Items content. `miniloops_{before|after}_items_format` $query arguments passed to it. See source for more details.
+* New: "Mini Mini Loops" widget. Simplified 'Recent Posts' widget for typical usage - only 3 options.
+* New: Filter for altering query. `miniloops_query` See source for more details.
+* New: Post author field.
+* New: Get posts from current author (if viewing single post or author archive).
+* New: 'length' 'before' 'after' parameters for [title] and [url] shortcode. Length is number of characters, processed prior to 'before' and 'after'.
+* New: Maximum age field. Only show posts from last X number of days. Thanks bluey80.
+* New: Meta value (alpha and numerical) ordering.
+* New: [post_type] [post_type_archive_link]. Great for Before/After Item formats.
+* New: 'Any' option for post type.
+* Fix: Missed marking some strings for translation.
+* Fix: Markup mixup for some selected options.
+* Improved: fullpath used in include() for better compatibility.
+
+Take if for a testdrive and let me know if you find any bugs!
+
 == Installation ==
 
 1. Download the zip file and extract the contents.
