@@ -67,36 +67,50 @@ See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-f
 Explanation of options:
 
 **Title:** Your recent posts widget's title on your sidebar.
+`title="Recent Posts"`
 
-**Title Link:** The page the title should link to.
+**Title URL:** The page the title should link to.
+`title_url="/blog/"`
 
 **Number of Posts:** Number of posts to be displayed
+`number_posts=3`
 
 **Post Offset:** Number of posts to skip before displaying the list
+`post_offset=0`
 
 **Post Type:** Post type to display
+`post_type=post`
 
 **Post Status:** Post status to display. Primarily useful to show upcoming (future) posts. But be creative!
+`post_status=publish`
 
 **Order By:** What order the posts should be displayed in
+`orderby=date`
 
 **Order:** Ascending (good for order by title) or Descending (good for order by date)
+`order=DESC`
 
 **Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
+`reverse_order=0`
 
 **Ignore sticky posts?** Treat sticky posts as normal posts. I recommend ignoring, or the number of posts displayed may be inconsistent.
+`ignore_sticky=1`
 
 **Exclude sticky posts?** Don't show sticky posts at all.
+`exclude_sticky=0`
+
+**Only sticky posts?** Show only sticky posts.
+`only_sticky=0`
 
 **Categories:** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
 
 **Tags:** Comma separated list of tag IDs to pull from. Use negative ID numbers to exclude a tag.
 
 **Custom Taxonomies:** A clunky way to support custom taxonomies. To include terms 5, 6, 9 from taxonomy "Genre" do this:
-`genre=5,6,9`
+`tax="genre=5,6,9"`
 
 **Custom Fields:** For listing posts that have certain meta data. To list posts that have a custom field 'favorite_color' with a value of 'blue' do this:
-`favorite_color=blue`
+`custom_fields="favorite_color=blue"`
 
 **Exclude Posts:** A comma separated list of post IDs to exclude.
 
@@ -279,9 +293,21 @@ Real image croping for thumbnails and several other new features. See Changelog.
 * New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup.
 * New: Filters for the Before/After Items content. `miniloops_{before|after}_items_format` $query arguments passed to it. See source for more details.
 * New: "Mini Mini Loops" widget. Simplified 'Recent Posts' widget for typical usage - only 3 options.
-* Fix: Multiple tag bug. Only first was being recognized, now correctly accepts all. Thanks Ozias.
 * New: Filter for altering query. `miniloops_query` See source for more details.
+* New: Post author field.
+* New: Get posts from current author (if viewing single post or author archive).
+* New: 'length' 'before' 'after' parameters for [title] and [url] shortcode. Length is number of characters, processed prior to 'before' and 'after'.
+* New: Maximum age field. Only show posts from last X number of days. Thanks bluey80.
+* New: Meta value (alpha and numerical) ordering.
+* New: [post_type] [post_type_archive_link]. Great for Before/After Item formats.
+* New: 'Any' option for post type.
+* Fix: Missed marking some strings for translation.
+* Fix: Markup mixup for some selected options.
+* Improved: fullpath used in include() for better compatibility.
 
+= Version 1.0.1 =
+* Fix: Multiple tag bug. Only first was being recognized, now correctly accepts all. Thanks Ozias.
+ 
 = Version 1.0 =
 * New: Exclude sticky posts option.
 * New: Get posts from first current category (if single).

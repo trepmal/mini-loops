@@ -6,7 +6,7 @@ class miniloops extends WP_Widget {
 		$widget_ops = array('classname' => 'miniloops',
 							'description' => __( 'Query posts, display them.', 'mini-loops' )
 						);
-		$control_ops = array( 'width' => 300 );
+		$control_ops = array( 'width' => 700 );
 
 		parent::WP_Widget( 'miniloops', __( 'Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
 	}
@@ -35,10 +35,12 @@ class miniloops extends WP_Widget {
 		$instance['title_url'] = esc_url( $new_instance['title_url'] );
 		$instance['number_posts'] = (int) $new_instance['number_posts'];
 		$instance['post_offset'] = (int) $new_instance['post_offset'];
+		$instance['maximum_age'] = esc_attr( $new_instance['maximum_age'] );
 		$instance['post_type'] = esc_attr( $new_instance['post_type'] );
 		$instance['post_status'] = esc_attr( $new_instance['post_status'] );
 		$instance['order_by'] = esc_attr( $new_instance['order_by'] );
 		$instance['order'] = esc_attr( $new_instance['order'] );
+		$instance['order_meta_key'] = esc_attr( $new_instance['order_meta_key'] );
 		$instance['reverse_order'] = (bool) $new_instance['reverse_order'] ? 1 : 0;
 		$instance['shuffle_order'] = (bool) $new_instance['shuffle_order'] ? 1 : 0;
 		$instance['ignore_sticky'] = (bool) $new_instance['ignore_sticky'] ? 1 : 0;
@@ -47,8 +49,10 @@ class miniloops extends WP_Widget {
 		$instance['exclude_current'] = (bool) $new_instance['exclude_current'] ? 1 : 0;
 		$instance['current_category'] = (bool) $new_instance['current_category'] ? 1 : 0;
 		$instance['current_single_category'] = (bool) $new_instance['current_single_category'] ? 1 : 0;
+		$instance['current_author'] = (bool) $new_instance['current_author'] ? 1 : 0;
 		$instance['categories'] = esc_attr( $new_instance['categories'] );
 		$instance['tags'] = esc_attr( $new_instance['tags'] );
+		$instance['post_author'] = esc_attr( $new_instance['post_author'] );
 		$instance['tax'] = esc_attr( $new_instance['tax'] );
 		$instance['custom_fields'] = esc_attr( $new_instance['custom_fields'] );
 		$instance['exclude'] = esc_attr( $new_instance['exclude'] );
@@ -65,7 +69,7 @@ class miniloops extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, get_miniloops_defaults() );
 		extract( $instance );
 
-		include('form.php');
+		include( dirname( __FILE__) .'/form.php');
 
 	} //end form()
 }
@@ -109,6 +113,7 @@ class miniminiloops extends miniloops {
 			</label>
 		</p>
 		<input name="<?php echo $this->get_field_name('post_offset'); ?>" type="hidden" value="<?php echo $post_offset; ?>" />
+		<input name="<?php echo $this->get_field_name('maximum_age'); ?>" type="hidden" value="<?php echo $maximum_age; ?>" />
 		<input name="<?php echo $this->get_field_name('post_type'); ?>" type="hidden" value="<?php echo $post_type; ?>" />
 		<input name="<?php echo $this->get_field_name('post_status'); ?>" type="hidden" value="<?php echo $post_status; ?>" />
 		<input name="<?php echo $this->get_field_name('order_by'); ?>" type="hidden" value="<?php echo $order_by; ?>" />
@@ -120,9 +125,10 @@ class miniminiloops extends miniloops {
 		<input name="<?php echo $this->get_field_name('exclude_sticky'); ?>" type="hidden" value="<?php echo $exclude_sticky; ?>" />
 		<input name="<?php echo $this->get_field_name('exclude_current'); ?>" type="hidden" value="<?php echo $exclude_current; ?>" />
 		<input name="<?php echo $this->get_field_name('current_category'); ?>" type="hidden" value="<?php echo $current_category; ?>" />
-		<input name="<?php echo $this->get_field_name('current_category'); ?>" type="hidden" value="<?php echo $current_category; ?>" />
+		<input name="<?php echo $this->get_field_name('current_author'); ?>" type="hidden" value="<?php echo $current_author; ?>" />
 		<input name="<?php echo $this->get_field_name('categories'); ?>" type="hidden" value="<?php echo $categories; ?>" />
 		<input name="<?php echo $this->get_field_name('tags'); ?>" type="hidden" value="<?php echo $tags; ?>" />
+		<input name="<?php echo $this->get_field_name('post_author'); ?>" type="hidden" value="<?php echo $post_author; ?>" />
 		<input name="<?php echo $this->get_field_name('tax'); ?>" type="hidden" value="<?php echo $tax; ?>" />
 		<input name="<?php echo $this->get_field_name('custom_fields'); ?>" type="hidden" value="<?php echo $custom_fields; ?>" />
 		<input name="<?php echo $this->get_field_name('exclude'); ?>" type="hidden" value="<?php echo $exclude; ?>" />

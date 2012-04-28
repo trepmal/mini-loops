@@ -6,10 +6,12 @@ function get_miniloops_defaults() {
 					'title_url' => '',
 					'number_posts' => 3,
 					'post_offset' => 0,
+					'maximum_age' => 0,
 					'post_type' => 'post',
 					'post_status' => 'publish',
 					'order_by' => 'date',
 					'order' => 'DESC',
+					'order_meta_key' => '',
 					'reverse_order' => 0,
 					'shuffle_order' => 0,
 					'ignore_sticky' => 1,
@@ -18,8 +20,10 @@ function get_miniloops_defaults() {
 					'exclude_current' => 1,
 					'current_category' => 0,
 					'current_single_category' => 0,
+					'current_author' => 0,
 					'categories' => '',
 					'tags' => '',
+					'post_author' => '',
 					'tax' => '',
 					'custom_fields' => '',
 					'exclude' => '',
@@ -40,11 +44,13 @@ function get_miniloops( $args = '' ) {
 	//since this function can be called in the template, re-escape the parameters
 	$number_posts = (int) $number_posts;
 	$post_offset = (int) $post_offset;
+	$maximum_age = (int) $maximum_age;
 	$post_type = esc_attr( $post_type );
 	$post_status = esc_attr( $post_status );
 	$order_by = esc_attr( $order_by );
 	$order = esc_attr( $order );
 	if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) $order = 'DESC';
+	$order_meta_key = esc_attr( $order_meta_key );
 	$reverse_order = (bool) $reverse_order;
 	$ignore_sticky = (bool) $ignore_sticky;
 	$only_sticky = (bool) $only_sticky;
@@ -52,11 +58,13 @@ function get_miniloops( $args = '' ) {
 	$exclude_current = (bool) $exclude_current;
 	$current_category = (bool) $current_category;
 	$current_single_category = (bool) $current_single_category;
+	$current_author = (bool) $current_author;
 	$categories = esc_attr( $categories );
 	$tags = esc_attr( $tags );
 		$tags = str_replace( ' ', '', $tags );
 		$tags = explode( ',', $tags );
 		$tags = array_filter( $tags );
+	$post_author = esc_attr( $post_author );
 	$tax = str_replace('&amp;', '&', esc_attr( $tax ) );
 	$custom_fields = str_replace('&amp;', '&', esc_attr( $custom_fields ) );
 	$exclude = explode( ',', esc_attr( $exclude ) );
@@ -107,6 +115,12 @@ function get_miniloops( $args = '' ) {
 	    $categories = $categories[0]->term_id;
 	}
 
+	if ( $current_author && is_author() ) {
+	    $post_author = get_query_var( 'author' );
+	} elseif ( $current_author && is_single() ) {
+	    $post_author = get_the_author_meta('ID');
+	}
+
 	$query = array(
 		'cat' => $categories,
 		'tag__in' => $tags,
@@ -117,12 +131,25 @@ function get_miniloops( $args = '' ) {
 		'post__in' => ( $only_sticky ? get_option('sticky_posts') : '' ),
 		'post_type' => $post_type,
 		'post_status' => $post_status,
+		'author' => $post_author,
 		'offset' => $post_offset,
 		'orderby' => $order_by,
 		'order' => $order,
 		'post__not_in' => $exclude,
 	);
+	
+	if ( in_array( $order_by, array( 'meta_value', 'meta_value_num' ) ) && ! empty( $order_meta_key ) ) {
+		$query['meta_key'] = $order_meta_key;
+	}
+	
 	$query = apply_filters( 'miniloops_query', $query );
+
+	if ( $maximum_age != 0 ) {
+		global $mini_loops_minimum_date;
+		$mini_loops_minimum_date = date( 'Y-m-d', time() - ( $maximum_age * 24 * 60 * 60 ) );
+		$maximum_age_func = create_function('$filter','global $mini_loops_minimum_date; $filter .= " AND post_date >= \'' . $mini_loops_minimum_date .'\'"; return $filter;');
+		add_filter( 'posts_where', $maximum_age_func );
+	}
 
 	//for testing
 	//return '<pre>'. print_r( $query, true ) .'</pre>';
@@ -132,15 +159,21 @@ function get_miniloops( $args = '' ) {
 	if ( $reverse_order ) $miniloop->posts = array_reverse( $miniloop->posts );
 	if ( $shuffle_order ) shuffle( $miniloop->posts );
 
+	if ( $maximum_age != 0 ) {
+		remove_filter( 'posts_where', 'filter_maximum_age' );
+	}
+
 	//for testing
 	//return '<pre>'. print_r( $miniloop, true ) .'</pre>';
 
+	if ( $miniloop->have_posts() ) : $miniloop->the_post();
 	//begin building the list
 	$postlist = '';
 	$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
 	$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
 	$postlist .= $before_items;
 
+	$miniloop->rewind_posts();
 	while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
     	$post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
@@ -151,6 +184,7 @@ function get_miniloops( $args = '' ) {
 		$postlist .= str_replace( '%%%%%', '', do_shortcode( $item_format_to_use ) );
 
 	endwhile;
+	endif;
 
 	wp_reset_query();
 
@@ -218,13 +252,43 @@ function miniloop_item_format( $atts, $content ) {
 }
 
 add_shortcode( 'ml_title' , 'miniloop_title' );
-function miniloop_title() {
-	return apply_filters( 'the_title', get_the_title() );
+function miniloop_title( $atts ) {
+	extract( shortcode_atts( array(
+		'link' => 0,
+		'length' => 0, //characters
+		'before' => '',
+		'after' => '',
+	), $atts ) );
+	$title = apply_filters( 'the_title', get_the_title() );
+
+	if ($length)
+		$title = substr( $title, 0, $length );
+	
+	$title = $before . $title . $after;
+	
+	if ( $link ) {
+		$link = get_permalink();
+		$title = "<a href='$link'>$title</a>";
+	}
+	
+	return $title;
 }
 
 add_shortcode( 'ml_url' , 'miniloop_url' );
-function miniloop_url() {
-	return get_permalink( get_the_ID() );
+function miniloop_url( $atts ) {
+	extract( shortcode_atts( array(
+		'length' => 0, //characters
+		'before' => '',
+		'after' => '',
+	), $atts ) );
+	$link = get_permalink( );
+
+	if ($length)
+		$link = substr( $link, 0, $length );
+	
+	$link = $before . $link . $after;
+
+	return $link;
 }
 
 add_shortcode( 'ml_excerpt' , 'miniloop_excerpt' );
@@ -405,6 +469,27 @@ function miniloop_date( $atts ) {
 	$format = esc_attr( $format );
 
 	return get_the_date( $format );
+}
+
+add_shortcode( 'ml_post_type', 'miniloop_post_type' );
+function miniloop_post_type( $atts ) {
+	extract( shortcode_atts( array(
+		'label' => 'name', //probably 'name' or 'singular_name'. also accepted: add_new, add_new_item, edit_item, new_item, view_item, search_items, not_found, not_found_in_trash, parent_item_colon, all_items, menu_name, name_admin_bar
+	), $atts ) );
+
+ 	$post_type_obj = get_post_type_object( get_post_type() );
+ 	$post_type_name = $post_type_obj->labels->$label;
+	//return '<pre>'. print_r( $post_type_obj->labels, true ) .'</pre>';
+	return $post_type_name;
+}
+
+add_shortcode( 'ml_post_type_archive_link', 'miniloop_post_type_archive_link' );
+function miniloop_post_type_archive_link( $atts ) {
+	extract( shortcode_atts( array(
+	), $atts ) );
+
+	$post_archive_url = get_post_type_archive_link( get_post_type() );
+	return $post_archive_url;
 }
 
 add_shortcode( 'ml_class' , 'miniloop_class' );
