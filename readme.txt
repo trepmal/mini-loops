@@ -301,9 +301,10 @@ Real image croping for thumbnails and several other new features. See Changelog.
 * New: Meta value (alpha and numerical) ordering.
 * New: [post_type] [post_type_archive_link]. Great for Before/After Item formats.
 * New: 'Any' option for post type.
+* New: Alt text support for thumbnails.
 * Fix: Missed marking some strings for translation.
 * Fix: Markup mixup for some selected options.
-* Improved: fullpath used in include() for better compatibility.
+* General code clean up and improvements, such as full path used in include().
 
 = Version 1.0.1 =
 * Fix: Multiple tag bug. Only first was being recognized, now correctly accepts all. Thanks Ozias.

@@ -511,11 +511,13 @@ function miniloop_image( $atts ) {
 	extract( shortcode_atts( array(
 		'from' => '',
 		'cfname' => '',
+		'cfnamealt' => '',
 		'class' => '',
 		'width' => 50,
 		'height' => 50,
 		'crop' => 0,
 		'fallback' => '',
+		'alttext' => '',
 		'cache' => '',
 	), $atts ) );
 
@@ -527,8 +529,12 @@ function miniloop_image( $atts ) {
 	switch ( $from ) {
 		case 'thumb' :
 
-			if ( 'clear' == $cache ) delete_post_meta( get_the_ID(), '_ml_thumb_thumb' );
+			if ( 'clear' == $cache ) {
+				delete_post_meta( get_the_ID(), '_ml_thumb_thumb' );
+				delete_post_meta( get_the_ID(), '_ml_thumb_thumb_alt' );
+			}
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_thumb', true );
+			$alt = get_post_meta( get_the_ID(), '_ml_thumb_thumb_alt', true );
 
 			if ( isset( $resized["{$width}x{$height}"] ) ) {
 				//thumb exists
@@ -537,32 +543,41 @@ function miniloop_image( $atts ) {
 			elseif ( has_post_thumbnail( get_the_ID() ) ) {
 				$id = get_post_thumbnail_id( get_the_ID() );
 				$src = miniloops_create_thumbnail_from_id( $id, $width, $height );
+				$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
 				//save to meta
 				$resized["{$width}x{$height}"] = $src;
 				update_post_meta( get_the_ID(), '_ml_thumb_thumb', $resized );
+				update_post_meta( get_the_ID(), '_ml_thumb_thumb_alt', $alt );
 			}
 			break;
 
 		case 'attached' :
 
-			if ( 'clear' == $cache ) delete_post_meta( get_the_ID(), '_ml_thumb_attached' );
+			if ( 'clear' == $cache ) {
+				delete_post_meta( get_the_ID(), '_ml_thumb_attached' );
+				delete_post_meta( get_the_ID(), '_ml_thumb_attached_alt' );
+			}
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_attached', true );
+			$alt = get_post_meta( get_the_ID(), '_ml_thumb_attached_alt', true );
 
 			if ( isset( $resized["{$width}x{$height}"] ) ) {
 				//thumb exists
 				$src = $resized["{$width}x{$height}"];
 			}
 			else {
-				$atts = get_children( array( 'post_parent' => get_the_ID(), 'post_type' => 'attachment' ) );
+				$atts = get_posts( array( 'post_parent' => get_the_ID(), 'post_type' => 'attachment', 'orderby' => 'menu_order', 'order' => 'ASC' ) );
 				foreach( $atts as $a ) {
 					//make sure we don't grab the wrong file type
-					if ( strpos( $a->post_mime_type, 'image/' ) !== false ) {
+					if ( wp_attachment_is_image( $a->ID ) ) {
 						$src = miniloops_create_thumbnail_from_id( $a->ID, $width, $height );
+						$alt = get_post_meta( $a->ID, '_wp_attachment_image_alt', true );
 						//save to meta
 						$resized["{$width}x{$height}"] = $src;
-						update_post_meta( get_the_ID(), '_ml_thumb_attached', $resized );
+						break;
 					}
 				}
+				update_post_meta( get_the_ID(), '_ml_thumb_attached', $resized );
+				update_post_meta( get_the_ID(), '_ml_thumb_attached_alt', $alt );
 			}
 			break;
 
@@ -571,6 +586,9 @@ function miniloop_image( $atts ) {
 
 			if ( 'clear' == $cache ) delete_post_meta( get_the_ID(), '_ml_thumb_customfield' );
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_customfield', true );
+
+			if ( ! empty( $cfnamealt ) )
+				$alt = get_post_meta( get_the_ID(), $cfnamealt, true );
 
 			if ( isset( $resized["{$width}x{$height}"] ) ) {
 				//thumb exists
@@ -607,6 +625,7 @@ function miniloop_image( $atts ) {
 
 			if ( 'clear' == $cache ) delete_post_meta( get_the_ID(), '_ml_thumb_first' );
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_first', true );
+			$alt = get_post_meta( get_the_ID(), '_ml_thumb_first_alt', true );
 
 			if ( isset( $resized["{$width}x{$height}"] ) ) {
 				//thumb exists
@@ -619,8 +638,11 @@ function miniloop_image( $atts ) {
 					$img = str_replace("'", '"', $img);
 					//locate the first image
 					//preg_match_all('/(alt|title|src)=("[^"]*")/i', $img, $img_atts);
-					preg_match('/src="([^"]*)"/i', $img, $img_atts);
-					$img = $img_atts[1];
+					preg_match('/src="([^"]*)"/i', $img, $img_src);
+					preg_match('/alt="([^"]*)"/i', $img, $img_alt);
+
+					$img = $img_src[1];
+					$alt = isset( $img_alt[1] ) ? $img_alt[1] : '';
 
 					if ( substr( $img, 0, 4 ) != 'http' ) {
 						//if no 'http'
@@ -641,14 +663,22 @@ function miniloop_image( $atts ) {
 					}
 					$resized["{$width}x{$height}"] = $src;
 					update_post_meta( get_the_ID(), '_ml_thumb_first', $resized );
+					update_post_meta( get_the_ID(), '_ml_thumb_first_alt', $alt );
 				}
 			}
 		break;
 	}
-	if ( ! empty( $src ) )
-		$img = "<img src='$src' width='$width' height='$height' class='$class' alt= '' />";
 
-	$fallback = ! empty( $fallback ) ? "<img src='$fallback' alt='' width='$width' height='$height' class='$class' />" : '';
+	$alt = ! empty( $alt ) ? $alt : $alttext;
+
+	//if the above has resulted in an image
+	if ( ! empty( $src ) )
+		$img = "<img src='$src' width='$width' height='$height' class='$class' alt='$alt' />";
+
+	//build the fallback
+	$fallback = ! empty( $fallback ) ? "<img src='$fallback' alt='$alt' width='$width' height='$height' class='$class' />" : '';
+
+	//if no/empty image, use fallback
 	return ( ! $img || empty( $img ) ) ? $fallback : $img;
 }
 
