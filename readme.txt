@@ -3,8 +3,8 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
-Tested up to: 3.3
-Stable tag: 1.0.1
+Tested up to: 3.4
+Stable tag: 1.1
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -61,6 +61,7 @@ See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-f
 2. Sample Format 1 (see Other Notes)
 3. Sample Format 2 (see Other Notes)
 4. Sample Format 3 (see Other Notes)
+5. Widget Options (pre 1.1)
 
 == Other Notes ==
 
@@ -78,6 +79,12 @@ Explanation of options:
 **Post Offset:** Number of posts to skip before displaying the list
 `post_offset=0`
 
+**Maximum Age:** Don't show posts more than X days old
+`maximum_age=0`
+
+**Post Author:** Get author's post. By ID.
+`post_author=0`
+
 **Post Type:** Post type to display
 `post_type=post`
 
@@ -90,8 +97,14 @@ Explanation of options:
 **Order:** Ascending (good for order by title) or Descending (good for order by date)
 `order=DESC`
 
+**Meta Key for ordering:** If order by = meta value, specify a key
+`meta_value=some_key`
+
 **Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
 `reverse_order=0`
+
+**Shuffle post order?** Shuffle the order of the posts matching your query. Perhaps showing the 5 most recent posts in randomized order.
+`shuffle_order=0`
 
 **Ignore sticky posts?** Treat sticky posts as normal posts. I recommend ignoring, or the number of posts displayed may be inconsistent.
 `ignore_sticky=1`
@@ -101,6 +114,18 @@ Explanation of options:
 
 **Only sticky posts?** Show only sticky posts.
 `only_sticky=0`
+
+**If viewing a single post, exclude it?** If viewing a single post, remove it from the widget display.
+`exclude_current=1`
+
+**Get posts from current category (if archive)?** If viewing an archive, only show posts from the same category.
+`current_category=1`
+
+**Get posts from first category (if single)?** If viewing a single post, only show posts from the first category.
+`current_single_category=1`
+
+**Get posts from current author (if single or archive)?** Show more posts from the current author.
+`current_author=1`
 
 **Categories:** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
 
@@ -266,6 +291,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
+
+= 1.1 = 
+New: Lots! See the changelog for details.
 
 = 1.0 =
 New: get from first category if viewing single post.
