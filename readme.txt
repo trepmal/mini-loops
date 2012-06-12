@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -291,6 +291,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Really sorry guys! Apparently one file didn't make it into that last update.
 
 = 1.1 = 
 New: Lots! See the changelog for details.
