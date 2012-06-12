@@ -292,6 +292,9 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
+= 1.1 = 
+New: Lots! See the changelog for details.
+
 = 1.0 =
 New: get from first category if viewing single post.
 
