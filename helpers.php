@@ -107,18 +107,18 @@ function get_miniloops( $args = '' ) {
 	}
 
 	if ( $current_category && is_category() ) {
-	    $categories = get_query_var( 'cat' );
+		$categories = get_query_var( 'cat' );
 	}
 
 	if ( $current_single_category && is_single() ) {
-	    $categories = get_the_category();
-	    $categories = $categories[0]->term_id;
+		$categories = get_the_category();
+		$categories = $categories[0]->term_id;
 	}
 
 	if ( $current_author && is_author() ) {
-	    $post_author = get_query_var( 'author' );
+		$post_author = get_query_var( 'author' );
 	} elseif ( $current_author && is_single() ) {
-	    $post_author = get_the_author_meta('ID');
+		$post_author = get_the_author_meta('ID');
 	}
 
 	$query = array(
@@ -137,11 +137,11 @@ function get_miniloops( $args = '' ) {
 		'order' => $order,
 		'post__not_in' => $exclude,
 	);
-	
+
 	if ( in_array( $order_by, array( 'meta_value', 'meta_value_num' ) ) && ! empty( $order_meta_key ) ) {
 		$query['meta_key'] = $order_meta_key;
 	}
-	
+
 	$query = apply_filters( 'miniloops_query', $query );
 
 	if ( $maximum_age != 0 ) {
@@ -167,30 +167,32 @@ function get_miniloops( $args = '' ) {
 	//return '<pre>'. print_r( $miniloop, true ) .'</pre>';
 
 	if ( $miniloop->have_posts() ) : $miniloop->the_post();
-	//begin building the list
-	$postlist = '';
-	$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
-	$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
-	$postlist .= $before_items;
+		//begin building the list
+		$postlist = '';
 
-	$miniloop->rewind_posts();
-	while ( $miniloop->have_posts() ) : $miniloop->the_post();
+		$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
+		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
+		$postlist .= $before_items;
 
-    	$post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
+		$miniloop->rewind_posts();
+		while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
-		$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
+			$post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
 
-		$item_format_to_use = miniloops_shortcoder( $item_format_to_use );
-		$postlist .= str_replace( '%%%%%', '', do_shortcode( $item_format_to_use ) );
+			$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
-	endwhile;
+			$item_format_to_use = miniloops_shortcoder( $item_format_to_use );
+			$postlist .= str_replace( '%%%%%', '', do_shortcode( $item_format_to_use ) );
+
+		endwhile;
+
+		$after_items = do_shortcode( miniloops_shortcoder( stripslashes( $after_items ) ) );
+		$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query );
+		$postlist .= $after_items;
+
 	endif;
 
 	wp_reset_query();
-
-	$after_items = do_shortcode( miniloops_shortcoder( stripslashes( $after_items ) ) );
-	$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query );
-	$postlist .= $after_items;
 
 	return $postlist;
 }
@@ -230,7 +232,7 @@ function get_miniloops_sc( $atts, $content ) {
 	$content = str_replace( '{', '[', str_replace('}', ']', $content ) );
 	if ( strpos( $content, '[ml_format' ) !== false )
 		$atts['item_format'] = do_shortcode( $content );
-	elseif ( ! empty( $content) ) 
+	elseif ( ! empty( $content) )
 		$atts['item_format'] = $content;
 	$args = shortcode_atts( get_miniloops_defaults(), $atts );
 
@@ -263,14 +265,14 @@ function miniloop_title( $atts ) {
 
 	if ($length)
 		$title = substr( $title, 0, $length );
-	
+
 	$title = $before . $title . $after;
-	
+
 	if ( $link ) {
 		$link = get_permalink();
 		$title = "<a href='$link'>$title</a>";
 	}
-	
+
 	return $title;
 }
 
@@ -285,7 +287,7 @@ function miniloop_url( $atts ) {
 
 	if ($length)
 		$link = substr( $link, 0, $length );
-	
+
 	$link = $before . $link . $after;
 
 	return $link;
@@ -691,7 +693,7 @@ function miniloops_create_thumbnail_from_id( $att_id, $width, $height ) {
 function miniloops_create_thumbnail_from_path( $file, $width, $height ) {
 	$upl = wp_upload_dir();
 	$new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
-	if ( is_wp_error( $new ) ) 
+	if ( is_wp_error( $new ) )
 		//if the image could not be resized, return the original url
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
 	return str_replace( $upl['basedir'], $upl['baseurl'], $new );

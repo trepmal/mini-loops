@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -292,6 +292,9 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
+= 1.1.2 = 
+Fix: imbalanced tags if zero posts match query
+
 = 1.1 = 
 New: Lots! See the changelog for details.
 
@@ -316,6 +319,9 @@ Real image croping for thumbnails and several other new features. See Changelog.
 = Version 0.5 =
 
 == Changelog ==
+
+= Version 1.1.2 =
+* Fix: imbalanced tags if zero posts match query
 
 = Version 1.1 =
 * New: Changed Before/After Items inputs to textareas for easier modifying if there is a lot of markup.
