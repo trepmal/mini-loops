@@ -166,9 +166,9 @@ function get_miniloops( $args = '' ) {
 	//for testing
 	//return '<pre>'. print_r( $miniloop, true ) .'</pre>';
 
+	//begin building the list
+	$postlist = '';
 	if ( $miniloop->have_posts() ) : $miniloop->the_post();
-		//begin building the list
-		$postlist = '';
 
 		$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
 		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
@@ -479,8 +479,8 @@ function miniloop_post_type( $atts ) {
 		'label' => 'name', //probably 'name' or 'singular_name'. also accepted: add_new, add_new_item, edit_item, new_item, view_item, search_items, not_found, not_found_in_trash, parent_item_colon, all_items, menu_name, name_admin_bar
 	), $atts ) );
 
- 	$post_type_obj = get_post_type_object( get_post_type() );
- 	$post_type_name = $post_type_obj->labels->$label;
+	$post_type_obj = get_post_type_object( get_post_type() );
+	$post_type_name = $post_type_obj->labels->$label;
 	//return '<pre>'. print_r( $post_type_obj->labels, true ) .'</pre>';
 	return $post_type_name;
 }
