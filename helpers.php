@@ -171,7 +171,7 @@ function get_miniloops( $args = '' ) {
 	if ( $miniloop->have_posts() ) : $miniloop->the_post();
 
 		$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
-		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query );
+		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query, $miniloop );
 		$postlist .= $before_items;
 
 		$miniloop->rewind_posts();
@@ -187,12 +187,12 @@ function get_miniloops( $args = '' ) {
 		endwhile;
 
 		$after_items = do_shortcode( miniloops_shortcoder( stripslashes( $after_items ) ) );
-		$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query );
+		$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query, $miniloop );
 		$postlist .= $after_items;
 
 	endif;
 
-	wp_reset_query();
+	wp_reset_postdata();
 
 	return $postlist;
 }
@@ -208,6 +208,8 @@ function miniloops_shortcoder( $input ) {
 	//make sure we haven't doubled-up
 	$input = str_replace( '[ml_ml_', '[ml_', $input );
 	$input = str_replace( '[/ml_ml_', '[/ml_', $input );
+	$input = str_replace( '[ml_ba_', '[ba_', $input );
+	$input = str_replace( '[/ml_ba_', '[/ba_', $input );
 	//a hack: 2 shortcodes touching has issues
 	//%%%%% is a placeholder to be removed during output
 	$input = str_replace( '][', ']%%%%%[', $input );
@@ -414,7 +416,7 @@ function miniloop_field( $atts ) {
 
 add_shortcode( 'ml_category' , 'miniloop_category' );
 function miniloop_category( $atts ) {
-	$atts = shortcode_atts(array(
+	$atts = shortcode_atts( array(
 		'separator' => ', ',
 		'link' => false,
 		'justone' => false,
@@ -427,7 +429,7 @@ function miniloop_category( $atts ) {
 
 add_shortcode( 'ml_tag' , 'miniloop_tag' );
 function miniloop_tag( $atts ) {
-	$atts = shortcode_atts(array(
+	$atts = shortcode_atts( array(
 		'separator' => ', ',
 		'link' => false,
 		'justone' => false,
@@ -463,6 +465,43 @@ function miniloop_taxonomy( $atts ) {
 	return implode( $separator, $terms_ );
 }
 
+// BETA - not fully tested, may not work under some conditions
+// 'ba' prefix for 'before/after' - special hackish use
+add_shortcode( 'ba_archive' , 'miniloop_archive' );
+function miniloop_archive( $atts ) {
+	extract( shortcode_atts( array(
+		'before' => '<p>',
+		'after' => '</p>',
+	), $atts ) );
+
+	return "{$before}##replace|archive##{$after}";
+}
+// For use with the BETA [ba_archive] shortcode
+add_filter( 'miniloops_before_items_format', 'ml_hackish_filter', 10, 3 );
+add_filter( 'miniloops_after_items_format', 'ml_hackish_filter', 10, 3 );
+function ml_hackish_filter( $before_items, $query, $miniloop ) {
+	// if there is nothing to replace, carry on...
+	if ( strpos( $before_items, '##replace' ) === false ) return $before_items;
+
+	// if the miniloop query is an archive, swap the placeholder for an archive link
+	if ( $miniloop->is_archive() ) {
+		$obj = $miniloop->get_queried_object();
+
+		if ( is_a( $obj, 'WP_User' ) ) {
+			$name = $obj->data->display_name;
+			$url = get_author_posts_url( $obj->data->ID );
+		} else if ( is_a( $obj, 'stdClass' ) ) { // taxonomy
+			$name = $obj->name;
+			$url = get_term_link( $name, $obj->taxonomy );
+		}
+		$before_items = str_replace('##replace|archive##', "<a href='$url'>$name</a>", $before_items );
+	}
+	else
+		$before_items = str_replace('##replace|archive##', '', $before_items );
+
+	return $before_items;
+}
+
 add_shortcode( 'ml_date' , 'miniloop_date' );
 function miniloop_date( $atts ) {
 	extract( shortcode_atts( array(
@@ -479,9 +518,8 @@ function miniloop_post_type( $atts ) {
 		'label' => 'name', //probably 'name' or 'singular_name'. also accepted: add_new, add_new_item, edit_item, new_item, view_item, search_items, not_found, not_found_in_trash, parent_item_colon, all_items, menu_name, name_admin_bar
 	), $atts ) );
 
-	$post_type_obj = get_post_type_object( get_post_type() );
-	$post_type_name = $post_type_obj->labels->$label;
-	//return '<pre>'. print_r( $post_type_obj->labels, true ) .'</pre>';
+ 	$post_type_obj = get_post_type_object( get_post_type() );
+ 	$post_type_name = $post_type_obj->labels->$label;
 	return $post_type_name;
 }
 

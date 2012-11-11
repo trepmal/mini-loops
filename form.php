@@ -40,6 +40,7 @@
 				<small>(<?php _e('IDs, comma-separated.', 'mini-loops');?>) </small>
 			</label>
 		</p>
+		<p>
 		<p style="width:48%;float:left;">
 			<label for="<?php echo $this->get_field_id('post_type'); ?>"><?php _e('Post Type:', 'mini-loops' );?>
 				<select class="widefat" id="<?php echo $this->get_field_id('post_type'); ?>" name="<?php echo $this->get_field_name('post_type'); ?>">
@@ -84,7 +85,7 @@
 				<?php
 					$obs = array( 'ASC', 'DESC' );
 					foreach($obs as $v) {
-						echo "<option value='{$v}" . selected( $v, $order, false ) . ">{$v}</option>";
+						echo "<option value='{$v}'" . selected( $v, $order, false ) . ">{$v}</option>";
 					}
 				?>
 				</select>
@@ -152,7 +153,6 @@
 				<small>(<?php _e('IDs, comma-separated.', 'mini-loops');?>) </small>
 			</label>
 		</p>
-		<p>
 			<label for="<?php echo $this->get_field_id('tax'); ?>"><?php _e('Custom Taxonomies:', 'mini-loops');?>
 				<input class="widefat" id="<?php echo $this->get_field_id('tax'); ?>" name="<?php echo $this->get_field_name('tax'); ?>" type="text" value="<?php echo $tax; ?>" /><br />
 				<small>(<?php _e('Ex: category=1,2,4&post_tag=6,12', 'mini-loops');?><br />

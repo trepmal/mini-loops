@@ -5,6 +5,7 @@ Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.1
 Tested up to: 3.4
 Stable tag: 1.1.2
+License: GPLv2 or later
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
 
@@ -67,81 +68,113 @@ See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-f
 
 Explanation of options:
 
-**Title:** Your recent posts widget's title on your sidebar.
-`title="Recent Posts"`
+**Title:** Your recent posts widget's title on your sidebar. Default: Recent Posts
+`[miniloop title="Recent Posts"]
+get_miniloops( array('title' => 'Recent Posts' ) );`
 
-**Title URL:** The page the title should link to.
-`title_url="/blog/"`
+**Title URL:** The page the title should link to. Default: none
+`[miniloop title_url="/blog/"]
+get_miniloops( array('title_url' => '/blog/'' ) );`
 
-**Number of Posts:** Number of posts to be displayed
-`number_posts=3`
+**Number of Posts:** Number of posts to be displayed. Default: 3
+`[miniloop number_posts=3]
+get_miniloops( array('number_posts' => 3 ) );`
 
-**Post Offset:** Number of posts to skip before displaying the list
-`post_offset=0`
+**Post Offset:** Number of posts to skip before displaying the list. Default: 0
+`[miniloop post_offset=0]
+get_miniloops( array('post_offset' => 0 ) );`
 
-**Maximum Age:** Don't show posts more than X days old
-`maximum_age=0`
+**Maximum Age:** Don't show posts more than X days old Default: 0
+`[miniloop maximum_age=0]
+get_miniloops( array('maximum_age' => 0 ) );`
 
-**Post Author:** Get author's post. By ID.
-`post_author=0`
+**Post Author:** Get author's post. By ID. Default: none
+`[miniloop post_author=0]
+get_miniloops( array('post_author' => 0 ) );`
 
-**Post Type:** Post type to display
-`post_type=post`
+**Post Type:** Post type to display. Default: post
+`[miniloop post_type=post]
+get_miniloops( array('post_type' => 'post' ) );`
 
-**Post Status:** Post status to display. Primarily useful to show upcoming (future) posts. But be creative!
-`post_status=publish`
+**Post Status:** Post status to display. Primarily useful to show upcoming (future) posts. But be creative! Default: publish
+`[miniloop post_status=publish]
+get_miniloops( array('post_status' => 'publish' ) );`
 
-**Order By:** What order the posts should be displayed in
-`orderby=date`
+**Order By:** What order the posts should be displayed in. Default: date
+`[miniloop orderby=date]
+get_miniloops( array('orderby' => 'date' ) );`
 
-**Order:** Ascending (good for order by title) or Descending (good for order by date)
-`order=DESC`
+**Order:** Ascending (good for order by title) or Descending (good for order by date) Default: DESC
+`[miniloop order=DESC]
+get_miniloops( array('order' => 'DESC' ) );`
 
-**Meta Key for ordering:** If order by = meta value, specify a key
-`meta_value=some_key`
+**Meta Key for ordering:** If order by = meta value, specify a key. Default: none
+`[miniloop meta_value=some_key]
+get_miniloops( array('meta_value' => 'some_key' ) );`
 
-**Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this.
-`reverse_order=0`
+**Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this. Default: 0
+`[miniloop reverse_order=0]
+get_miniloops( array('reverse_order' => 0 ) );`
 
-**Shuffle post order?** Shuffle the order of the posts matching your query. Perhaps showing the 5 most recent posts in randomized order.
-`shuffle_order=0`
+**Shuffle post order?** Shuffle the order of the posts matching your query. Perhaps showing the 5 most recent posts in randomized order. Default: 0
+`[miniloop shuffle_order=0]
+get_miniloops( array('shuffle_order' => 0 ) );`
 
-**Ignore sticky posts?** Treat sticky posts as normal posts. I recommend ignoring, or the number of posts displayed may be inconsistent.
-`ignore_sticky=1`
+**Ignore sticky posts?** Treat sticky posts as normal posts. I recommend ignoring, or the number of posts displayed may be inconsistent. Default: 1
+`[miniloop ignore_sticky=1]
+get_miniloops( array('ignore_sticky' => 1 ) );`
 
-**Exclude sticky posts?** Don't show sticky posts at all.
-`exclude_sticky=0`
+**Exclude sticky posts?** Don't show sticky posts at all. Default: 0
+`[miniloop exclude_sticky=0]
+get_miniloops( array('exclude_sticky' => 0 ) );`
 
-**Only sticky posts?** Show only sticky posts.
-`only_sticky=0`
+**Only sticky posts?** Show only sticky posts. Default: 0
+`[miniloop only_sticky=0]
+get_miniloops( array('only_sticky' => 0 ) );`
 
-**If viewing a single post, exclude it?** If viewing a single post, remove it from the widget display.
-`exclude_current=1`
+**If viewing a single post, exclude it?** If viewing a single post, remove it from the widget display. Default: 1
+`[miniloop exclude_current=1]
+get_miniloops( array('exclude_current' => 1 ) );`
 
-**Get posts from current category (if archive)?** If viewing an archive, only show posts from the same category.
-`current_category=1`
+**Get posts from current category (if archive)?** If viewing an archive, only show posts from the same category. Default: 0
+`[miniloop current_category=1]
+get_miniloops( array('current_category' => 1 ) );`
 
-**Get posts from first category (if single)?** If viewing a single post, only show posts from the first category.
-`current_single_category=1`
+**Get posts from first category (if single)?** If viewing a single post, only show posts from the first category. Default: none
+`[miniloop current_single_category=1]
+get_miniloops( array('current_single_category' => 1 ) );`
 
-**Get posts from current author (if single or archive)?** Show more posts from the current author.
-`current_author=1`
+**Get posts from current author (if single or archive)?** Show more posts from the current author. Default: none
+`[miniloop current_author=1]
+get_miniloops( array('current_author' => 1 ) );`
 
-**Categories:** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category.
+**Categories:** Comma separated list of category IDs to pull from. Use negative ID numbers to exclude a category. Default: none
+`[miniloop categories="1,8,13"]
+get_miniloops( array('categories' => '1,8,13' ) );`
 
-**Tags:** Comma separated list of tag IDs to pull from. Use negative ID numbers to exclude a tag.
+**Tags:** Comma separated list of tag IDs to pull from. Use negative ID numbers to exclude a tag. Default: none
+`[miniloop tags="15,40,88"]
+get_miniloops( array('tags' => '15,40,88' ) );`
 
-**Custom Taxonomies:** A clunky way to support custom taxonomies. To include terms 5, 6, 9 from taxonomy "Genre" do this:
-`tax="genre=5,6,9"`
+**Custom Taxonomies:** A clunky way to support custom taxonomies. Default: none. To include terms 5, 6, 9 from taxonomy "Genre" do this:
+`[miniloop tax="genre=5,6,9"]
+get_miniloops( array('tax' => 'genre=5,6,9' ) );`
 
-**Custom Fields:** For listing posts that have certain meta data. To list posts that have a custom field 'favorite_color' with a value of 'blue' do this:
-`custom_fields="favorite_color=blue"`
+**Custom Fields:** For listing posts that have certain meta data. Default: none. To list posts that have a custom field 'favorite_color' with a value of 'blue' do this:
+`[miniloop custom_fields="favorite_color=blue"]
+get_miniloops( array('custom_fields' => 'favorite_color=blue' ) );`
 
-**Exclude Posts:** A comma separated list of post IDs to exclude.
+**Exclude Posts:** A comma separated list of post IDs to exclude. Default: none
+`[miniloop exclude="15,200,1032"]
+get_miniloops( array('exclude' => '15,200,1032' ) );`
 
-**Before Item:** Text/HTML to insert before the post list
+**Before Items:** Text/HTML to insert before the post list. Default: `<ul>`
+`[miniloop before_items="<div>"]
+get_miniloops( array('before_items' => '<div>' ) );`
 
-**After Item:** Text/HTML to insert after the post list
+**After Items:** Text/HTML to insert after the post list. Default: `</ul>`
+`[miniloop after_items="</div>"]
+get_miniloops( array('after_items' => '</div>' ) );`
 
 **Item Format:**
 HTML and shortcodes to format each item
@@ -316,9 +349,13 @@ New: get posts from current category (if archive) option.
 = 0.5 =
 Real image croping for thumbnails and several other new features. See Changelog.
 
-= Version 0.5 =
-
 == Changelog ==
+
+= Version 1.1.3 =
+* Fix: undefined index notice if zero posts match query
+* Fix: markup errors in widget. Corrects save issue regarding order
+* Fix: reset postdata instead of query
+* New: BETA - use `[ba_archive before='' after='']` shortcode to insert an author/taxonomy link. For use with before|after_items fields.
 
 = Version 1.1.2 =
 * Fix: imbalanced tags if zero posts match query
