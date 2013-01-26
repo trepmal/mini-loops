@@ -15,6 +15,8 @@ Show most recent posts, posts from categories, and more. Can be displayed via wi
 
 This is a new release, please report bugs to trepmal (at) gmail (dot) com before leaving a poor review. Thanks
 
+Version 1.2 is available on the [developers page](http://wordpress.org/extend/plugins/mini-loops/developers/). Would love a test-driver or two to take it for a spin and let me know if anything needs fine-tuning :)
+
 == Installation ==
 
 1. Download the zip file and extract the contents.
