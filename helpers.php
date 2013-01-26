@@ -566,7 +566,9 @@ function miniloop_image( $atts ) {
 
 	$img = '';
 	$upl = wp_upload_dir();
-	switch ( $from ) {
+	$from = explode( ',', $from );
+	foreach( $from as $from_where ) {
+	switch ( $from_where ) {
 		case 'thumb' :
 
 			if ( 'clear' == $cache ) {
@@ -707,7 +709,9 @@ function miniloop_image( $atts ) {
 				}
 			}
 		break;
-	}
+	}//end switch
+	if ( ! empty( $src ) ) break;
+	}//end foreach
 
 	$alt = ! empty( $alt ) ? $alt : $alttext;
 
@@ -730,9 +734,32 @@ function miniloops_create_thumbnail_from_id( $att_id, $width, $height ) {
 }
 function miniloops_create_thumbnail_from_path( $file, $width, $height ) {
 	$upl = wp_upload_dir();
-	$new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
-	if ( is_wp_error( $new ) )
-		//if the image could not be resized, return the original url
+	// deprecated method
+	// $new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
+	// if ( is_wp_error( $new ) )
+	// 	//if the image could not be resized, return the original url
+	// 	return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+	// return str_replace( $upl['basedir'], $upl['baseurl'], $new );
+
+	// robbed from the depracted image_resize() function
+	$editor = wp_get_image_editor( $file );
+	if ( is_wp_error( $editor ) )
+		// return $editor;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
-	return str_replace( $upl['basedir'], $upl['baseurl'], $new );
+	$editor->set_quality( 90 );
+
+	$resized = $editor->resize( $width, $height, true );
+	if ( is_wp_error( $resized ) )
+		// return $resized;
+		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+
+	$dest_file = $editor->generate_filename( "ml-{$width}x{$height}", null );
+	$saved = $editor->save( $dest_file );
+
+	if ( is_wp_error( $saved ) )
+		// return $saved;
+		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+
+	return str_replace( $upl['basedir'], $upl['baseurl'], $dest_file );
+
 }

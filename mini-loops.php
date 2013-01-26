@@ -3,11 +3,11 @@
 Plugin Name: Mini Loops
 Plugin URI: http://trepmal.com/plugins/mini-loops/
 Description: Query posts and display them where you want
-Version: 1.1.3-dev-121110
+Version: 1.2-dev-130126
 Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 
-Copyright (C) 2011-12  Kailey Lampert
+Copyright (C) 2011-13 Kailey Lampert
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

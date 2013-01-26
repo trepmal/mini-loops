@@ -2,7 +2,7 @@
 Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
-Requires at least: 3.1
+Requires at least: 3.5
 Tested up to: 3.4
 Stable tag: 1.1.2
 License: GPLv2 or later
@@ -221,6 +221,7 @@ HTML and shortcodes to format each item
      * *from* 'attached' first attached image `[ml_image from=attached]`
      * *from* 'customfield' get from custom field `[ml_image from=customfield]`
      * *from* 'first' first image in post `[ml_image from=first]`
+  * since 1.1.3, you can pass a comma-separated list to use as fallbacks. `[ml_image from="thumb,first"]`
   * cfname = custom field to use if from=customfield `[ml_image from=customfield cfname=thumbnail]`
   * class = class for image
   * width = width of image
@@ -325,6 +326,9 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
+= 1.1.3 = 
+New: fallback 'from' options for [image]
+
 = 1.1.2 = 
 Fix: imbalanced tags if zero posts match query
 
@@ -356,6 +360,8 @@ Real image croping for thumbnails and several other new features. See Changelog.
 * Fix: markup errors in widget. Corrects save issue regarding order
 * Fix: reset postdata instead of query
 * New: BETA - use `[ba_archive before='' after='']` shortcode to insert an author/taxonomy link. For use with before|after_items fields.
+* Fix: removed deprecated function for thumbnail creation
+* New: fallback 'from' options for [image]. [image from="thumb,first"] - If no post thumbnail (featured image), get first image from post
 
 = Version 1.1.2 =
 * Fix: imbalanced tags if zero posts match query
