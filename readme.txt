@@ -56,6 +56,14 @@ If you're using a custom theme, you can add this code the its `functions.php` fi
 
 See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-functions-plugin-for-end-users) for instructions on creating your own plugin.
 
+= How can I add ajax-paging? =
+
+See [this add-on plugin](https://gist.github.com/trepmal/5073756). Install that manually by downloading the code and uploading it to your WP installation's wp-content/plugins folder and activating it.
+
+= Can this be used in multisite to show other site's posts? =
+
+With [this add-on plugin](https://gist.github.com/trepmal/5073067) you can do that. Install that manually by downloading the code and uploading it to your WP installation's wp-content/plugins folder and activating it.
+
 == Screenshots ==
 
 1. Widget Options
