@@ -197,6 +197,10 @@ HTML and shortcodes to format each item
 * [ml_comment_count]
 * [ml_author]
 * [ml_author_link]
+* [ml_author_avatar] Attributes: size (92), default (''), alt (false)
+  * size = avatar size, in pixels
+  * default = default if no gravatar. See Settings > Discussion
+  * alt = alt text
 * [ml_field] Attributes: name, single (1), separator (', '), reverse (0)
   * name = custom field name
   * single = 1 get single value, 0 get all values matching name
@@ -326,8 +330,8 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
-= 1.1.3 = 
-New: fallback 'from' options for [image]
+= 1.2 = 
+New: [author_avatar], replaced deprecated function, Ajax! Multisite! (See Changelog)
 
 = 1.1.2 = 
 Fix: imbalanced tags if zero posts match query
@@ -355,13 +359,16 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
-= Version 1.1.3 =
+= Version 1.2 =
 * Fix: undefined index notice if zero posts match query
 * Fix: markup errors in widget. Corrects save issue regarding order
 * Fix: reset postdata instead of query
 * New: BETA - use `[ba_archive before='' after='']` shortcode to insert an author/taxonomy link. For use with before|after_items fields.
 * Fix: removed deprecated function for thumbnail creation
 * New: fallback 'from' options for [image]. [image from="thumb,first"] - If no post thumbnail (featured image), get first image from post
+* New: [author_avatar] with optional parameters [author_avatar size=92 default='' alt=0]
+* New: Multisite - Show posts from sister-sites (on same network). REQUIRES ADD ON: https://gist.github.com/trepmal/5073067
+* New: Ajax-paging - View prev/next set of posts in widget. REQUIRES ADD ON: https://gist.github.com/trepmal/5073756 
 
 = Version 1.1.2 =
 * Fix: imbalanced tags if zero posts match query

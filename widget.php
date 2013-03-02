@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 
 class miniloops extends WP_Widget {
 

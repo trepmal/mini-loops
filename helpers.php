@@ -1,10 +1,13 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) die( '-1' );
+
 // Show recent posts function
 function get_miniloops_defaults() {
 	$defs = array( 	'title' => __( 'Recent Posts', 'mini-loops' ),
 					'hide_title' => 0,
 					'title_url' => '',
 					'number_posts' => 3,
+					'paged' => 1,
 					'post_offset' => 0,
 					'maximum_age' => 0,
 					'post_type' => 'post',
@@ -43,6 +46,7 @@ function get_miniloops( $args = '' ) {
 
 	//since this function can be called in the template, re-escape the parameters
 	$number_posts = (int) $number_posts;
+	$paged = (int) $paged;
 	$post_offset = (int) $post_offset;
 	$maximum_age = (int) $maximum_age;
 	$post_type = esc_attr( $post_type );
@@ -136,6 +140,7 @@ function get_miniloops( $args = '' ) {
 		'orderby' => $order_by,
 		'order' => $order,
 		'post__not_in' => $exclude,
+		'paged' => $paged,
 	);
 
 	if ( in_array( $order_by, array( 'meta_value', 'meta_value_num' ) ) && ! empty( $order_meta_key ) ) {
@@ -154,6 +159,8 @@ function get_miniloops( $args = '' ) {
 	//for testing
 	//return '<pre>'. print_r( $query, true ) .'</pre>';
 
+	do_action( 'before_the_miniloop', $query, $args );
+
 	//perform the query
 	$miniloop = new WP_Query( $query );
 	if ( $reverse_order ) $miniloop->posts = array_reverse( $miniloop->posts );
@@ -164,20 +171,22 @@ function get_miniloops( $args = '' ) {
 	}
 
 	//for testing
-	//return '<pre>'. print_r( $miniloop, true ) .'</pre>';
+	// return '<pre>'. print_r( $miniloop, true ) .'</pre>';
 
 	//begin building the list
 	$postlist = '';
+
 	if ( $miniloop->have_posts() ) : $miniloop->the_post();
 
 		$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
-		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query, $miniloop );
+		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query, $miniloop, $args );
 		$postlist .= $before_items;
 
 		$miniloop->rewind_posts();
 		while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
-			$post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
+			// $post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
+			$post_format = current_theme_supports('post-formats') ? get_post_format( get_the_ID() ) : 'standard';
 
 			$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
@@ -187,12 +196,14 @@ function get_miniloops( $args = '' ) {
 		endwhile;
 
 		$after_items = do_shortcode( miniloops_shortcoder( stripslashes( $after_items ) ) );
-		$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query, $miniloop );
+		$after_items = apply_filters( 'miniloops_after_items_format', $after_items, $query, $miniloop, $args );
 		$postlist .= $after_items;
 
 	endif;
 
 	wp_reset_postdata();
+
+	do_action( 'after_the_miniloop', $query );
 
 	return $postlist;
 }
@@ -390,6 +401,18 @@ add_shortcode( 'ml_author_link' , 'miniloop_author_link' );
 function miniloop_author_link() {
 
 	return get_author_posts_url( get_the_author_meta('ID') );
+}
+
+add_shortcode( 'ml_author_avatar' , 'miniloop_author_avatar' );
+function miniloop_author_avatar( $atts ) {
+	extract( shortcode_atts( array(
+		'size' => 96,
+		'default' => '',
+		'alt' => false
+	), $atts ) );
+	// if ( empty( $name ) ) return;
+
+	return get_avatar( get_the_author_meta('ID'), $size, $default, $alt );
 }
 
 add_shortcode( 'ml_field' , 'miniloop_field' );

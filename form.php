@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) die( '-1' ); ?>
 		<p style="width:40%;float:left;">
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'mini-loops' );?>
 				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo stripslashes( $title ); ?>" />
@@ -155,14 +156,14 @@
 		</p>
 			<label for="<?php echo $this->get_field_id('tax'); ?>"><?php _e('Custom Taxonomies:', 'mini-loops');?>
 				<input class="widefat" id="<?php echo $this->get_field_id('tax'); ?>" name="<?php echo $this->get_field_name('tax'); ?>" type="text" value="<?php echo $tax; ?>" /><br />
-				<small>(<?php _e('Ex: category=1,2,4&post_tag=6,12', 'mini-loops');?><br />
+				<small>(<?php _e('Ex: category=1,2,4&amp;post_tag=6,12', 'mini-loops');?><br />
 						<?php _e('Available: ', 'mini-loops'); echo implode( ', ', get_taxonomies( array( 'public' => true ) ) ); ?>)</small>
 			</label>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('custom_fields'); ?>"><?php _e('Custom Fields:', 'mini-loops');?>
 				<input class="widefat" id="<?php echo $this->get_field_id('custom_fields'); ?>" name="<?php echo $this->get_field_name('custom_fields'); ?>" type="text" value="<?php echo $custom_fields; ?>" /><br />
-				<small>(<?php _e('Ex: meta_key=meta_value&meta_key2=meta_value2', 'mini-loops');?>)</small>
+				<small>(<?php _e('Ex: meta_key=meta_value&amp;meta_key2=meta_value2', 'mini-loops');?>)</small>
 			</label>
 		</p>
 		<p>
