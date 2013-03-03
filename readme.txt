@@ -361,6 +361,7 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 = Version 1.3-dev =
 * New: 'crop' parameter for the image tag
+* New: Allow any shortcodes in item format
 
 = Version 1.2 =
 * Fix: undefined index notice if zero posts match query

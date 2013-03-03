@@ -214,13 +214,20 @@ function miniloops( $params ) {
 function miniloops_shortcoder( $input ) {
 	$input = wp_filter_post_kses( $input );
 	//give our shortcodes the correct prefix
-	$input = str_replace( '[', '[ml_', $input );
-	$input = str_replace( '[/', '[/ml_', $input );
+
+	// whitelist ML shortcodes, only prefix those
+	$mlcodes = explode(',', 'format,title,url,excerpt,content,comment_count,author,author_link,author_avatar,field,category,tag,tax,taxonomy,archive,iloops_before_items_format,iloops_after_items_format,date,post_type,post_type_archive_link,class,image' );
+	foreach( $mlcodes as $mlc ) {
+		$input = str_replace( "[$mlc", "[ml_$mlc", $input );
+	}
+	// $input = str_replace( '[', '[ml_', $input );
+	// $input = str_replace( '[/', '[/ml_', $input );
 	//make sure we haven't doubled-up
-	$input = str_replace( '[ml_ml_', '[ml_', $input );
-	$input = str_replace( '[/ml_ml_', '[/ml_', $input );
-	$input = str_replace( '[ml_ba_', '[ba_', $input );
-	$input = str_replace( '[/ml_ba_', '[/ba_', $input );
+	// $input = str_replace( '[ml_ml_', '[ml_', $input );
+	// $input = str_replace( '[/ml_ml_', '[/ml_', $input );
+	// $input = str_replace( '[ml_ba_', '[ba_', $input );
+	// $input = str_replace( '[/ml_ba_', '[/ba_', $input );
+
 	//a hack: 2 shortcodes touching has issues
 	//%%%%% is a placeholder to be removed during output
 	$input = str_replace( '][', ']%%%%%[', $input );
