@@ -578,7 +578,7 @@ function miniloop_image( $atts ) {
 		'class' => '',
 		'width' => 50,
 		'height' => 50,
-		'crop' => 0,
+		'crop' => true,
 		'fallback' => '',
 		'alttext' => '',
 		'cache' => '',
@@ -590,6 +590,9 @@ function miniloop_image( $atts ) {
 	$img = '';
 	$upl = wp_upload_dir();
 	$from = explode( ',', $from );
+
+	$crop = (bool) $crop;
+
 	foreach( $from as $from_where ) {
 	switch ( $from_where ) {
 		case 'thumb' :
@@ -607,7 +610,7 @@ function miniloop_image( $atts ) {
 			}
 			elseif ( has_post_thumbnail( get_the_ID() ) ) {
 				$id = get_post_thumbnail_id( get_the_ID() );
-				$src = miniloops_create_thumbnail_from_id( $id, $width, $height );
+				$src = miniloops_create_thumbnail_from_id( $id, $width, $height, $crop );
 				$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
 				//save to meta
 				$resized["{$width}x{$height}"] = $src;
@@ -634,7 +637,7 @@ function miniloop_image( $atts ) {
 				foreach( $atts as $a ) {
 					//make sure we don't grab the wrong file type
 					if ( wp_attachment_is_image( $a->ID ) ) {
-						$src = miniloops_create_thumbnail_from_id( $a->ID, $width, $height );
+						$src = miniloops_create_thumbnail_from_id( $a->ID, $width, $height, $crop );
 						$alt = get_post_meta( $a->ID, '_wp_attachment_image_alt', true );
 						//save to meta
 						$resized["{$width}x{$height}"] = $src;
@@ -667,12 +670,12 @@ function miniloop_image( $atts ) {
 						//assume relative to root
 						$img = site_url( $img );
 						$file = str_replace( $upl['baseurl'], $upl['basedir'], $img );
-						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 					}
 					elseif ( strpos( $img, site_url() ) !== false) {
 						//if match for site_url
 						$file = str_replace( $upl['baseurl'], $upl['basedir'], $img );
-						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 					}
 					else {
 						//external
@@ -714,12 +717,12 @@ function miniloop_image( $atts ) {
 						//assume relative to root
 						$img = site_url( $img );
 						$file = str_replace( $upl['baseurl'], $upl['basedir'], $img );
-						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 					}
 					elseif ( strpos( $img, site_url() ) !== false) {
 						//if match for site_url
 						$file = str_replace( $upl['baseurl'], $upl['basedir'], $img );
-						$src = miniloops_create_thumbnail_from_path( $file, $width, $height );
+						$src = miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 					}
 					else {
 						//external
@@ -743,19 +746,24 @@ function miniloop_image( $atts ) {
 		$img = "<img src='$src' width='$width' height='$height' class='$class' alt='$alt' />";
 
 	//build the fallback
-	$fallback = ! empty( $fallback ) ? "<img src='$fallback' alt='$alt' width='$width' height='$height' class='$class' />" : '';
+	$fallback = ! empty( $fallback ) ? "<img src='$fallback' width='$width' height='$height' alt='$alt' class='$class' />" : '';
 
 	//if no/empty image, use fallback
-	return ( ! $img || empty( $img ) ) ? $fallback : $img;
+	$html = ( ! $img || empty( $img ) ) ? $fallback : $img;
+
+	if ( ! $crop )
+		$html = preg_replace( '/ width=\'(\d*)\' height=\'(\d*)\'/', '', $html );
+
+	return $html;
 }
 
-function miniloops_create_thumbnail_from_id( $att_id, $width, $height ) {
+function miniloops_create_thumbnail_from_id( $att_id, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
 	$file = wp_get_attachment_image_src( $att_id, 'fullsize' );
 	$file = str_replace( $upl['baseurl'], $upl['basedir'], $file[0] );
-	return miniloops_create_thumbnail_from_path( $file, $width, $height );
+	return miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 }
-function miniloops_create_thumbnail_from_path( $file, $width, $height ) {
+function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
 	// deprecated method
 	// $new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
@@ -771,7 +779,7 @@ function miniloops_create_thumbnail_from_path( $file, $width, $height ) {
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
 	$editor->set_quality( 90 );
 
-	$resized = $editor->resize( $width, $height, true );
+	$resized = $editor->resize( $width, $height, $crop );
 	if ( is_wp_error( $resized ) )
 		// return $resized;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );

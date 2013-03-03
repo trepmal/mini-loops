@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 Plugin Name: Mini Loops
 Plugin URI: http://trepmal.com/plugins/mini-loops/
 Description: Query posts and display them where you want
-Version: 1.2-dev
+Version: 1.3-dev-130302
 Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 

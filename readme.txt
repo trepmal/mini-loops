@@ -359,6 +359,9 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
+= Version 1.3-dev =
+* New: 'crop' parameter for the image tag
+
 = Version 1.2 =
 * Fix: undefined index notice if zero posts match query
 * Fix: markup errors in widget. Corrects save issue regarding order
