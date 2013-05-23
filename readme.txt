@@ -101,7 +101,7 @@ get_miniloops( array('post_type' => 'post' ) );`
 get_miniloops( array('post_status' => 'publish' ) );`
 
 **Order By:** What order the posts should be displayed in. Default: date
-`[miniloop orderby=date]
+`[miniloop order_by=date]
 get_miniloops( array('orderby' => 'date' ) );`
 
 **Order:** Ascending (good for order by title) or Descending (good for order by date) Default: DESC
