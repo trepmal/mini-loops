@@ -108,9 +108,13 @@ get_miniloops( array('order_by' => 'date' ) );`
 `[miniloop order=DESC]
 get_miniloops( array('order' => 'DESC' ) );`
 
-**Meta Key for ordering:** If order by = meta value, specify a key. Default: none
-`[miniloop meta_value=some_key]
-get_miniloops( array('meta_value' => 'some_key' ) );`
+**Ordering by the values of `some_key`** (works well if the values of `some_key` are strings/words):
+`[miniloop order_by=meta_value order_meta_key=some_key]
+get_miniloops( array('order_by' => 'meta_value', 'order_meta_key' => 'some_key' ) );`
+
+**Ordering by the numeric values of `some_key`** (works well if the values of `some_key` are numbers/integers):
+`[miniloop order_by=meta_value_num order_meta_key=some_key]
+get_miniloops( array('order_by' => 'meta_value_num', 'order_meta_key' => 'some_key' ) );`
 
 **Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this. Default: 0
 `[miniloop reverse_order=0]
