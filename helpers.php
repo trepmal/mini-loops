@@ -605,8 +605,7 @@ function miniloop_image( $atts ) {
 		case 'thumb' :
 
 			if ( 'clear' == $cache ) {
-				delete_post_meta( get_the_ID(), '_ml_thumb_thumb' );
-				delete_post_meta( get_the_ID(), '_ml_thumb_thumb_alt' );
+				miniloops_clear_thumbnail_cache( get_the_ID() );
 			}
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_thumb', true );
 			$alt = get_post_meta( get_the_ID(), '_ml_thumb_thumb_alt', true );
@@ -801,3 +800,20 @@ function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 	return str_replace( $upl['basedir'], $upl['baseurl'], $dest_file );
 
 }
+
+function miniloops_clear_thumbnail_cache( $post_id ) {
+	delete_post_meta( $post_id, '_ml_thumb_thumb' );
+	delete_post_meta( $post_id, '_ml_thumb_thumb_alt' );
+}
+
+
+/**
+ * Automatically clear the thumbnail cache for the post whenever its featured image is deleted or changed
+ */
+function miniloops_updated_deleted_post_meta( $meta_ids, $object_id, $meta_key, $_meta_value ) {
+	if ( '_thumbnail_id' == $meta_key ) {
+		miniloops_clear_thumbnail_cache( $object_id );
+	}
+}
+add_action('updated_post_meta', 'miniloops_updated_deleted_post_meta', 10, 4);
+add_action('deleted_post_meta', 'miniloops_updated_deleted_post_meta', 10, 4);
