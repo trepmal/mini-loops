@@ -750,7 +750,13 @@ function miniloop_image( $atts ) {
 
 	//if the above has resulted in an image
 	if ( ! empty( $src ) )
+	{
+		if(is_ssl()){
+			$src = str_replace( 'http://', 'https://', $src );
+		}
+	
 		$img = "<img src='$src' width='$width' height='$height' class='$class' alt='$alt' />";
+	}
 
 	//build the fallback
 	$fallback = ! empty( $fallback ) ? "<img src='$fallback' width='$width' height='$height' alt='$alt' class='$class' />" : '';
