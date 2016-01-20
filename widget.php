@@ -43,7 +43,9 @@ class miniloops extends WP_Widget {
 		$instance['post_status'] = esc_attr( $new_instance['post_status'] );
 		$instance['order_by'] = esc_attr( $new_instance['order_by'] );
 		$instance['order'] = esc_attr( $new_instance['order'] );
-		$instance['order_meta_key'] = esc_attr( $new_instance['order_meta_key'] );
+		if ( isset( $new_instance['order_meta_key'] ) ) {
+			$instance['order_meta_key'] = esc_attr( $new_instance['order_meta_key'] );
+		}
 		$instance['reverse_order'] = (bool) $new_instance['reverse_order'] ? 1 : 0;
 		$instance['shuffle_order'] = (bool) $new_instance['shuffle_order'] ? 1 : 0;
 		$instance['ignore_sticky'] = (bool) $new_instance['ignore_sticky'] ? 1 : 0;
@@ -51,7 +53,9 @@ class miniloops extends WP_Widget {
 		$instance['exclude_sticky'] = (bool) $new_instance['exclude_sticky'] ? 1 : 0;
 		$instance['exclude_current'] = (bool) $new_instance['exclude_current'] ? 1 : 0;
 		$instance['current_category'] = (bool) $new_instance['current_category'] ? 1 : 0;
-		$instance['current_single_category'] = (bool) $new_instance['current_single_category'] ? 1 : 0;
+		if ( isset( $new_instance['current_single_category'] ) ) {
+			$instance['current_single_category'] = (bool) $new_instance['current_single_category'] ? 1 : 0;
+		}
 		$instance['current_author'] = (bool) $new_instance['current_author'] ? 1 : 0;
 		$instance['categories'] = esc_attr( $new_instance['categories'] );
 		$instance['tags'] = esc_attr( $new_instance['tags'] );
@@ -80,7 +84,7 @@ class miniloops extends WP_Widget {
 
 class miniminiloops extends miniloops {
 
-	function miniminiloops() {
+	public function __construct() {
 		$widget_ops = array('classname' => 'miniminiloops',
 							'description' => __( 'Query posts, display them.', 'mini-loops' )
 						);
