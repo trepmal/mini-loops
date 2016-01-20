@@ -3,13 +3,13 @@ if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 
 class miniloops extends WP_Widget {
 
-	function miniloops() {
+	public function __construct() {
 		$widget_ops = array('classname' => 'miniloops',
 							'description' => __( 'Query posts, display them.', 'mini-loops' )
 						);
 		$control_ops = array( 'width' => 700 );
 
-		parent::WP_Widget( 'miniloops', __( 'Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
+		parent::__construct( 'miniloops', __( 'Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
 	}
 
 	function widget( $args, $instance ) {
@@ -32,7 +32,9 @@ class miniloops extends WP_Widget {
 		$instance = $old_instance;
 		//get old variables
 		$instance['title'] = wp_filter_post_kses( $new_instance['title'] );
-		$instance['hide_title'] = (bool) $new_instance['hide_title'] ? 1 : 0;
+		if ( isset( $new_instance['hide_title'] ) ) {
+			$instance['hide_title'] = (bool) $new_instance['hide_title'] ? 1 : 0;
+		}
 		$instance['title_url'] = esc_url( $new_instance['title_url'] );
 		$instance['number_posts'] = (int) $new_instance['number_posts'];
 		$instance['post_offset'] = (int) $new_instance['post_offset'];
@@ -84,7 +86,7 @@ class miniminiloops extends miniloops {
 						);
 		$control_ops = array(  );
 
-		parent::WP_Widget( 'miniminiloops', __( 'Mini Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
+		parent::__construct( 'miniminiloops', __( 'Mini Mini Loops', 'mini-loops' ), $widget_ops, $control_ops );
 	}
 
 	function form( $instance ) {
