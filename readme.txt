@@ -3,8 +3,8 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.5
-Tested up to: 3.4
-Stable tag: 1.2
+Tested up to: 4.4
+Stable tag: 1.3
 License: GPLv2 or later
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -34,7 +34,7 @@ Did you set the strip_tags attribute to false? (`[excerpt strip_tags=0]`). If ta
 = Why can't I add an ID to the element in 'Before Items'? =
 There are limitations on the tag or tag/attribute combiniations allowed by WordPress. However, these can be overcome with a few lines of code.
 
-To allow an additional tag, use this: 
+To allow an additional tag, use this:
 
 `add_filter( "admin_init", "allowed_tags" );
 function allowed_tags() {
@@ -68,6 +68,8 @@ See [this post](http://justintadlock.com/archives/2011/02/02/creating-a-custom-f
 
 Explanation of options:
 
+= Widget Display =
+
 **Title:** Your recent posts widget's title on your sidebar. Default: Recent Posts
 `[miniloop title="Recent Posts"]
 get_miniloops( array('title' => 'Recent Posts' ) );`
@@ -75,6 +77,8 @@ get_miniloops( array('title' => 'Recent Posts' ) );`
 **Title URL:** The page the title should link to. Default: none
 `[miniloop title_url="/blog/"]
 get_miniloops( array('title_url' => '/blog/'' ) );`
+
+= Building the Query =
 
 **Number of Posts:** Number of posts to be displayed. Default: 3
 `[miniloop number_posts=3]
@@ -108,9 +112,13 @@ get_miniloops( array('order_by' => 'date' ) );`
 `[miniloop order=DESC]
 get_miniloops( array('order' => 'DESC' ) );`
 
-**Meta Key for ordering:** If order by = meta value, specify a key. Default: none
-`[miniloop meta_value=some_key]
-get_miniloops( array('meta_value' => 'some_key' ) );`
+**Ordering by the values of `some_key`** (works well if the values of `some_key` are strings/words):
+`[miniloop order_by=meta_value order_meta_key=some_key]
+get_miniloops( array('order_by' => 'meta_value', 'order_meta_key' => 'some_key' ) );`
+
+**Ordering by the numeric values of `some_key`** (works well if the values of `some_key` are numbers/integers):
+`[miniloop order_by=meta_value_num order_meta_key=some_key]
+get_miniloops( array('order_by' => 'meta_value_num', 'order_meta_key' => 'some_key' ) );`
 
 **Show posts in reverse order?** Perhaps you want the 3 most recent posts, but you want the oldest of those to be displayed first. If so, check this. Default: 0
 `[miniloop reverse_order=0]
@@ -167,6 +175,8 @@ get_miniloops( array('custom_fields' => 'favorite_color=blue' ) );`
 **Exclude Posts:** A comma separated list of post IDs to exclude. Default: none
 `[miniloop exclude="15,200,1032"]
 get_miniloops( array('exclude' => '15,200,1032' ) );`
+
+= Display =
 
 **Before Items:** Text/HTML to insert before the post list. Default: `<ul>`
 `[miniloop before_items="<div>"]
@@ -233,7 +243,7 @@ HTML and shortcodes to format each item
   * crop = 1 to crop, 0 to scale (not implemented yet)
   * fallback = URL of image to use if 'from' doesn't return anything
   * cache = set to 'clear' to generate new thumbnails. It is not recommended that you leave this option on. `[ml_image from=thumb cache=clear]`
-  
+
 Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 
 = Sample Item Formats =
@@ -241,8 +251,8 @@ Inside of Item Format, shortcodes can be used without the `ml_` prefix.
 Format 1: http://s.wordpress.org/extend/plugins/mini-loops/screenshot-2.png
 
 (before: `<ul>` after: `</ul>`)
-`<li class="[class]"><p><a href="[url]">[image from=customfield 
-cfname=image width=50 height=50 class=alignright 
+`<li class="[class]"><p><a href="[url]">[image from=customfield
+cfname=image width=50 height=50 class=alignright
 fallback='http://dummyimage.com/50'][title]</a><br />
 [excerpt wlength=30 space_between=1 after="..." after_link=1]<br /><br />
 By [author] on [date format="n/j/y"]</p></li>`
@@ -252,7 +262,7 @@ Format 2: http://s.wordpress.org/extend/plugins/mini-loops/screenshot-3.png
 
 (before: `<ul>` after: `</ul>`)
 `<li class="[class]"><p>[date format="F j, Y"]<br /><a href="[url]">
-[image from=customfield cfname=image width=180 height=100 
+[image from=customfield cfname=image width=180 height=100
 class=aligncenter fallback='http://placekitten.com/180/100']</a>
 [excerpt length=90 space_between=1 after="..." after_link=1]</p></li>`
 
@@ -260,7 +270,7 @@ Format 3: http://s.wordpress.org/extend/plugins/mini-loops/screenshot-4.png
 
 (before: -- after: --)
 `<p class="[class]" style="text-align:center"><a href="[url]">[title]<br />
-[image from=customfield cfname=image width=140 height=140 
+[image from=customfield cfname=image width=140 height=140
 class=aligncenter fallback='http://placepuppy.it/200/300&text=++woof++']</a></p>`
 
 == Template Tag ==
@@ -299,22 +309,22 @@ get_miniloops( $args );`
 = Shortcode =
 `[miniloop]`
 
-Use with all args listed above  
+Use with all args listed above
 e.g. `[miniloop number_posts=10]`
 
 **Exception - 'item_format' must be handled differently**
 
 New way (since v0.9):
 
-Create a custom field named `ml_format` and save the item format there. Then adjust your `[miniloop]` shortcode  
+Create a custom field named `ml_format` and save the item format there. Then adjust your `[miniloop]` shortcode
 e.g. `[miniloop number_posts=10][ml_format][/miniloop]`
 
-If needed, you can change the custom field. Just pass the name of the new custom field to the `[ml_format]` shortcode  
+If needed, you can change the custom field. Just pass the name of the new custom field to the `[ml_format]` shortcode
 e.g. `[miniloop number_posts=10][ml_format name="new_field"][/miniloop]`
 
 Old way:
 
-'item_format' must go into the content of the shortcode, and square brackets must be replaced with curly brackets.  
+'item_format' must go into the content of the shortcode, and square brackets must be replaced with curly brackets.
 e.g. `[miniloop number_posts=10]{title}by {author}<br />[/miniloop]`
 
 Also, if you are using html inside the item_format, you must add this into the HTML editor, else your markup will be rendered, not parsed
@@ -330,13 +340,16 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
-= 1.2 = 
+= 1.3 =
+New: Automatically clear thumbnail cache and more. See Changelog
+
+= 1.2 =
 New: [author_avatar], replaced deprecated function, Ajax! Multisite! (See Changelog)
 
-= 1.1.2 = 
+= 1.1.2 =
 Fix: imbalanced tags if zero posts match query
 
-= 1.1 = 
+= 1.1 =
 New: Lots! See the changelog for details.
 
 = 1.0 =
@@ -359,9 +372,13 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
-= Version 1.3-dev =
+= Version 1.3 =
+* Fix: Widget warnings since 4.3
 * New: 'crop' parameter for the image tag
 * New: Allow any shortcodes in item format
+* New: Automatically clear thumbnail cache on image change. props @om4james
+* Fix: Use widget_title filter
+
 
 = Version 1.2 =
 * Fix: undefined index notice if zero posts match query
@@ -372,7 +389,7 @@ Real image croping for thumbnails and several other new features. See Changelog.
 * New: fallback 'from' options for [image]. [image from="thumb,first"] - If no post thumbnail (featured image), get first image from post
 * New: [author_avatar] with optional parameters [author_avatar size=92 default='' alt=0]
 * New: Multisite - Show posts from sister-sites (on same network). REQUIRES ADD ON: https://gist.github.com/trepmal/5073067
-* New: Ajax-paging - View prev/next set of posts in widget. REQUIRES ADD ON: https://gist.github.com/trepmal/5073756 
+* New: Ajax-paging - View prev/next set of posts in widget. REQUIRES ADD ON: https://gist.github.com/trepmal/5073756
 
 = Version 1.1.2 =
 * Fix: imbalanced tags if zero posts match query
@@ -396,11 +413,11 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 = Version 1.0.1 =
 * Fix: Multiple tag bug. Only first was being recognized, now correctly accepts all. Thanks Ozias.
- 
+
 = Version 1.0 =
 * New: Exclude sticky posts option.
 * New: Get posts from first current category (if single).
- 
+
 = Version 0.9 =
 * Fix: Prevents error from being displayed if image can't be resized.
 * New: Improved support for multisite use.

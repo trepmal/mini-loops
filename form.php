@@ -42,7 +42,7 @@
 			</label>
 		</p>
 		<p>
-		<p style="width:48%;float:left;">
+		<p style="width:48%;float:left;clear:left;">
 			<label for="<?php echo $this->get_field_id('post_type'); ?>"><?php _e('Post Type:', 'mini-loops' );?>
 				<select class="widefat" id="<?php echo $this->get_field_id('post_type'); ?>" name="<?php echo $this->get_field_name('post_type'); ?>">
 				<?php

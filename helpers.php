@@ -3,37 +3,38 @@ if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 
 // Show recent posts function
 function get_miniloops_defaults() {
-	$defs = array( 	'title' => __( 'Recent Posts', 'mini-loops' ),
-					'hide_title' => 0,
-					'title_url' => '',
-					'number_posts' => 3,
-					'paged' => 1,
-					'post_offset' => 0,
-					'maximum_age' => 0,
-					'post_type' => 'post',
-					'post_status' => 'publish',
-					'order_by' => 'date',
-					'order' => 'DESC',
-					'order_meta_key' => '',
-					'reverse_order' => 0,
-					'shuffle_order' => 0,
-					'ignore_sticky' => 1,
-					'only_sticky' => 0,
-					'exclude_sticky' => 0,
-					'exclude_current' => 1,
-					'current_category' => 0,
-					'current_single_category' => 0,
-					'current_author' => 0,
-					'categories' => '',
-					'tags' => '',
-					'post_author' => '',
-					'tax' => '',
-					'custom_fields' => '',
-					'exclude' => '',
-					'before_items' => '<ul>',
-					'item_format' => '<li><a href="[url]">[title]</a><br />[excerpt]</li>',
-					'after_items' => '</ul>',
-			);
+	$defs = array(
+		'title'                   => __( 'Recent Posts', 'mini-loops' ),
+		'hide_title'              => 0,
+		'title_url'               => '',
+		'number_posts'            => 3,
+		'paged'                   => 1,
+		'post_offset'             => 0,
+		'maximum_age'             => 0,
+		'post_type'               => 'post',
+		'post_status'             => 'publish',
+		'order_by'                => 'date',
+		'order'                   => 'DESC',
+		'order_meta_key'          => '',
+		'reverse_order'           => 0,
+		'shuffle_order'           => 0,
+		'ignore_sticky'           => 1,
+		'only_sticky'             => 0,
+		'exclude_sticky'          => 0,
+		'exclude_current'         => 1,
+		'current_category'        => 0,
+		'current_single_category' => 0,
+		'current_author'          => 0,
+		'categories'              => '',
+		'tags'                    => '',
+		'post_author'             => '',
+		'tax'                     => '',
+		'custom_fields'           => '',
+		'exclude'                 => '',
+		'before_items'            => '<ul>',
+		'item_format'             => '<li><a href="[url]">[title]</a><br />[excerpt]</li>',
+		'after_items'             => '</ul>',
+	);
 	return $defs;
 }
 
@@ -45,45 +46,45 @@ function get_miniloops( $args = '' ) {
 	extract($args);
 
 	//since this function can be called in the template, re-escape the parameters
-	$number_posts = (int) $number_posts;
-	$paged = (int) $paged;
-	$post_offset = (int) $post_offset;
-	$maximum_age = (int) $maximum_age;
-	$post_type = esc_attr( $post_type );
-	$post_status = esc_attr( $post_status );
-	$order_by = esc_attr( $order_by );
-	$order = esc_attr( $order );
+	$number_posts            = (int) $number_posts;
+	$paged                   = (int) $paged;
+	$post_offset             = (int) $post_offset;
+	$maximum_age             = (int) $maximum_age;
+	$post_type               = esc_attr( $post_type );
+	$post_status             = esc_attr( $post_status );
+	$order_by                = esc_attr( $order_by );
+	$order                   = esc_attr( $order );
 	if ( ! in_array( $order, array( 'ASC', 'DESC' ) ) ) $order = 'DESC';
-	$order_meta_key = esc_attr( $order_meta_key );
-	$reverse_order = (bool) $reverse_order;
-	$ignore_sticky = (bool) $ignore_sticky;
-	$only_sticky = (bool) $only_sticky;
-	$exclude_sticky = (bool) $exclude_sticky;
-	$exclude_current = (bool) $exclude_current;
-	$current_category = (bool) $current_category;
+	$order_meta_key          = esc_attr( $order_meta_key );
+	$reverse_order           = (bool) $reverse_order;
+	$ignore_sticky           = (bool) $ignore_sticky;
+	$only_sticky             = (bool) $only_sticky;
+	$exclude_sticky          = (bool) $exclude_sticky;
+	$exclude_current         = (bool) $exclude_current;
+	$current_category        = (bool) $current_category;
 	$current_single_category = (bool) $current_single_category;
-	$current_author = (bool) $current_author;
-	$categories = esc_attr( $categories );
-	$tags = esc_attr( $tags );
-		$tags = str_replace( ' ', '', $tags );
-		$tags = explode( ',', $tags );
-		$tags = array_filter( $tags );
-	$post_author = esc_attr( $post_author );
-	$tax = str_replace('&amp;', '&', esc_attr( $tax ) );
-	$custom_fields = str_replace('&amp;', '&', esc_attr( $custom_fields ) );
-	$exclude = explode( ',', esc_attr( $exclude ) );
-	$before_items = stripslashes( wp_filter_post_kses( $before_items ) );
-	$after_items = wp_filter_post_kses( $after_items );
+	$current_author          = (bool) $current_author;
+	$categories              = esc_attr( $categories );
+	$tags                    = esc_attr( $tags );
+		$tags                = str_replace( ' ', '', $tags );
+		$tags                = explode( ',', $tags );
+		$tags                = array_filter( $tags );
+	$post_author             = esc_attr( $post_author );
+	$tax                     = str_replace('&amp;', '&', esc_attr( $tax ) );
+	$custom_fields           = str_replace('&amp;', '&', esc_attr( $custom_fields ) );
+	$exclude                 = explode( ',', esc_attr( $exclude ) );
+	$before_items            = stripslashes( wp_filter_post_kses( $before_items ) );
+	$after_items             = wp_filter_post_kses( $after_items );
 	//$item_format //this is escaped in the loop so that the filter can be applied
 
-	if (is_single() && $exclude_current) {
+	if ( is_single() && $exclude_current ) {
 		$exclude[] = $post->ID;
 	}
-	if ($exclude_sticky) {
+	if ( $exclude_sticky ) {
 		$exclude = array_merge( $exclude, get_option('sticky_posts') );
 	}
 
-	parse_str($tax, $taxes);
+	parse_str( $tax, $taxes );
 	$tax_query = array();
 	foreach( array_keys( $taxes ) as $k => $slug ) {
 		//original code is this single commented line, if you need to revert
@@ -99,8 +100,8 @@ function get_miniloops( $args = '' ) {
 		}
 		$tax_query[] = array(
 			'taxonomy' => $slug,
-			'field' => 'id',
-			'terms' => $ids,
+			'field'    => 'id',
+			'terms'    => $ids,
 			'operator' => $oper );
 	}
 
@@ -126,21 +127,21 @@ function get_miniloops( $args = '' ) {
 	}
 
 	$query = array(
-		'cat' => $categories,
-		'tag__in' => $tags,
-		'tax_query' => $tax_query,
-		'meta_query' => $meta_query,
-		'posts_per_page' => $number_posts,
+		'cat'                 => $categories,
+		'tag__in'             => $tags,
+		'tax_query'           => $tax_query,
+		'meta_query'          => $meta_query,
+		'posts_per_page'      => $number_posts,
 		'ignore_sticky_posts' => $ignore_sticky,
-		'post__in' => ( $only_sticky ? get_option('sticky_posts') : '' ),
-		'post_type' => $post_type,
-		'post_status' => $post_status,
-		'author' => $post_author,
-		'offset' => $post_offset,
-		'orderby' => $order_by,
-		'order' => $order,
-		'post__not_in' => $exclude,
-		'paged' => $paged,
+		'post__in'            => ( $only_sticky ? get_option('sticky_posts') : '' ),
+		'post_type'           => $post_type,
+		'post_status'         => $post_status,
+		'author'              => $post_author,
+		'offset'              => $post_offset,
+		'orderby'             => $order_by,
+		'order'               => $order,
+		'post__not_in'        => $exclude,
+		'paged'               => $paged,
 	);
 
 	if ( in_array( $order_by, array( 'meta_value', 'meta_value_num' ) ) && ! empty( $order_meta_key ) ) {
@@ -185,7 +186,6 @@ function get_miniloops( $args = '' ) {
 		$miniloop->rewind_posts();
 		while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
-			// $post_format = function_exists('get_post_format') ? get_post_format( get_the_ID() ) : 'standard';
 			$post_format = current_theme_supports('post-formats') ? get_post_format( get_the_ID() ) : 'standard';
 
 			$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
@@ -212,21 +212,23 @@ function miniloops( $params ) {
 }
 
 function miniloops_shortcoder( $input ) {
+
+	$bypass = apply_filters( 'miniloops_shortcoder', '', $input );
+	if ( ! empty( $bypass ) ) {
+		return $bypass;
+	}
+
 	$input = wp_filter_post_kses( $input );
 	//give our shortcodes the correct prefix
 
 	// whitelist ML shortcodes, only prefix those
-	$mlcodes = explode(',', 'format,title,url,excerpt,content,comment_count,author,author_link,author_avatar,field,category,tag,tax,taxonomy,archive,iloops_before_items_format,iloops_after_items_format,date,post_type,post_type_archive_link,class,image' );
+	global $shortcode_tags;
+	$mlcodes = array_filter( array_keys( $shortcode_tags ), 'miniloops_shortcode_finder' );
+	$mlcodes = array_map( 'miniloops_shortcode_filter', $mlcodes );
+
 	foreach( $mlcodes as $mlc ) {
 		$input = str_replace( "[$mlc", "[ml_$mlc", $input );
 	}
-	// $input = str_replace( '[', '[ml_', $input );
-	// $input = str_replace( '[/', '[/ml_', $input );
-	//make sure we haven't doubled-up
-	// $input = str_replace( '[ml_ml_', '[ml_', $input );
-	// $input = str_replace( '[/ml_ml_', '[/ml_', $input );
-	// $input = str_replace( '[ml_ba_', '[ba_', $input );
-	// $input = str_replace( '[/ml_ba_', '[/ba_', $input );
 
 	//a hack: 2 shortcodes touching has issues
 	//%%%%% is a placeholder to be removed during output
@@ -235,7 +237,17 @@ function miniloops_shortcoder( $input ) {
 	return $input;
 }
 
-function word_excerpt( $input, $limit ) {
+	function miniloops_shortcode_finder( $shortcode ) {
+		if ( substr( $shortcode, 0, 3 ) == 'ml_' ) {
+			return true;
+		}
+		return false;
+	}
+	function miniloops_shortcode_filter( $shortcode ) {
+		return substr( $shortcode, 3 );
+	}
+
+function miniloops_word_excerpt( $input, $limit ) {
 	$input = explode( ' ', $input );
 	$input = array_splice( $input, 0, $limit );
 	return trim( implode( ' ', $input ) );
@@ -250,10 +262,11 @@ add_shortcode( 'miniloops' , 'get_miniloops_sc');
 add_shortcode( 'miniloop' , 'get_miniloops_sc');
 function get_miniloops_sc( $atts, $content ) {
 	$content = str_replace( '{', '[', str_replace('}', ']', $content ) );
-	if ( strpos( $content, '[ml_format' ) !== false )
+	if ( strpos( $content, '[ml_format' ) !== false ) {
 		$atts['item_format'] = do_shortcode( $content );
-	elseif ( ! empty( $content) )
+	} elseif ( ! empty( $content) ) {
 		$atts['item_format'] = $content;
+	}
 	$args = shortcode_atts( get_miniloops_defaults(), $atts );
 
 	return get_miniloops( $args, false );
@@ -276,15 +289,16 @@ function miniloop_item_format( $atts, $content ) {
 add_shortcode( 'ml_title' , 'miniloop_title' );
 function miniloop_title( $atts ) {
 	extract( shortcode_atts( array(
-		'link' => 0,
+		'link'   => 0,
 		'length' => 0, //characters
 		'before' => '',
-		'after' => '',
+		'after'  => '',
 	), $atts ) );
 	$title = apply_filters( 'the_title', get_the_title() );
 
-	if ($length)
+	if ($length) {
 		$title = substr( $title, 0, $length );
+	}
 
 	$title = $before . $title . $after;
 
@@ -301,12 +315,13 @@ function miniloop_url( $atts ) {
 	extract( shortcode_atts( array(
 		'length' => 0, //characters
 		'before' => '',
-		'after' => '',
+		'after'  => '',
 	), $atts ) );
 	$link = get_permalink( );
 
-	if ($length)
+	if ($length) {
 		$link = substr( $link, 0, $length );
+	}
 
 	$link = $before . $link . $after;
 
@@ -316,16 +331,16 @@ function miniloop_url( $atts ) {
 add_shortcode( 'ml_excerpt' , 'miniloop_excerpt' );
 function miniloop_excerpt( $atts ) {
 	extract( shortcode_atts( array(
-		'length' => 100,
-		'wlength' => 0,
-		'after' => '...',
-		'space_between' => 0,
-		'after_link' => 1,
-		'custom' => 0,
-		'strip_tags' => 1,
+		'length'           => 100,
+		'wlength'          => 0,
+		'after'            => '...',
+		'space_between'    => 0,
+		'after_link'       => 1,
+		'custom'           => 0,
+		'strip_tags'       => 1,
 		'strip_shortcodes' => 1,
-		'up_to_more' => 0,
-		'after_with_more' => 1,
+		'up_to_more'       => 0,
+		'after_with_more'  => 1,
 	), $atts ) );
 	$length = (int) $length;
 	$after = esc_attr( $after );
@@ -334,12 +349,17 @@ function miniloop_excerpt( $atts ) {
 	$custom = (bool) $custom;
 
 	$after = '<a href="' . get_permalink( ) . '">' . $after . '</a>';
-	if ( $space_between ) $after = ' ' . $after;
-	if ( ! $after_link ) $after = trim( strip_tags( $after ) );
+	if ( $space_between ) {
+		$after = ' ' . $after;
+	}
+	if ( ! $after_link ) {
+		$after = trim( strip_tags( $after ) );
+	}
 
 	//if using 'custom' excerpts (generated by WP or customized by author)
-	if ( $custom )
+	if ( $custom ) {
 		return get_the_excerpt() . $after;
+	}
 
 	//just get the post content
 	$contents = get_the_content();
@@ -348,22 +368,32 @@ function miniloop_excerpt( $atts ) {
 	if ( $up_to_more ) {
 		global $post;
 		$contents = explode( '<!--more-->', $post->post_content );
-		if ( count( $contents ) > 1 ) $used_more = true;
+		if ( count( $contents ) > 1 ) {
+			$used_more = true;
+		}
 		$contents = $contents[0];
 	}
 
 	//strip it (if needed)
-	if ( $strip_shortcodes ) $contents = strip_shortcodes( $contents );
-	else $contents = do_shortcode( $contents );
-	if ( $strip_tags ) $contents = strip_tags( $contents );
+	if ( $strip_shortcodes ) {
+		$contents = strip_shortcodes( $contents );
+	} else {
+		$contents = do_shortcode( $contents );
+	}
+	if ( $strip_tags ) {
+		$contents = strip_tags( $contents );
+	}
 
 	//back it up, we'll compare the trimmed version to this to see if the '...' is needed
 	$ocontent = $contents;
 
 	//trim it
 	if ( ! $used_more ) {
-		if ($wlength) $content = word_excerpt( $ocontent, $wlength );
-		else $content = $length >= 0 ? substr( $ocontent, 0, $length ) : substr( $ocontent, 0 );
+		if ($wlength) {
+			$content = miniloops_word_excerpt( $ocontent, $wlength );
+		} else {
+			$content = $length >= 0 ? substr( $ocontent, 0, $length ) : substr( $ocontent, 0 );
+		}
 	}
 	else {
 		$content = $contents;
@@ -371,7 +401,9 @@ function miniloop_excerpt( $atts ) {
 
 	//if our trimmed content is the same as the original content, we don't need a '...'
 	if ( ! $up_to_more || ( $used_more && ! $after_with_more ) ) {
-		if ( strlen( $content ) >= strlen( $ocontent ) )  $after = '';
+		if ( strlen( $content ) >= strlen( $ocontent ) ) {
+			$after = '';
+		}
 	}
 
 	return $content . $after;
@@ -380,11 +412,11 @@ function miniloop_excerpt( $atts ) {
 add_shortcode( 'ml_content' , 'miniloop_content' );
 function miniloop_content( $atts ) {
 	extract( shortcode_atts( array(
-		'length' => 100,
-		'wlength' => 0,
-		'after' => '...',
+		'length'        => 100,
+		'wlength'       => 0,
+		'after'         => '...',
 		'space_between' => 0,
-		'after_link' => 1,
+		'after_link'    => 1,
 	), $atts ) );
 	$content = apply_filters( 'the_content', get_the_content() );
 
@@ -413,9 +445,9 @@ function miniloop_author_link() {
 add_shortcode( 'ml_author_avatar' , 'miniloop_author_avatar' );
 function miniloop_author_avatar( $atts ) {
 	extract( shortcode_atts( array(
-		'size' => 96,
+		'size'    => 96,
 		'default' => '',
-		'alt' => false
+		'alt'     => false
 	), $atts ) );
 	// if ( empty( $name ) ) return;
 
@@ -425,10 +457,10 @@ function miniloop_author_avatar( $atts ) {
 add_shortcode( 'ml_field' , 'miniloop_field' );
 function miniloop_field( $atts ) {
 	extract( shortcode_atts( array(
-		'name' => '',
-		'single' => 1,
+		'name'      => '',
+		'single'    => 1,
 		'separator' => ', ',
-		'reverse' => 0,
+		'reverse'   => 0,
 	), $atts ) );
 	if ( empty( $name ) ) return;
 
@@ -436,7 +468,9 @@ function miniloop_field( $atts ) {
 		$return = get_post_meta( get_the_ID(), $name, $single );
 	else :
 		$meta = get_post_meta( get_the_ID(), $name, $single );
-		if ( $reverse ) $meta = array_reverse( $meta );
+		if ( $reverse ) {
+			$meta = array_reverse( $meta );
+		}
 		$return = implode( $separator, $meta );
 	endif;
 
@@ -448,10 +482,10 @@ add_shortcode( 'ml_category' , 'miniloop_category' );
 function miniloop_category( $atts ) {
 	$atts = shortcode_atts( array(
 		'separator' => ', ',
-		'link' => false,
-		'justone' => false,
-		'reverse' => 0,
-		'taxonomy' => 'category',
+		'link'      => false,
+		'justone'   => false,
+		'reverse'   => 0,
+		'taxonomy'  => 'category',
 	), $atts );
 
 	return miniloop_taxonomy( $atts );
@@ -461,10 +495,10 @@ add_shortcode( 'ml_tag' , 'miniloop_tag' );
 function miniloop_tag( $atts ) {
 	$atts = shortcode_atts( array(
 		'separator' => ', ',
-		'link' => false,
-		'justone' => false,
-		'reverse' => 0,
-		'taxonomy' => 'post_tag',
+		'link'      => false,
+		'justone'   => false,
+		'reverse'   => 0,
+		'taxonomy'  => 'post_tag',
 	), $atts );
 
 	return miniloop_taxonomy( $atts );
@@ -474,11 +508,11 @@ add_shortcode( 'ml_tax' , 'miniloop_taxonomy' );
 add_shortcode( 'ml_taxonomy' , 'miniloop_taxonomy' );
 function miniloop_taxonomy( $atts ) {
 	extract( shortcode_atts( array(
-		'taxonomy' => '',
+		'taxonomy'  => '',
 		'separator' => ', ',
-		'link' => false,
-		'justone' => false,
-		'reverse' => 0,
+		'link'      => false,
+		'justone'   => false,
+		'reverse'   => 0,
 	), $atts ) );
 	$terms = wp_get_object_terms( get_the_ID(), $taxonomy );
 	$terms_ = array();
@@ -490,7 +524,9 @@ function miniloop_taxonomy( $atts ) {
 		$terms_[ $t->term_id ] = $a;
 		if ( $justone ) break;
 	}
-		if ( $reverse ) $terms_ = array_reverse( $terms_ );
+	if ( $reverse ) {
+		$terms_ = array_reverse( $terms_ );
+	}
 
 	return implode( $separator, $terms_ );
 }
@@ -501,7 +537,7 @@ add_shortcode( 'ba_archive' , 'miniloop_archive' );
 function miniloop_archive( $atts ) {
 	extract( shortcode_atts( array(
 		'before' => '<p>',
-		'after' => '</p>',
+		'after'  => '</p>',
 	), $atts ) );
 
 	return "{$before}##replace|archive##{$after}";
@@ -579,16 +615,16 @@ function miniloop_class( $atts ) {
 add_shortcode( 'ml_image' , 'miniloop_image' );
 function miniloop_image( $atts ) {
 	extract( shortcode_atts( array(
-		'from' => '',
-		'cfname' => '',
+		'from'      => '',
+		'cfname'    => '',
 		'cfnamealt' => '',
-		'class' => '',
-		'width' => 50,
-		'height' => 50,
-		'crop' => true,
-		'fallback' => '',
-		'alttext' => '',
-		'cache' => '',
+		'class'     => '',
+		'width'     => 50,
+		'height'    => 50,
+		'crop'      => true,
+		'fallback'  => '',
+		'alttext'   => '',
+		'cache'     => '',
 	), $atts ) );
 
 	//for testing
@@ -605,8 +641,7 @@ function miniloop_image( $atts ) {
 		case 'thumb' :
 
 			if ( 'clear' == $cache ) {
-				delete_post_meta( get_the_ID(), '_ml_thumb_thumb' );
-				delete_post_meta( get_the_ID(), '_ml_thumb_thumb_alt' );
+				miniloops_clear_thumbnail_cache( get_the_ID() );
 			}
 			$resized = (array) get_post_meta( get_the_ID(), '_ml_thumb_thumb', true );
 			$alt = get_post_meta( get_the_ID(), '_ml_thumb_thumb_alt', true );
@@ -749,8 +784,9 @@ function miniloop_image( $atts ) {
 	$alt = ! empty( $alt ) ? $alt : $alttext;
 
 	//if the above has resulted in an image
-	if ( ! empty( $src ) )
+	if ( ! empty( $src ) ) {
 		$img = "<img src='$src' width='$width' height='$height' class='$class' alt='$alt' />";
+	}
 
 	//build the fallback
 	$fallback = ! empty( $fallback ) ? "<img src='$fallback' width='$width' height='$height' alt='$alt' class='$class' />" : '';
@@ -758,8 +794,9 @@ function miniloop_image( $atts ) {
 	//if no/empty image, use fallback
 	$html = ( ! $img || empty( $img ) ) ? $fallback : $img;
 
-	if ( ! $crop )
+	if ( ! $crop ) {
 		$html = preg_replace( '/ width=\'(\d*)\' height=\'(\d*)\'/', '', $html );
+	}
 
 	return $html;
 }
@@ -768,8 +805,10 @@ function miniloops_create_thumbnail_from_id( $att_id, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
 	$file = wp_get_attachment_image_src( $att_id, 'fullsize' );
 	$file = str_replace( $upl['baseurl'], $upl['basedir'], $file[0] );
+
 	return miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 }
+
 function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
 	// deprecated method
@@ -781,23 +820,42 @@ function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 
 	// robbed from the depracted image_resize() function
 	$editor = wp_get_image_editor( $file );
-	if ( is_wp_error( $editor ) )
+	if ( is_wp_error( $editor ) ) {
 		// return $editor;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+	}
 	$editor->set_quality( 90 );
 
 	$resized = $editor->resize( $width, $height, $crop );
-	if ( is_wp_error( $resized ) )
+	if ( is_wp_error( $resized ) ) {
 		// return $resized;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+	}
 
 	$dest_file = $editor->generate_filename( "ml-{$width}x{$height}", null );
 	$saved = $editor->save( $dest_file );
 
-	if ( is_wp_error( $saved ) )
+	if ( is_wp_error( $saved ) ) {
 		// return $saved;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
+	}
 
 	return str_replace( $upl['basedir'], $upl['baseurl'], $dest_file );
 
 }
+
+function miniloops_clear_thumbnail_cache( $post_id ) {
+	delete_post_meta( $post_id, '_ml_thumb_thumb' );
+	delete_post_meta( $post_id, '_ml_thumb_thumb_alt' );
+}
+
+/**
+ * Automatically clear the thumbnail cache for the post whenever its featured image is deleted or changed
+ */
+function miniloops_updated_deleted_post_meta( $meta_ids, $object_id, $meta_key, $_meta_value ) {
+	if ( '_thumbnail_id' == $meta_key ) {
+		miniloops_clear_thumbnail_cache( $object_id );
+	}
+}
+add_action('updated_post_meta', 'miniloops_updated_deleted_post_meta', 10, 4);
+add_action('deleted_post_meta', 'miniloops_updated_deleted_post_meta', 10, 4);

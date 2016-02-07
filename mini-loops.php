@@ -4,11 +4,11 @@ if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 Plugin Name: Mini Loops
 Plugin URI: http://trepmal.com/plugins/mini-loops/
 Description: Query posts and display them where you want
-Version: 1.3-dev-130302
+Version: 1.3
 Author: Kailey Lampert
 Author URI: http://kaileylampert.com
 
-Copyright (C) 2011-13 Kailey Lampert
+Copyright (C) 2011-15 Kailey Lampert
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ function miniloops_post_formats( $item_format, $post_format ) {
 /*
 	Demo of the 'miniloops_after_items_format' filter hook
 	Adds link to custom post type archives (where applicable)
-	
+
 	Same usage for the 'miniloops_before_items_format' filter hook
 */
 //add_filter( 'miniloops_after_items_format' , 'miniloops_after_items_format_filter_test', 10, 2 );
@@ -92,7 +92,7 @@ function miniloops_after_items_format_filter_test( $after, $query ) {
 	$post_type_obj = get_post_type_object( $post_type );
 	$post_type_name = $post_type_obj->labels->name;
 	$post_archive_url = get_post_type_archive_link( $post_type );
-	
+
 	$archive_link = "<p><a href='$post_archive_url'>More $post_type_name &raquo;</a></p>";
 	return $after . $archive_link;
 }
@@ -100,7 +100,7 @@ function miniloops_after_items_format_filter_test( $after, $query ) {
 /*
 	Modify the query args before they are run
 	Can either work on all instances, or only some by checking existing args
-	
+
 	This demo changes the 'tag__in' query to 'tag__and' to limit the number of matching posts
 */
 //add_filter( 'miniloops_query' , 'miniloops_query_filter_test' );
