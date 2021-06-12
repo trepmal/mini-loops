@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.5
 Tested up to: 4.4
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GPLv2 or later
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -371,6 +371,9 @@ New: get posts from current category (if archive) option.
 Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
+
+= Version 1.3.1 =
+* Fix: Widget title links
 
 = Version 1.3 =
 * Fix: Widget warnings since 4.3

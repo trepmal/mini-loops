@@ -18,8 +18,11 @@ class miniloops extends WP_Widget {
 		extract( $args, EXTR_SKIP );
 
 		echo $before_widget;
-		$instance['title'] = empty($instance['title_url']) ? $instance['title'] : '<a href="'. $instance['title_url'] .'">'. $instance['title'] .'</a>';
-		echo $instance['hide_title'] ? '' : $before_title . apply_filters( 'widget_title', stripslashes( $instance['title'] ) ) . $after_title;
+		if ( ! $instance['hide_title'] ) {
+			$title = apply_filters( 'widget_title', stripslashes( $instance['title'] ) );
+			$title = empty( $instance['title_url'] ) ? $title : '<a href="'. esc_url( $instance['title_url'] ) .'">'. $title .'</a>';
+			echo $before_title . $title . $after_title;
+		}
 
 		unset($instance['title']);
 		echo get_miniloops( $instance );
@@ -70,7 +73,6 @@ class miniloops extends WP_Widget {
 
 		$instance = wp_parse_args( (array) $instance, get_miniloops_defaults() );
 		extract( $instance );
-
 		include( dirname( __FILE__) .'/form.php');
 
 	} //end form()
