@@ -152,7 +152,7 @@ function get_miniloops( $args = '' ) {
 
 	if ( $maximum_age != 0 ) {
 		global $mini_loops_minimum_date;
-		$mini_loops_minimum_date = date( 'Y-m-d', time() - ( $maximum_age * 24 * 60 * 60 ) );
+		$mini_loops_minimum_date = gmdate( 'Y-m-d', time() - ( $maximum_age * 24 * 60 * 60 ) );
 		$maximum_age_func = create_function('$filter','global $mini_loops_minimum_date; $filter .= " AND post_date >= \'' . $mini_loops_minimum_date .'\'"; return $filter;');
 		add_filter( 'posts_where', $maximum_age_func );
 	}
@@ -208,7 +208,7 @@ function get_miniloops( $args = '' ) {
 	return $postlist;
 }
 function miniloops( $params ) {
-	echo get_miniloops( $params );
+	echo wp_kses_post( get_miniloops( $params ) );
 }
 
 function miniloops_shortcoder( $input ) {
