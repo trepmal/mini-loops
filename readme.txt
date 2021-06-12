@@ -3,7 +3,7 @@ Contributors: trepmal
 Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget, shortcode, template tag
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.5
-Tested up to: 4.4
+Tested up to: 5.7
 Stable tag: 1.3.1
 License: GPLv2 or later
 
