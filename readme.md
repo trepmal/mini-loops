@@ -1,3 +1,6 @@
+[![Run PHPUnit and PHPCS](https://github.com/trepmal/mini-loops/actions/workflows/integrate.yml/badge.svg)](https://github.com/trepmal/mini-loops/actions/workflows/integrate.yml)
+[![Deploy to WordPress.org](https://github.com/trepmal/mini-loops/actions/workflows/deploy.yml/badge.svg)](https://github.com/trepmal/mini-loops/actions/workflows/deploy.yml)
+
 # Mini Loops
 
 Tested up to: 5.7  
