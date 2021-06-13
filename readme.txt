@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.5
 Tested up to: 5.7
-Stable tag: 1.3.1
+Stable tag: 1.4
 License: GPLv2 or later
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -14,7 +14,7 @@ Widget for mini post loops.
 
 Show most recent posts, posts from categories, and more. Can be displayed via widgets, shortcodes, and template tags.
 
-This is a new release, please report bugs to trepmal (at) gmail (dot) com before leaving a poor review. Thanks
+Development is now happening at the [GitHub Repo](https://github.com/trepmal/mini-loops)
 
 == Installation ==
 
@@ -339,6 +339,9 @@ Also, if you are using html inside the item_format, you must add this into the H
 Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
+
+= 1.4 =
+General updates, improved shortcode compat with the Block Editor.
 
 = 1.3 =
 New: Automatically clear thumbnail cache and more. See Changelog
