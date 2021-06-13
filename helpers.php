@@ -1,7 +1,11 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) die( '-1' );
 
-// Show recent posts function
+/**
+ * Get default parameters
+ *
+ * @return array
+ */
 function get_miniloops_defaults() {
 	$defs = array(
 		'title'                   => __( 'Recent Posts', 'mini-loops' ),
@@ -38,6 +42,12 @@ function get_miniloops_defaults() {
 	return $defs;
 }
 
+/**
+ * get_miniloops
+ *
+ * @param array $args
+ * @return string
+ */
 function get_miniloops( $args = '' ) {
 	global $post;
 	$defaults = get_miniloops_defaults();
@@ -211,10 +221,20 @@ function get_miniloops( $args = '' ) {
 
 	return $postlist;
 }
+
+/**
+ * miniloops
+ */
 function miniloops( $params ) {
 	echo wp_kses_post( get_miniloops( $params ) );
 }
 
+/**
+ * miniloops_shortcoder
+ *
+ * @param string $input
+ * @return string
+ */
 function miniloops_shortcoder( $input ) {
 
 	$bypass = apply_filters( 'miniloops_shortcoder', '', $input );
@@ -241,29 +261,49 @@ function miniloops_shortcoder( $input ) {
 	return $input;
 }
 
-	function miniloops_shortcode_finder( $shortcode ) {
-		if ( substr( $shortcode, 0, 3 ) == 'ml_' ) {
-			return true;
-		}
-		return false;
+/**
+ * miniloops_shortcode_finder
+ *
+ * @param string $shortcode
+ * @return bool
+ */
+function miniloops_shortcode_finder( $shortcode ) {
+	if ( substr( $shortcode, 0, 3 ) == 'ml_' ) {
+		return true;
 	}
-	function miniloops_shortcode_filter( $shortcode ) {
-		return substr( $shortcode, 3 );
-	}
+	return false;
+}
 
+/**
+ * miniloops_shortcode_filter
+ *
+ * @param string $shortcode
+ * @return string
+ */
+function miniloops_shortcode_filter( $shortcode ) {
+	return substr( $shortcode, 3 );
+}
+
+/**
+ * miniloops_word_excerpt
+ *
+ * @param string $input
+ * @param int    $limit
+ * @return string
+ */
 function miniloops_word_excerpt( $input, $limit ) {
 	$input = explode( ' ', $input );
-	$input = array_splice( $input, 0, $limit );
+	$input = array_splice( $input, 0, (int) $limit );
 	return trim( implode( ' ', $input ) );
 }
 
-/*
-
-	shortcode for posts and pages
-
-*/
-add_shortcode( 'miniloops' , 'get_miniloops_sc');
-add_shortcode( 'miniloop' , 'get_miniloops_sc');
+/**
+ * shortcode for posts and pages
+ *
+ * @param array $atts
+ * @param string $content
+ * @return string
+ */
 function get_miniloops_sc( $atts, $content ) {
 
 	$content = str_replace(
@@ -286,6 +326,8 @@ function get_miniloops_sc( $atts, $content ) {
 
 /**
  * @link https://stackoverflow.com/a/21491305
+ * @param string $input
+ * @return string
  */
 function miniloops_straighten_quote( $input ) {
 	$chr_map = array(
@@ -320,21 +362,53 @@ function miniloops_straighten_quote( $input ) {
 	return $output;
 }
 
-/*
-
-	shortcodes for use in the Item Format
-	(but in fact can be used anywhere)
-
-*/
+/**
+ * shortcodes for use in the Item Format
+ * (but in fact can be used anywhere)
+ */
+add_shortcode( 'miniloops' , 'get_miniloops_sc');
+add_shortcode( 'miniloop' , 'get_miniloops_sc');
 add_shortcode( 'ml_format' , 'miniloop_item_format' );
-function miniloop_item_format( $atts, $content ) {
+add_shortcode( 'ml_title' , 'miniloop_title' );
+add_shortcode( 'ml_url' , 'miniloop_url' );
+add_shortcode( 'ml_excerpt' , 'miniloop_excerpt' );
+add_shortcode( 'ml_content' , 'miniloop_content' );
+add_shortcode( 'ml_comment_count' , 'miniloop_comment_count' );
+add_shortcode( 'ml_author' , 'miniloop_author' );
+add_shortcode( 'ml_author_link' , 'miniloop_author_link' );
+add_shortcode( 'ml_author_avatar' , 'miniloop_author_avatar' );
+add_shortcode( 'ml_field' , 'miniloop_field' );
+add_shortcode( 'ml_category' , 'miniloop_category' );
+add_shortcode( 'ml_tag' , 'miniloop_tag' );
+add_shortcode( 'ml_tax' , 'miniloop_taxonomy' );
+add_shortcode( 'ml_taxonomy' , 'miniloop_taxonomy' );
+add_shortcode( 'ml_date' , 'miniloop_date' );
+add_shortcode( 'ml_post_type', 'miniloop_post_type' );
+add_shortcode( 'ml_post_type_archive_link', 'miniloop_post_type_archive_link' );
+add_shortcode( 'ml_class' , 'miniloop_class' );
+add_shortcode( 'ml_image' , 'miniloop_image' );
+
+/**
+ * miniloop_item_format
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
+function miniloop_item_format( $atts ) {
 	extract( shortcode_atts( array(
 		'name' => 'ml_format',
 	), $atts ) );
 	return get_post_meta( get_the_ID(), $name, true );
 }
 
-add_shortcode( 'ml_title' , 'miniloop_title' );
+/**
+ * miniloop_title
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_title( $atts ) {
 	extract( shortcode_atts( array(
 		'link'   => 0,
@@ -358,7 +432,13 @@ function miniloop_title( $atts ) {
 	return $title;
 }
 
-add_shortcode( 'ml_url' , 'miniloop_url' );
+/**
+ * miniloop_url
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_url( $atts ) {
 	extract( shortcode_atts( array(
 		'length' => 0, //characters
@@ -376,7 +456,13 @@ function miniloop_url( $atts ) {
 	return $link;
 }
 
-add_shortcode( 'ml_excerpt' , 'miniloop_excerpt' );
+/**
+ * miniloop_excerpt
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_excerpt( $atts ) {
 	extract( shortcode_atts( array(
 		'length'           => 100,
@@ -457,7 +543,13 @@ function miniloop_excerpt( $atts ) {
 	return $content . $after;
 }
 
-add_shortcode( 'ml_content' , 'miniloop_content' );
+/**
+ * miniloop_content
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_content( $atts ) {
 	extract( shortcode_atts( array(
 		'length'        => 100,
@@ -471,26 +563,47 @@ function miniloop_content( $atts ) {
 	return $content;
 }
 
-add_shortcode( 'ml_comment_count' , 'miniloop_comment_count' );
+/**
+ * miniloop_comment_count
+ * shortcode callback
+ *
+ * @return string
+ */
 function miniloop_comment_count() {
 	$count = get_comment_count( get_the_ID() );
 
 	return $count['approved'];
 }
 
-add_shortcode( 'ml_author' , 'miniloop_author' );
+/**
+ * miniloop_author
+ * shortcode callback
+ *
+ * @return string
+ */
 function miniloop_author() {
 
 	return get_the_author();
 }
 
-add_shortcode( 'ml_author_link' , 'miniloop_author_link' );
+/**
+ * miniloop_author_link
+ * shortcode callback
+ *
+ * @return string
+ */
 function miniloop_author_link() {
 
 	return get_author_posts_url( get_the_author_meta('ID') );
 }
 
-add_shortcode( 'ml_author_avatar' , 'miniloop_author_avatar' );
+/**
+ * miniloop_author_avatar
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_author_avatar( $atts ) {
 	extract( shortcode_atts( array(
 		'size'    => 96,
@@ -502,7 +615,13 @@ function miniloop_author_avatar( $atts ) {
 	return get_avatar( get_the_author_meta('ID'), $size, $default, $alt );
 }
 
-add_shortcode( 'ml_field' , 'miniloop_field' );
+/**
+ * miniloop_field
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_field( $atts ) {
 	extract( shortcode_atts( array(
 		'name'      => '',
@@ -526,7 +645,13 @@ function miniloop_field( $atts ) {
 
 }
 
-add_shortcode( 'ml_category' , 'miniloop_category' );
+/**
+ * miniloop_category
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_category( $atts ) {
 	$atts = shortcode_atts( array(
 		'separator' => ', ',
@@ -539,7 +664,13 @@ function miniloop_category( $atts ) {
 	return miniloop_taxonomy( $atts );
 }
 
-add_shortcode( 'ml_tag' , 'miniloop_tag' );
+/**
+ * miniloop_tag
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_tag( $atts ) {
 	$atts = shortcode_atts( array(
 		'separator' => ', ',
@@ -552,8 +683,13 @@ function miniloop_tag( $atts ) {
 	return miniloop_taxonomy( $atts );
 }
 
-add_shortcode( 'ml_tax' , 'miniloop_taxonomy' );
-add_shortcode( 'ml_taxonomy' , 'miniloop_taxonomy' );
+/**
+ * miniloop_taxonomy
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_taxonomy( $atts ) {
 	extract( shortcode_atts( array(
 		'taxonomy'  => '',
@@ -579,9 +715,16 @@ function miniloop_taxonomy( $atts ) {
 	return implode( $separator, $terms_ );
 }
 
-// BETA - not fully tested, may not work under some conditions
-// 'ba' prefix for 'before/after' - special hackish use
-add_shortcode( 'ba_archive' , 'miniloop_archive' );
+/**
+ * miniloop_archive
+ * shortcode callback
+ *
+ * BETA - not fully tested, may not work under some conditions
+ * 'ba' prefix for 'before/after' - special hackish use
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_archive( $atts ) {
 	extract( shortcode_atts( array(
 		'before' => '<p>',
@@ -590,9 +733,20 @@ function miniloop_archive( $atts ) {
 
 	return "{$before}##replace|archive##{$after}";
 }
+add_shortcode( 'ba_archive' , 'miniloop_archive' );
+
 // For use with the BETA [ba_archive] shortcode
 add_filter( 'miniloops_before_items_format', 'ml_hackish_filter', 10, 3 );
 add_filter( 'miniloops_after_items_format', 'ml_hackish_filter', 10, 3 );
+
+/**
+ * ml_hackish_filter
+ *
+ * @param string $before_items
+ * @param mixed $query
+ * @param object $miniloop
+ * @return string
+ */
 function ml_hackish_filter( $before_items, $query, $miniloop ) {
 	// if there is nothing to replace, carry on...
 	if ( strpos( $before_items, '##replace' ) === false ) return $before_items;
@@ -616,7 +770,13 @@ function ml_hackish_filter( $before_items, $query, $miniloop ) {
 	return $before_items;
 }
 
-add_shortcode( 'ml_date' , 'miniloop_date' );
+/**
+ * miniloop_date
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_date( $atts ) {
 	extract( shortcode_atts( array(
 		'format' => 'F j, Y',
@@ -626,7 +786,13 @@ function miniloop_date( $atts ) {
 	return get_the_date( $format );
 }
 
-add_shortcode( 'ml_post_type', 'miniloop_post_type' );
+/**
+ * miniloop_post_type
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_post_type( $atts ) {
 	extract( shortcode_atts( array(
 		'label' => 'name', //probably 'name' or 'singular_name'. also accepted: add_new, add_new_item, edit_item, new_item, view_item, search_items, not_found, not_found_in_trash, parent_item_colon, all_items, menu_name, name_admin_bar
@@ -637,7 +803,13 @@ function miniloop_post_type( $atts ) {
 	return $post_type_name;
 }
 
-add_shortcode( 'ml_post_type_archive_link', 'miniloop_post_type_archive_link' );
+/**
+ * miniloop_post_type_archive_link
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_post_type_archive_link( $atts ) {
 	extract( shortcode_atts( array(
 	), $atts ) );
@@ -646,7 +818,13 @@ function miniloop_post_type_archive_link( $atts ) {
 	return $post_archive_url;
 }
 
-add_shortcode( 'ml_class' , 'miniloop_class' );
+/**
+ * miniloop_class
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_class( $atts ) {
 	extract( shortcode_atts( array(
 		'class' => '',
@@ -660,7 +838,13 @@ function miniloop_class( $atts ) {
 	return implode( ' ', $classes );
 }
 
-add_shortcode( 'ml_image' , 'miniloop_image' );
+/**
+ * miniloop_image
+ * shortcode callback
+ *
+ * @param array $atts
+ * @return string
+ */
 function miniloop_image( $atts ) {
 	extract( shortcode_atts( array(
 		'from'      => '',
@@ -847,6 +1031,15 @@ function miniloop_image( $atts ) {
 	return $html;
 }
 
+/**
+ * miniloops_create_thumbnail_from_id
+ *
+ * @param int $att_id
+ * @param int $width
+ * @param int $height
+ * @param bool $crop
+ * @return string
+ */
 function miniloops_create_thumbnail_from_id( $att_id, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
 	$file = wp_get_attachment_image_src( $att_id, 'fullsize' );
@@ -855,26 +1048,27 @@ function miniloops_create_thumbnail_from_id( $att_id, $width, $height, $crop ) {
 	return miniloops_create_thumbnail_from_path( $file, $width, $height, $crop );
 }
 
+/**
+ * miniloops_create_thumbnail_from_path
+ *
+ * @param string $file
+ * @param int $width
+ * @param int $height
+ * @param bool $crop
+ * @return string
+ */
 function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 	$upl = wp_upload_dir();
-	// deprecated method
-	// $new = image_resize( $file, $width, $height, true, "ml-{$width}x{$height}" );
-	// if ( is_wp_error( $new ) )
-	// 	//if the image could not be resized, return the original url
-	// 	return str_replace( $upl['basedir'], $upl['baseurl'], $file );
-	// return str_replace( $upl['basedir'], $upl['baseurl'], $new );
 
-	// robbed from the depracted image_resize() function
+	// robbed from the deprecated image_resize() function
 	$editor = wp_get_image_editor( $file );
 	if ( is_wp_error( $editor ) ) {
-		// return $editor;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
 	}
 	$editor->set_quality( 90 );
 
 	$resized = $editor->resize( $width, $height, $crop );
 	if ( is_wp_error( $resized ) ) {
-		// return $resized;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
 	}
 
@@ -882,7 +1076,6 @@ function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 	$saved = $editor->save( $dest_file );
 
 	if ( is_wp_error( $saved ) ) {
-		// return $saved;
 		return str_replace( $upl['basedir'], $upl['baseurl'], $file );
 	}
 
@@ -890,6 +1083,11 @@ function miniloops_create_thumbnail_from_path( $file, $width, $height, $crop ) {
 
 }
 
+/**
+ * miniloops_clear_thumbnail_cache
+ *
+ * @param int $post_id
+ */
 function miniloops_clear_thumbnail_cache( $post_id ) {
 	delete_post_meta( $post_id, '_ml_thumb_thumb' );
 	delete_post_meta( $post_id, '_ml_thumb_thumb_alt' );
@@ -897,6 +1095,11 @@ function miniloops_clear_thumbnail_cache( $post_id ) {
 
 /**
  * Automatically clear the thumbnail cache for the post whenever its featured image is deleted or changed
+ *
+ * @param int $meta_ids
+ * @param int $object_id
+ * @param string $meta_key
+ * @param string $_meta_value
  */
 function miniloops_updated_deleted_post_meta( $meta_ids, $object_id, $meta_key, $_meta_value ) {
 	if ( '_thumbnail_id' == $meta_key ) {
