@@ -372,6 +372,9 @@ Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
 
+= Version 1.4 =
+* General upkeep
+
 = Version 1.3.1 =
 * Fix: Widget title links
 

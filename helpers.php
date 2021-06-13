@@ -39,7 +39,7 @@ function get_miniloops_defaults() {
 }
 
 function get_miniloops( $args = '' ) {
-	global $wpdb, $post;
+	global $post;
 	$defaults = get_miniloops_defaults();
 
 	$args = wp_parse_args( $args, $defaults );
@@ -181,12 +181,16 @@ function get_miniloops( $args = '' ) {
 
 		$before_items = do_shortcode( miniloops_shortcoder( stripslashes( $before_items ) ) );
 		$before_items = apply_filters( 'miniloops_before_items_format', $before_items, $query, $miniloop, $args );
+
 		$postlist .= $before_items;
 
 		$miniloop->rewind_posts();
 		while ( $miniloop->have_posts() ) : $miniloop->the_post();
 
 			$post_format = current_theme_supports('post-formats') ? get_post_format( get_the_ID() ) : 'standard';
+
+			// decodes shortcode brackets
+			$item_format = html_entity_decode( $item_format );
 
 			$item_format_to_use = apply_filters( 'miniloops_item_format', $item_format, $post_format );
 
@@ -261,15 +265,59 @@ function miniloops_word_excerpt( $input, $limit ) {
 add_shortcode( 'miniloops' , 'get_miniloops_sc');
 add_shortcode( 'miniloop' , 'get_miniloops_sc');
 function get_miniloops_sc( $atts, $content ) {
-	$content = str_replace( '{', '[', str_replace('}', ']', $content ) );
+
+	$content = str_replace(
+		[ '{', '}' ],
+		[ '[', ']' ],
+		$content
+	);
+
 	if ( strpos( $content, '[ml_format' ) !== false ) {
 		$atts['item_format'] = do_shortcode( $content );
 	} elseif ( ! empty( $content) ) {
-		$atts['item_format'] = $content;
+		$content = ltrim( $content, '</p>' );
+		$content = rtrim( $content, '<p>' );
+		$atts['item_format'] = miniloops_straighten_quote( $content );
 	}
 	$args = shortcode_atts( get_miniloops_defaults(), $atts );
 
 	return get_miniloops( $args, false );
+}
+
+/**
+ * @link https://stackoverflow.com/a/21491305
+ */
+function miniloops_straighten_quote( $input ) {
+	$chr_map = array(
+		// Windows codepage 1252
+		"\xC2\x82" => "'", // U+0082⇒U+201A single low-9 quotation mark
+		"\xC2\x84" => '"', // U+0084⇒U+201E double low-9 quotation mark
+		"\xC2\x8B" => "'", // U+008B⇒U+2039 single left-pointing angle quotation mark
+		"\xC2\x91" => "'", // U+0091⇒U+2018 left single quotation mark
+		"\xC2\x92" => "'", // U+0092⇒U+2019 right single quotation mark
+		"\xC2\x93" => '"', // U+0093⇒U+201C left double quotation mark
+		"\xC2\x94" => '"', // U+0094⇒U+201D right double quotation mark
+		"\xC2\x9B" => "'", // U+009B⇒U+203A single right-pointing angle quotation mark
+
+		// Regular Unicode     // U+0022 quotation mark (")
+							   // U+0027 apostrophe     (')
+		"\xC2\xAB"     => '"', // U+00AB left-pointing double angle quotation mark
+		"\xC2\xBB"     => '"', // U+00BB right-pointing double angle quotation mark
+		"\xE2\x80\x98" => "'", // U+2018 left single quotation mark
+		"\xE2\x80\x99" => "'", // U+2019 right single quotation mark
+		"\xE2\x80\x9A" => "'", // U+201A single low-9 quotation mark
+		"\xE2\x80\x9B" => "'", // U+201B single high-reversed-9 quotation mark
+		"\xE2\x80\x9C" => '"', // U+201C left double quotation mark
+		"\xE2\x80\x9D" => '"', // U+201D right double quotation mark
+		"\xE2\x80\x9E" => '"', // U+201E double low-9 quotation mark
+		"\xE2\x80\x9F" => '"', // U+201F double high-reversed-9 quotation mark
+		"\xE2\x80\xB9" => "'", // U+2039 single left-pointing angle quotation mark
+		"\xE2\x80\xBA" => "'", // U+203A single right-pointing angle quotation mark
+	);
+	$chr = array_keys( $chr_map ); // but: for efficiency you should
+	$rpl = array_values( $chr_map ); // pre-calculate these two arrays
+	$output = str_replace( $chr, $rpl, html_entity_decode( $input, ENT_QUOTES, "UTF-8" ) );
+	return $output;
 }
 
 /*
@@ -635,11 +683,9 @@ function miniloop_image( $atts ) {
 	$from = explode( ',', $from );
 
 	$crop = (bool) $crop;
-
 	foreach( $from as $from_where ) {
 	switch ( $from_where ) {
 		case 'thumb' :
-
 			if ( 'clear' == $cache ) {
 				miniloops_clear_thumbnail_cache( get_the_ID() );
 			}
