@@ -38,7 +38,7 @@ class miniloops extends WP_Widget {
 		$instance = $old_instance;
 		//get old variables
 		$instance['title']                   = wp_kses_post( $new_instance['title'] );
-		$instance['hide_title']              = (bool) isset( $new_instance['hide_title'] ) ? 1 : 0;
+		$instance['hide_title']              = (bool) isset( $new_instance['hide_title'] ) && $new_instance['hide_title'] ? 1 : 0;
 		$instance['title_url']               = esc_url( $new_instance['title_url'] );
 		$instance['number_posts']            = (int) $new_instance['number_posts'];
 		$instance['post_offset']             = (int) $new_instance['post_offset'];
@@ -48,15 +48,15 @@ class miniloops extends WP_Widget {
 		$instance['order_by']                = esc_attr( $new_instance['order_by'] );
 		$instance['order']                   = esc_attr( $new_instance['order'] );
 		$instance['order_meta_key']          = esc_attr( $new_instance['order_meta_key'] );
-		$instance['reverse_order']           = (bool) isset( $new_instance['reverse_order'] ) ? 1 : 0;
-		$instance['shuffle_order']           = (bool) isset( $new_instance['shuffle_order'] ) ? 1 : 0;
-		$instance['ignore_sticky']           = (bool) isset( $new_instance['ignore_sticky'] ) ? 1 : 0;
-		$instance['only_sticky']             = (bool) isset( $new_instance['only_sticky'] ) ? 1 : 0;
-		$instance['exclude_sticky']          = (bool) isset( $new_instance['exclude_sticky'] ) ? 1 : 0;
-		$instance['exclude_current']         = (bool) isset( $new_instance['exclude_current'] ) ? 1 : 0;
-		$instance['current_category']        = (bool) isset( $new_instance['current_category'] ) ? 1 : 0;
-		$instance['current_single_category'] = (bool) isset( $new_instance['current_single_category'] ) ? 1 : 0;
-		$instance['current_author']          = (bool) isset( $new_instance['current_author'] ) ? 1 : 0;
+		$instance['reverse_order']           = (bool) isset( $new_instance['reverse_order'] ) && $new_instance['reverse_order'] ? 1 : 0;
+		$instance['shuffle_order']           = (bool) isset( $new_instance['shuffle_order'] ) && $new_instance['shuffle_order'] ? 1 : 0;
+		$instance['ignore_sticky']           = (bool) isset( $new_instance['ignore_sticky'] ) && $new_instance['ignore_sticky'] ? 1 : 0;
+		$instance['only_sticky']             = (bool) isset( $new_instance['only_sticky'] ) && $new_instance['only_sticky'] ? 1 : 0;
+		$instance['exclude_sticky']          = (bool) isset( $new_instance['exclude_sticky'] ) && $new_instance['exclude_sticky'] ? 1 : 0;
+		$instance['exclude_current']         = (bool) isset( $new_instance['exclude_current'] ) && $new_instance['exclude_current'] ? 1 : 0;
+		$instance['current_category']        = (bool) isset( $new_instance['current_category'] ) && $new_instance['current_category'] ? 1 : 0;
+		$instance['current_single_category'] = (bool) isset( $new_instance['current_single_category'] ) && $new_instance['current_single_category'] ? 1 : 0;
+		$instance['current_author']          = (bool) isset( $new_instance['current_author'] ) && $new_instance['current_author'] ? 1 : 0;
 		$instance['categories']              = esc_attr( $new_instance['categories'] );
 		$instance['tags']                    = esc_attr( $new_instance['tags'] );
 		$instance['post_author']             = esc_attr( $new_instance['post_author'] );
@@ -96,7 +96,6 @@ class miniminiloops extends miniloops {
 
 		$instance = wp_parse_args( (array) $instance, get_miniloops_defaults() );
 		extract( $instance );
-
 		?>
 		<p><?php esc_html_e( 'Back to basics. Just recent posts. No fuss.', 'mini-loops' ); ?></p>
 		<p style="width:63%;float:left;">
@@ -124,6 +123,7 @@ class miniminiloops extends miniloops {
 		<input name="<?php echo esc_attr( $this->get_field_name('post_status') ); ?>" type="hidden" value="<?php echo esc_attr( $post_status ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('order_by') ); ?>" type="hidden" value="<?php echo esc_attr( $order_by ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('order') ); ?>" type="hidden" value="<?php echo esc_attr( $order ); ?>" />
+		<input name="<?php echo esc_attr( $this->get_field_name('order_meta_key') ); ?>" type="hidden" value="<?php echo esc_attr( $order_meta_key ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('reverse_order') ); ?>" type="hidden" value="<?php echo esc_attr( $reverse_order ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('shuffle_order') ); ?>" type="hidden" value="<?php echo esc_attr( $shuffle_order ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('ignore_sticky') ); ?>" type="hidden" value="<?php echo esc_attr( $ignore_sticky ); ?>" />
