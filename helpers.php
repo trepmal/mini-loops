@@ -315,8 +315,15 @@ function get_miniloops_sc( $atts, $content ) {
 	if ( strpos( $content, '[ml_format' ) !== false ) {
 		$atts['item_format'] = do_shortcode( $content );
 	} elseif ( ! empty( $content) ) {
-		$content = ltrim( $content, '</p>' );
-		$content = rtrim( $content, '<p>' );
+		// for some annoying reason, shortcode content often ends up like this:
+		// `</p>%thecontent%<p>`
+		// so we explicitly look for these errant tags and remove them
+		if ( substr( $content, 0, 4 ) === '</p>' ){
+			$content = substr( $content, 4 );
+		}
+		if ( substr( $content, -3 ) === '<p>' ){
+			$content = substr( $content, 0, -3 );
+		}
 		$atts['item_format'] = miniloops_straighten_quote( $content );
 	}
 	$args = shortcode_atts( get_miniloops_defaults(), $atts );
