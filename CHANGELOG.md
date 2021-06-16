@@ -1,5 +1,10 @@
 ## Changelog
 
+### Version 1.4.1
+
+- Fix: Corrects sloppy shortcode fixes.
+- Fix: Mini-Mini-Loops widget default settings.
+
 ### Version 1.4
 
 - Long-overdue cleanup.

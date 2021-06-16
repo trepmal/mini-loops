@@ -4,7 +4,7 @@ Tags: recent, recent posts, most recent, category posts, thumbnail, loop, widget
 Donate link: http://kaileylampert.com/donate/
 Requires at least: 3.5
 Tested up to: 5.7
-Stable tag: 1.4
+Stable tag: 1.4.1
 License: GPLv2 or later
 
 Get recent posts, posts from categories, and more. Display as widget or with shortcodes and template tags.
@@ -340,6 +340,9 @@ Send your mo/po files to me at trepmal (at) gmail.com
 
 == Upgrade Notice ==
 
+= 1.4.1 =
+Fix: Corrects sloppy shortcode fixes and Mini-Mini-Loops widget default settings.
+
 = 1.4 =
 General updates, improved shortcode compat with the Block Editor.
 
@@ -374,6 +377,10 @@ New: get posts from current category (if archive) option.
 Real image croping for thumbnails and several other new features. See Changelog.
 
 == Changelog ==
+
+= Version 1.4.1 =
+* Fix: Corrects sloppy shortcode fixes.
+* Fix: Mini-Mini-Loops widget default settings.
 
 = Version 1.4 =
 * General upkeep
