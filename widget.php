@@ -18,8 +18,9 @@ class miniloops extends WP_Widget {
 		 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		echo $args['before_widget'];
-		if ( ! $instance['hide_title'] ) {
-			$title = apply_filters( 'widget_title', $instance['title'] );
+		$hide_title = ( isset( $instance['hide_title'] ) && $instance['hide_title'] );
+		if ( ! $hide_title ) {
+			$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );
 			$title = empty( $instance['title_url'] ) ? wp_kses_post( $title ) : '<a href="'. esc_url( $instance['title_url'] ) .'">'. wp_kses_post( $title ) .'</a>';
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
