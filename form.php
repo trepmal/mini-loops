@@ -65,6 +65,9 @@
 				<select class="widefat" id="<?php echo esc_attr( $this->get_field_id('post_status' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name('post_status' ) ); ?>">
 				<?php
 					echo "<option value='any'" . selected( 'any', $post_status, false ) . ">Any</option>";
+					if ( ! function_exists( 'get_available_post_statuses' ) ) {
+						require_once ABSPATH . '/wp-admin/includes/post.php';
+					}
 					$pss = get_available_post_statuses();
 					foreach ( $pss as $k => $v ) {
 						printf(
