@@ -18,8 +18,9 @@ class miniloops extends WP_Widget {
 		 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		echo $args['before_widget'];
-		if ( ! $instance['hide_title'] ) {
-			$title = apply_filters( 'widget_title', $instance['title'] );
+		$hide_title = ( isset( $instance['hide_title'] ) && $instance['hide_title'] );
+		if ( ! $hide_title ) {
+			$title = apply_filters( 'widget_title', ( isset( $instance['title'] ) ? $instance['title'] : '' ) );
 			$title = empty( $instance['title_url'] ) ? wp_kses_post( $title ) : '<a href="'. esc_url( $instance['title_url'] ) .'">'. wp_kses_post( $title ) .'</a>';
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
@@ -117,6 +118,7 @@ class miniminiloops extends miniloops {
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id('number_posts' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name('number_posts') ); ?>" type="number" value="<?php echo esc_attr( $number_posts ); ?>" />
 			</label>
 		</p>
+		<br style="clear:both;">
 		<input name="<?php echo esc_attr( $this->get_field_name('post_offset') ); ?>" type="hidden" value="<?php echo esc_attr( $post_offset ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('maximum_age') ); ?>" type="hidden" value="<?php echo esc_attr( $maximum_age ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('post_type') ); ?>" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
