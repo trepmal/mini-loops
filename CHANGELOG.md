@@ -1,5 +1,9 @@
 ## Changelog
 
+### Version 1.4.2
+
+- Fix: misc php errors
+
 ### Version 1.4.1
 
 - Fix: Corrects sloppy shortcode fixes.
