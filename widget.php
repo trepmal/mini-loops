@@ -118,6 +118,7 @@ class miniminiloops extends miniloops {
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id('number_posts' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name('number_posts') ); ?>" type="number" value="<?php echo esc_attr( $number_posts ); ?>" />
 			</label>
 		</p>
+		<br style="clear:both;">
 		<input name="<?php echo esc_attr( $this->get_field_name('post_offset') ); ?>" type="hidden" value="<?php echo esc_attr( $post_offset ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('maximum_age') ); ?>" type="hidden" value="<?php echo esc_attr( $maximum_age ); ?>" />
 		<input name="<?php echo esc_attr( $this->get_field_name('post_type') ); ?>" type="hidden" value="<?php echo esc_attr( $post_type ); ?>" />
