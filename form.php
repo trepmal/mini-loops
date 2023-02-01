@@ -183,7 +183,7 @@
 						<?php
 						$taxonomy_names = get_taxonomies( array( 'public' => true ) );
 						printf(
-							esc_html('Available: %', 'mini-loops'),
+							esc_html('Available: %s', 'mini-loops'),
 							implode( ', ', array_map( 'esc_html', $taxonomy_names ) )
 						); ?>)</small>
 			</label>
